@@ -1,0 +1,292 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	template="MainTemplate.xhtml">
+
+
+	<ui:define name="contentPanel">
+	 
+		<div id="Wrapper">
+			<ui:include src="./snippets/MenuBars/MenuBarKeyholdersSnippet.xhtml" />
+			<ui:include src="./snippets/DlgCallListSequence.xhtml" />
+			<h:form id="frmquotationPage" prependId="false">
+				<div class="threequartersplus30">
+					<div class="userPanel">
+						User:
+						<p:outputLabel value="#{userInfo.userName}"
+							style="font-size:15px !important; font-weight:bold !important;" />
+					</div>
+				</div>
+				<div class="threequartersplus30"
+					style="width: 940px; padding-left: 10px;">
+					<h3>
+						<b>
+						KEY HOLDER MANAGEMENT - HOLIDAY CALL LISTS
+						
+						</b>
+					</h3>
+					
+					<h3>
+						<div style="padding-left:560px;">
+							<b>ACTIVE CALL LISTS</b>
+						</div>
+					</h3>
+					
+				<!-- 	<p:dataTable widgetVar="Tb" id="tbKeyholdersList" var="row"
+						value="#{keyholders.keyHoldersList}" rowKey="#{row.keyholderId}"
+						scrollable="true" scrollHeight="125"
+						emptyMessage="No keyholders in this department."
+						selectionMode="single" resizableColumns="true">
+						<p:columnGroup type="header">
+							<p:row>
+								<p:column rowspan="2" headerText="CONTACT NAME"/>
+								<p:column rowspan="2" headerText="PHONE NO."/>
+								<p:column rowspan="2" headerText="SMS NO."/>
+								<p:column rowspan="2" headerText="EMAIL"/>
+								<p:column colspan="7" headerText="ACTIVE CALL LISTS" />
+								<p:column rowspan="2" headerText="EDIT"/>
+								<p:column rowspan="2" headerText="DELETE"/>
+								
+							</p:row>
+						 <p:row>
+								<p:column headerText="24/7" />
+								<p:column headerText="WKD" />
+								<p:column headerText="WKN" />
+								<p:column headerText="SAD" />
+								<p:column headerText="SAN" />
+								<p:column headerText="SUD" />
+								<p:column headerText="SUN" />
+								
+								
+							</p:row>
+						</p:columnGroup>
+						<p:column width="100">
+							<h:outputText id="contactname" value="#{row.contactName}">
+								<p:tooltip for="contactname" value="#{row.contactName}" />
+							</h:outputText>
+						</p:column>
+						<p:column width="100">
+							<h:outputText value="#{row.phone}" />
+						</p:column>
+						<p:column width="100">
+							<h:outputText value="#{row.mobile}" />
+						</p:column>
+						<p:column width="100">
+							<h:outputText id="email" value="#{row.email}">
+								<p:tooltip for="email" value="#{row.email}" />
+							</h:outputText>
+						</p:column>
+						<p:column width="30">
+					
+							<h:commandLink rendered="#{row.listType=='Default'}"
+								style="background: url('./images/Setting.png');width:25px;height:25px;margin:0 auto;" styleClass="dataTableActions"/>
+						</p:column>
+						<p:column width="30">
+						
+							<h:commandLink rendered="#{row.listType=='Weekday Occupancy'}"
+								style="background: url('./images/Setting.png');width:25px;height:25px;margin:0 auto;" styleClass="dataTableActions"/>
+						</p:column>
+						<p:column width="30">
+						
+							<h:commandLink rendered="#{row.listType=='Weekday OutOfHours'}"
+								style="background: url('./images/Setting.png');width:25px;height:25px;margin:0 auto;" styleClass="dataTableActions"/>
+						</p:column>
+						<p:column width="30">
+						
+							<h:commandLink rendered="#{row.listType=='Saturday Occupancy'}"
+								style="background: url('./images/Setting.png');width:25px;height:25px;margin:0 auto;" styleClass="dataTableActions"/>
+						</p:column>
+						<p:column width="30">
+						
+							<h:commandLink rendered="#{row.listType=='Saturday OutOfHours'}"
+								style="background: url('./images/Setting.png');width:25px;height:25px;margin:0 auto;" styleClass="dataTableActions"/>
+						</p:column>
+						<p:column width="30">
+						
+							<h:commandLink rendered="#{row.listType=='Sunday Occupancy'}"
+								style="background: url('./images/Setting.png');width:25px;height:25px;margin:0 auto;" styleClass="dataTableActions"/>
+						</p:column>
+						<p:column width="30">
+						
+							<h:commandLink rendered="#{row.listType=='Sunday OutOfHours'}"
+								style="background: url('./images/Setting.png');width:25px;height:25px;margin:0 auto;" styleClass="dataTableActions"/>
+						</p:column>
+						<p:column width="50">
+							<h:commandLink
+								style="background: url('./images/Setting.png');width:25px;height:25px;margin:0 auto;"
+								styleClass="dataTableActions" />
+						</p:column>
+						<p:column width="50">
+							<h:commandLink
+								style="background: url('./images/Setting.png');width:25px;height:25px;margin:0 auto;"
+								styleClass="dataTableActions" />
+						</p:column>
+
+						<f:facet name="footer"></f:facet>
+					</p:dataTable> -->
+				 <p:dataTable widgetVar="Tb" id="tbHolidayKeyholdersList" var="row"
+						value="#{keyholders.keyHoldersList}" rowKey="#{row.keyholderId}"
+						scrollable="true" scrollHeight="125" 
+						emptyMessage="No Keyholders."
+						styleClass="keyholdersTable"
+					 	selectionMode="single"
+						resizableColumns="true"
+						scrollWidth="200"
+						frozenColumns="6"
+						>
+
+						<p:column width="110">
+							<f:facet name="header">
+								<h:outputText value="CONTACT NAME" />
+							</f:facet>
+							<h:outputText id="contactname" value="#{row.contactName}" >
+								<p:tooltip for="contactname" value="#{row.contactName}" />
+							</h:outputText>
+						</p:column>
+						<p:column width="85">
+							<f:facet name="header">
+								<h:outputText value="PHONE NO." />
+							</f:facet>
+							<h:outputText value="#{row.phone}" />
+						</p:column>
+						<p:column width="85">
+							<f:facet name="header">
+								<h:outputText value="SMS NO." />
+							</f:facet>
+							<h:outputText value="#{row.mobile}" />
+						</p:column>
+						<p:column width="110">
+							<f:facet name="header">
+								<h:outputText value="EMAIL" />
+							</f:facet>
+							<h:outputText id="email" value="#{row.email}">
+								<p:tooltip for="email" value="#{row.email}" />
+							</h:outputText>
+						</p:column>
+						<p:column width="22">
+							<f:facet name="header">
+								<h:outputText value="EDIT" />
+							</f:facet>
+							<h:commandLink
+								style="background: url('./images/Setting.png');width:25px;height:25px;margin:0 auto;" styleClass="dataTableActions"/>
+						</p:column>
+						<p:column width="40">
+							<f:facet name="header">
+								<h:outputText value="DELETE" />
+							</f:facet>
+							<h:commandLink
+								style="background: url('./images/Setting.png');width:25px;height:25px;margin:0 auto;" styleClass="dataTableActions"/>
+						</p:column>
+						<p:columns  width="22" value="#{keyholders.listTypes}" var="column" columnIndexVar="colIndex" style="width:22px;" >
+							<f:facet name="header">
+								<p:commandLink value="#{column}" styleClass="blue" oncomplete="PF('sequenceDialog').show();" ajax="true">
+									<f:setPropertyActionListener target="#{keyholders.selectedListType}" value="#{row.listType}"/>
+								</p:commandLink>
+							</f:facet>
+							<h:commandLink rendered="#{column==row.displayName}"
+								style="background: url('./images/Setting.png');width:25px;height:25px;margin:0 auto;" styleClass="dataTableActions"/>
+						</p:columns>
+					<!-- 	<p:column width="22">
+							<f:facet name="header">
+								<p:commandLink value="BOX" styleClass="blue" oncomplete="PF('sequenceDialog').show();" ajax="true">
+									<f:setPropertyActionListener target="#{keyholders.selectedListType}" value="Weekday Occupancy"/>
+								</p:commandLink>
+								
+							</f:facet>
+							<h:commandLink rendered="#{row.displayName=='BOX'}"
+								style="background: url('./images/Setting.png');width:25px;height:25px;margin:0 auto;" styleClass="dataTableActions"/>
+						</p:column>
+						<p:column width="22">
+							<f:facet name="header">
+								<p:commandLink value="NYR" styleClass="blue" oncomplete="PF('sequenceDialog').show();" ajax="true">
+									<f:setPropertyActionListener target="#{keyholders.selectedListType}" value="Weekday OutOfHours"/>
+								</p:commandLink>
+							
+								
+							</f:facet>
+							<h:commandLink rendered="#{row.displayName=='NYR'}"
+								style="background: url('./images/Setting.png');width:25px;height:25px;margin:0 auto;" styleClass="dataTableActions"/>
+						</p:column>
+						<p:column width="22">
+							<f:facet name="header">
+								<p:commandLink value="SH1" styleClass="blue" oncomplete="PF('sequenceDialog').show();" ajax="true">
+									<f:setPropertyActionListener target="#{keyholders.selectedListType}" value="Saturday Occupancy"/>
+								</p:commandLink>
+								
+							</f:facet>
+							<h:commandLink rendered="#{row.displayName=='SH1'}"
+								style="background: url('./images/Setting.png');width:25px;height:25px;margin:0 auto;" styleClass="dataTableActions"/>
+						</p:column>
+						<p:column width="22">
+							<f:facet name="header">
+								<p:commandLink value="SH2" styleClass="blue" oncomplete="PF('sequenceDialog').show();" ajax="true">
+									<f:setPropertyActionListener target="#{keyholders.selectedListType}" value="Saturday OutOfHours"/>
+								</p:commandLink>
+								
+							</f:facet>
+							<h:commandLink rendered="#{row.displayName=='SH2'}"
+								style="background: url('./images/Setting.png');width:25px;height:25px;margin:0 auto;" styleClass="dataTableActions"/>
+						</p:column>
+						<p:column width="22">
+							<f:facet name="header">
+								<p:commandLink value="SH3" styleClass="blue" oncomplete="PF('sequenceDialog').show();" ajax="true">
+									<f:setPropertyActionListener target="#{keyholders.selectedListType}" value="Sunday Occupancy"/>
+								</p:commandLink>
+								
+							</f:facet>
+							<h:commandLink rendered="#{row.displayName=='SH3'}"
+								style="background: url('./images/Setting.png');width:25px;height:25px;margin:0 auto;" styleClass="dataTableActions"/>
+						</p:column>
+						<p:column width="22">
+							<f:facet name="header">
+								<p:commandLink value="SH4" styleClass="blue" oncomplete="PF('sequenceDialog').show();" ajax="true">
+									<f:setPropertyActionListener target="#{keyholders.selectedListType}" value="Sunday OutOfHours"/>
+								</p:commandLink>
+								
+							</f:facet>
+							<h:commandLink rendered="#{row.displayName=='SH4'}"
+								style="background: url('./images/Setting.png');width:25px;height:25px;margin:0 auto;" styleClass="dataTableActions"/>
+						</p:column>
+						 -->
+						
+						<f:facet name="footer"></f:facet>
+					</p:dataTable>
+					<div class="threequartersplus30" style="margin-top:30px;">
+						<table>
+							<tr>
+							<td>
+								<h:commandLink action="#{keyholders.showKeyholders(true)}"
+									style="background: url('./images/SensorList.png') no-repeat left;
+									background-size:100% 100%;
+									width:50px;height:50px;
+									display:block;margin:0 auto;"/>
+								<b><h:outputText value="VIEW NORMAL" /></b>
+							</td>
+							<td>
+								<h:commandLink action="#{keyholders.showKeyholders(false)}"
+									style="background: url('./images/SensorList2.png') no-repeat left;
+									background-size:100% 100%;
+									width:50px;height:50px;
+									display:block;margin:0 auto;"/>
+								<b><h:outputText value="VIEW HOLIDAY" /></b>
+							</td>
+							<td>
+								<h:commandLink 
+									style="background: url('./images/SensorList.png') no-repeat left;
+									background-size:100% 100%;
+									width:50px;height:50px;
+									display:block;margin:0 auto;"/>
+								<b><h:outputText value="ADD KEYHOLDER" /></b>
+							</td>
+							</tr>
+						</table> 
+					</div>
+				</div>
+			</h:form>
+			
+		</div>
+	</ui:define>
+</ui:composition>

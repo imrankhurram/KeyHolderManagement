@@ -1,0 +1,164 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:o="http://omnifaces.org/ui" xmlns:p="http://primefaces.org/ui">
+
+	<!-- START OF DIALOG -->
+	<p:dialog widgetVar="addKeyholderDlg" id="addKeyholderDlg"
+		appendTo="@(body)" modal="true" position="center"
+		header="Add Key Holder" resizable="false" showEffect="fade"
+		hideEffect="fade" closable="false">
+
+		<h:form id="addKeyholderFrm" prependId="false">
+		<p:messages showDetails="true" id="saveMsg" />
+			<p:panelGrid>
+				<p:row>
+					<p:column>
+						<p:panel style="float: left; text-align: right">
+							<p:panelGrid columns="2" style="text-align: right;width:100%;">
+								<!-- <o:outputLabel value="Contact Type " />
+								<h:selectOneMenu id="addPosition"
+									value="#{keyholders.newKeyholder.position}">
+									<f:selectItems value="#{keyholders.contactTypes}" />
+									<p:ajax listener="#{keyholders.filterTypes}"
+										update="addtelephoneNo, addsmsNo" />
+								</h:selectOneMenu> -->
+								<p:outputLabel for="addkeyholderName" value="Key Holder Name: " />
+								<p:inputText id="addkeyholderName"
+									value="#{keyholders.newKeyholder.contactName}" required="true" requiredMessage="Keyholder name is required!"/>
+								<o:outputLabel for="addtelephoneNo" value="Telephone No.: " />
+								<p:inputText id="addtelephoneNo"
+									value="#{keyholders.newKeyholder.phone}"
+									disabled="#{keyholders.emailFlag}" />
+								<o:outputLabel for="addsmsNo" value="Cell Phone No.(SMS): " />
+								<p:inputText id="addsmsNo"
+									value="#{keyholders.newKeyholder.mobile}" disabled="#{keyholders.emailFlag}" />
+								<!-- <o:outputLabel for="addemail" value="Email Address: " disabled="#{keyholders.emailFlag}" />
+								<p:inputText id="addemail"
+									value="#{keyholders.newKeyholder.email}" /> -->
+							</p:panelGrid>
+							<p:outputPanel id="addNewEmail">
+								<ui:repeat value="#{keyholders.emails}" var="emails">
+									<p:panelGrid columns="2" style="width:100%;text-align:right;">
+										<h:outputLabel value="Email: " style="font-size:14px;" />
+										<p:inputText value="#{emails.email}" required="false"
+											maxlength="200" id="newEmail">
+											<p:ajax process="@this" />
+										</p:inputText>
+									</p:panelGrid>
+								</ui:repeat>
+							</p:outputPanel>
+							<p:dataTable widgetVar="TbAdd" id="tbAddKeyholdersList" var="row"
+								value="#{keyholders.newNormalList}"
+								rowKey="#{row.keyholderListId}" style="width:380px;"
+								emptyMessage="No Normal Call list exists in this department."
+								styleClass="keyholdersTable popupDataTable"
+								resizableColumns="true">
+
+								<p:column width="100">
+									<f:facet name="header">
+										<h:outputText value="NORMAL CALL LISTS" />
+									</f:facet>
+									<o:outputLabel value="#{row.fullDisplayName}" />
+								</p:column>
+								<p:column width="25" style="padding:0px;">
+									<f:facet name="header">
+										<h:outputText value="ENA" />
+									</f:facet>
+									<p:selectBooleanCheckbox value="#{row.enabled}" id="ena"/>
+								</p:column>
+								<p:column width="25" style="padding:0px;">
+									<f:facet name="header">
+										<h:outputText value="VC" />
+									</f:facet>
+									<p:selectBooleanCheckbox value="#{row.contactPhone}" id="vc"/>
+								</p:column>
+								<p:column width="25" style="padding:0px;">
+									<f:facet name="header">
+										<h:outputText value="SMS" />
+									</f:facet>
+									<p:selectBooleanCheckbox value="#{row.contactSMS}" id="sms"/>
+								</p:column>
+								<p:column width="25" style="padding:0px;">
+									<f:facet name="header">
+										<h:outputText value="EM" />
+									</f:facet>
+									<p:selectBooleanCheckbox value="#{row.contactEmail}" id="em"/>
+								</p:column>
+							</p:dataTable>
+
+						</p:panel>
+					</p:column>
+					<p:column style="vertical-align:top;">
+
+						<p:panel style="float: right; text-align: center;">
+							<p:dataTable widgetVar="TbAddHoliday"
+								id="tbAddHolidayKeyholdersList" var="row"
+								value="#{keyholders.newHolidayList}"
+								rowKey="#{row.keyholderListId}" style="width:480px;"
+								emptyMessage="No Holiday Call list exists in this department."
+								styleClass="keyholdersTable"
+								resizableColumns="true">
+
+								<p:column width="100">
+									<f:facet name="header">
+										<h:outputText value="HOLIDAY CALL LISTS" />
+									</f:facet>
+									<o:outputLabel value="#{row.fullDisplayName}" />
+								</p:column>
+								<p:column width="25" style="padding:0px;">
+									<f:facet name="header">
+										<h:outputText value="ENA" />
+									</f:facet>
+									<p:selectBooleanCheckbox value="#{row.enabled}" />
+								</p:column>
+								<p:column width="25" style="padding:0px;">
+									<f:facet name="header">
+										<h:outputText value="VC" />
+									</f:facet>
+									<p:selectBooleanCheckbox value="#{row.contactPhone}" />
+								</p:column>
+								<p:column width="25" style="padding:0px;">
+									<f:facet name="header">
+										<h:outputText value="SMS" />
+									</f:facet>
+									<p:selectBooleanCheckbox value="#{row.contactSMS}" />
+								</p:column>
+								<p:column width="25" style="padding:0px;">
+									<f:facet name="header">
+										<h:outputText value="EM" />
+									</f:facet>
+									<p:selectBooleanCheckbox value="#{row.contactEmail}" />
+								</p:column>
+							</p:dataTable>
+
+						</p:panel>
+					</p:column>
+				</p:row>
+			</p:panelGrid>
+			<p:panelGrid style="width:100%">
+				<p:row>
+					<p:column style="width:50%"></p:column>
+					<p:column style="text-align:center;">
+						<p:panel>
+							<p:commandButton value="Cancel"
+								onclick="PF('addKeyholderDlg').hide();"
+								styleClass="dialogButton" />
+							<p:commandButton value="Add Email" immediate="true"
+								actionListener="#{keyholders.addEmail}" update="addNewEmail"
+								styleClass="dialogButton" />
+							<p:commandButton id="saveKeyholderBtn" value="Save" styleClass="dialogButton"
+								update=":addKeyholderFrm"
+								action="#{keyholders.saveNewKeyholder}" />
+								<!-- oncomplete="PF('addKeyholderDlg').hide();" -->
+						</p:panel>
+					</p:column>
+				</p:row>
+			</p:panelGrid>
+		</h:form>
+
+	</p:dialog>
+	<!-- END OF DIALOG -->
+</ui:composition>

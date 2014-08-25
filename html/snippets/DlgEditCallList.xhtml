@@ -1,0 +1,96 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:p="http://primefaces.org/ui">
+
+	<!-- START OF DIALOG -->
+	<p:dialog widgetVar="editCallListDialog" id="addEditListDlg" styleClass="normalDialog"
+		appendTo="@(body)" modal="true" position="center"
+		header="Edit Call List" resizable="false" showEffect="fade"
+		hideEffect="fade" closable="false" closeListener="#{keyholdercalllist.closeListener}">
+		<h:form id="editKeyHldsList">
+			<p:panelGrid columns="2" columnClasses="rightStyle,leftStyle">
+			<h:outputText value="List Type: "/>
+				<p:selectOneMenu id="editSelectListType" value="#{keyholdercalllist.selectedCallList.listType}" required="false" editable="true">
+					<p:ajax listener="#{keyholdercalllist.setModType}" event="change" update="editKeyHldsList" process="editSelectListType"/>
+						<f:selectItems value="#{keyholdercalllist.listType}"/>
+						<!-- <f:selectItem itemValue="Default" itemLabel="Default"/>
+						<f:selectItem itemValue="Weekday Occupancy" itemLabel="Weekday Occupancy"/>
+						<f:selectItem itemValue="Weekday OutOfHours" itemLabel="Weekday OutOfHours"/>
+						<f:selectItem itemValue="Saturday Occupancy" itemLabel="Saturday Occupancy"/>
+						<f:selectItem itemValue="Saturday OutOfHours" itemLabel="Saturday OutOfHours"/>
+						<f:selectItem itemValue="Sunday Occupancy" itemLabel="Sunday Occupancy"/>
+						<f:selectItem itemValue="Sunday OutOfHours" itemLabel="Sunday OutOfHours"/>
+						<f:selectItem itemValue="Christmas" itemLabel="Christmas"/>
+						<f:selectItem itemValue="Boxing Day" itemLabel="Boxing Day"/>
+						<f:selectItem itemValue="New Years Day" itemLabel="New Year's Day"/>
+						<f:selectItem itemValue="Special Occasion" itemLabel="Special Occasion"/>
+						<f:selectItem itemValue="Waitrose Special Occasion" itemLabel="Waitrose Special Occasion"/> -->
+				</p:selectOneMenu>
+				<p:outputLabel value="List description: " />
+				<p:inputText id="listDescription" value="#{keyholdercalllist.selectedCallList.description}" size="32"/>
+				<p:outputLabel value="List name: " />
+				<p:inputText id="listName" value="#{keyholdercalllist.selectedCallList.displayName}" size="14"/>
+				<p:outputLabel value="Start time: " />
+				<p:panel styleClass="timePanel">
+					<h:selectOneMenu value="#{keyholdercalllist.startHour}" id="editStartTimeHour">
+							<f:selectItems value="#{keyholdercalllist.hours}"/>
+					</h:selectOneMenu>
+					<h:outputText value=" : " style="font-size:14px;"/>
+					<h:selectOneMenu value="#{keyholdercalllist.startMinutes}" id="editStartTimeMinutes">
+						<f:selectItems value="#{keyholdercalllist.minutes}"/>
+					</h:selectOneMenu>
+				</p:panel>
+							
+				<p:outputLabel value="End time: " />
+				<!-- <p:inputText id="endTime" value="#{keyholdercalllist.newCallList.occupancyEnd}" size="10"/> -->
+				<p:panel styleClass="timePanel">
+					<h:selectOneMenu value="#{keyholdercalllist.endHour}" id="editEndTimeHour">
+						<f:selectItems value="#{keyholdercalllist.endHours}"/>
+					</h:selectOneMenu>
+					<h:outputText value=" : " style="font-size:14px;"/>
+					<h:selectOneMenu value="#{keyholdercalllist.endMinutes}" id="editEndTimeMinutes">
+						<f:selectItems value="#{keyholdercalllist.minutes}"/>
+					</h:selectOneMenu>	
+				</p:panel>
+				<p:outputLabel value="Start date: " rendered="${keyholdercalllist.typeNumb==1 || keyholdercalllist.typeNumb==3}"/>
+				<p:calendar id="startDate" value="#{keyholdercalllist.selectedCallList.startDate}" locale="en" mode="popup" immediate="true" pattern="dd-MM-yyyy" startWeekday="1" monthFormat="short" showWeekdays="false" size="14" rendered="${keyholdercalllist.typeNumb==1 || keyholdercalllist.typeNumb==3}"/>
+				<p:outputLabel value="End date: " rendered="${keyholdercalllist.typeNumb==1 || keyholdercalllist.typeNumb==3}"/>
+				<p:calendar id="endDate" value="#{keyholdercalllist.selectedCallList.endDate}" locale="en" mode="popup" immediate="true" pattern="dd-MM-yyyy" startWeekday="1" monthFormat="short" showWeekdays="false" size="14" rendered="${keyholdercalllist.typeNumb==1 || keyholdercalllist.typeNumb==3}"/>
+				<p:panel></p:panel>
+				<h:panelGrid columns="5" rendered="#{keyholdercalllist.typeNumb==2}" style="margin:1px">
+					<h:outputText value=" M " style="font-size:14px;"/>
+					<h:outputText value=" T " style="font-size:14px;"/>
+					<h:outputText value=" W " style="font-size:14px;"/>
+					<h:outputText value=" T " style="font-size:14px;"/>
+					<h:outputText value=" F " style="font-size:14px;"/>
+							
+					<h:selectBooleanCheckbox value="#{keyholdercalllist.selectedCallList.monday}" id="monday"/>
+					<h:selectBooleanCheckbox value="#{keyholdercalllist.selectedCallList.tuesday}" id="tuesday"/>
+					<h:selectBooleanCheckbox value="#{keyholdercalllist.selectedCallList.wednesday}" id="wednesday"/>
+					<h:selectBooleanCheckbox value="#{keyholdercalllist.selectedCallList.thursday}" id="thursday"/>
+					<h:selectBooleanCheckbox value="#{keyholdercalllist.selectedCallList.friday}" id="friday"/>
+			</h:panelGrid>
+			</p:panelGrid>
+			
+			<p:panelGrid style="width:100%">
+				<p:row>
+					<p:column style="text-align:center;">
+						<p:panel>
+							<p:commandButton value="Cancel"
+								onclick="PF('editCallListDialog').hide();"
+								styleClass="dialogButton" />
+							<p:commandButton id="updateCallListBtn" value="Update" styleClass="dialogButton"
+								oncomplete="PF('editCallListDialog').hide();"
+								action="#{keyholdercalllist.editCallList}"/>
+						</p:panel>
+					</p:column>
+				</p:row>
+			</p:panelGrid>
+		</h:form>
+
+	</p:dialog>
+	<!-- END OF DIALOG -->
+</ui:composition>

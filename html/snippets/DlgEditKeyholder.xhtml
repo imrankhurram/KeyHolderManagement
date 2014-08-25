@@ -1,0 +1,189 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:o="http://omnifaces.org/ui" xmlns:p="http://primefaces.org/ui">
+
+	<!-- START OF DIALOG -->
+	<p:dialog widgetVar="editKeyholderDlg" id="editKeyholderDlg"
+		appendTo="@(body)" modal="true" position="center"
+		header="Edit Key Holder" resizable="false" showEffect="fade"
+		hideEffect="fade" closable="false">
+
+		<h:form id="editKeyholderFrm" prependId="false">
+		<p:messages showDetails="true" id="updateMsg" />
+			<p:panelGrid>
+				<p:row>
+					<p:column>
+						<p:panel style="float: left; text-align: right">
+							<p:panelGrid columns="2" style="text-align: right;width:100%;">
+								<!-- <o:outputLabel value="Contact Type " />
+								<h:selectOneMenu id="position"
+									value="#{keyholders.selectedKeyholder.position}">
+									<f:selectItems value="#{keyholders.contactTypes}" />
+									<p:ajax listener="#{keyholders.filterModTypes}"
+										update="telephoneNo, smsNo" />
+								</h:selectOneMenu> -->
+								<p:outputLabel for="keyholderName" value="Key Holder Name: " />
+								<p:inputText id="keyholderName"
+									value="#{keyholders.selectedKeyholder.contactName}"
+									required="true" requiredMessage="Keyholder name is required!"/>
+								<o:outputLabel for="telephoneNo" value="Telephone No.: " />
+								<p:inputText id="telephoneNo"
+									value="#{keyholders.selectedKeyholder.phone}"
+									disabled="#{keyholders.emailFlag}" />
+								<o:outputLabel for="smsNo" value="Cell Phone No.(SMS): " />
+								<p:inputText id="smsNo"
+									value="#{keyholders.selectedKeyholder.mobile}"
+									disabled="#{keyholders.emailFlag}" />
+								<!-- <o:outputLabel for="email" value="Email Address: " />
+									<p:inputText id="email"
+									value="#{keyholders.selectedKeyholder.email}" /> -->
+
+
+							</p:panelGrid>
+							<p:outputPanel id="addEmail">
+								<ui:repeat value="#{keyholders.modEmails}" var="emails">
+									<p:panelGrid style="width:100%;text-align:right;">
+										<p:row>
+											<p:column style="width:48.5%">
+												<h:outputLabel value="Email: " style="font-size:14px;" />
+											</p:column>
+											<p:column>
+												<p:inputText value="#{emails.email}" required="false"
+													maxlength="200" id="email">
+													<p:ajax process="@this" />
+												</p:inputText>
+											</p:column>
+										</p:row>
+									</p:panelGrid>
+								</ui:repeat>
+							</p:outputPanel>
+							<p:dataTable widgetVar="TbEdit" id="tbEditKeyholdersList"
+								var="row" value="#{keyholders.normalList}"
+								rowKey="#{row.keyholderListId}" style="width:380px;"
+								emptyMessage="No Normal Call list exists in this department."
+								styleClass="keyholdersTable" resizableColumns="true">
+
+								<p:column width="100">
+									<f:facet name="header">
+										<h:outputText value="NORMAL CALL LISTS" />
+									</f:facet>
+									<!-- <o:outputLabel value="24Hrs 7 Days a week (24/7)"
+							rendered="#{row.displayName=='24/7'}" />
+						<o:outputLabel value="Week Days Mon-Fri (WKD)" rendered="#{row.displayName=='WKD'}" />
+						<o:outputLabel value="Week Nights Mon-Fri (WKN)" rendered="#{row.displayName=='WKN'}" />
+						<o:outputLabel value="Saturday Days (SAD)" rendered="#{row.displayName=='SAD'}" />
+						<o:outputLabel value="Saturday Nights (SAN)" rendered="#{row.displayName=='SAN'}" />
+						<o:outputLabel value="Sunday Days (SUD)" rendered="#{row.displayName=='SUD'}" />
+						<o:outputLabel value="Sunday Nights (SUN)" rendered="#{row.displayName=='SUN'}" /> -->
+									<o:outputLabel value="#{row.fullDisplayName}" />
+								</p:column>
+								<p:column width="25" style="padding:0px;">
+									<f:facet name="header">
+										<h:outputText value="ENA" />
+									</f:facet>
+									<p:selectBooleanCheckbox value="#{row.enabled}" />
+									<!-- <p:selectBooleanCheckbox value="#{keyholders.selectedKeyholder.keyholderListNames.contains(row.displayName)}" />
+						<o:outputLabel value="24Hrs 7 Days a week (24/7)"
+							rendered="#{row.displayName=='24/7'}" />
+						<o:outputLabel value="Week Days Mon-Fri (WKD)" rendered="#{row.displayName=='WKD'}" />
+						<o:outputLabel value="Week Nights Mon-Fri (WKN)" rendered="#{row.displayName=='WKN'}" />
+						<o:outputLabel value="Saturday Days (SAD)" rendered="#{row.displayName=='SAD'}" />
+						<o:outputLabel value="Saturday Nights (SAN)" rendered="#{row.displayName=='SAN'}" />
+						<o:outputLabel value="Sunday Days (SUD)" rendered="#{row.displayName=='SUD'}" />
+						<o:outputLabel value="Sunday Nights (SUN)" rendered="#{row.displayName=='SUN'}" /> -->
+								</p:column>
+								<p:column width="25" style="padding:0px;">
+									<f:facet name="header">
+										<h:outputText value="VC" />
+									</f:facet>
+									<p:selectBooleanCheckbox value="#{row.contactPhone}" />
+								</p:column>
+								<p:column width="25" style="padding:0px;">
+									<f:facet name="header">
+										<h:outputText value="SMS" />
+									</f:facet>
+									<p:selectBooleanCheckbox value="#{row.contactSMS}" />
+								</p:column>
+								<p:column width="25" style="padding:0px;">
+									<f:facet name="header">
+										<h:outputText value="EM" />
+									</f:facet>
+									<p:selectBooleanCheckbox value="#{row.contactEmail}" />
+								</p:column>
+							</p:dataTable>
+
+						</p:panel>
+					</p:column>
+					<p:column style="vertical-align:top;">
+
+						<p:panel style="float: right; text-align: center;">
+							<p:dataTable widgetVar="TbEditHoliday"
+								id="tbEditHolidayKeyholdersList" var="row"
+								value="#{keyholders.holidayList}"
+								rowKey="#{row.keyholderListId}" style="width:480px;"
+								emptyMessage="No Holiday Call list exists in this department."
+								styleClass="keyholdersTable" resizableColumns="true">
+
+								<p:column width="100">
+									<f:facet name="header">
+										<h:outputText value="HOLIDAY CALL LISTS" />
+									</f:facet>
+									<o:outputLabel value="#{row.fullDisplayName}" />
+								</p:column>
+								<p:column width="25" style="padding:0px;">
+									<f:facet name="header">
+										<h:outputText value="ENA" />
+									</f:facet>
+									<p:selectBooleanCheckbox value="#{row.enabled}" />
+								</p:column>
+								<p:column width="25" style="padding:0px;">
+									<f:facet name="header">
+										<h:outputText value="VC" />
+									</f:facet>
+									<p:selectBooleanCheckbox value="#{row.contactPhone}" />
+								</p:column>
+								<p:column width="25" style="padding:0px;">
+									<f:facet name="header">
+										<h:outputText value="SMS" />
+									</f:facet>
+									<p:selectBooleanCheckbox value="#{row.contactSMS}" />
+								</p:column>
+								<p:column width="25" style="padding:0px;">
+									<f:facet name="header">
+										<h:outputText value="EM" />
+									</f:facet>
+									<p:selectBooleanCheckbox value="#{row.contactEmail}" />
+								</p:column>
+							</p:dataTable>
+
+						</p:panel>
+					</p:column>
+				</p:row>
+			</p:panelGrid>
+			<p:panelGrid style="width:100%">
+				<p:row>
+					<p:column style="width:50%"></p:column>
+					<p:column style="text-align:center;">
+						<p:panel>
+							<p:commandButton value="Cancel"
+								onclick="PF('editKeyholderDlg').hide();"
+								styleClass="dialogButton" />
+							<p:commandButton value="Add Email" immediate="true"
+								actionListener="#{keyholders.addModEmail}" update="addEmail"
+								styleClass="dialogButton" />
+							<p:commandButton id="editKeyholderBtn" value="Update" styleClass="dialogButton"
+								update=":editKeyholderFrm"
+								action="#{keyholders.saveEditedKeyholder}" />
+							<!-- oncomplete="PF('editKeyholderDlg').hide();" -->
+						</p:panel>
+					</p:column>
+				</p:row>
+			</p:panelGrid>
+		</h:form>
+
+	</p:dialog>
+	<!-- END OF DIALOG -->
+</ui:composition>

@@ -1,0 +1,63 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:p="http://primefaces.org/ui">
+
+	<!-- START OF DIALOG -->
+	<p:dialog widgetVar="sequenceDialog" id="sequenceDlg" styleClass="normalDialog"
+		appendTo="@(body)" modal="true" position="center"
+		header="Edit Call Sequence List" resizable="false" showEffect="fade"
+		hideEffect="fade" closable="false">
+		<h:form>
+			<div style="padding: 20px;overflow:auto;">
+				<div>
+				<div style="float: left; padding: 6px; color: white;">
+					<c:forEach var="i" begin="1" end="#{keyholders.listKeyHoldersSize}">
+						<h:outputText value="${i}"
+							style="background-color:gray; margin-bottom:5px;
+						padding:1px 15px;
+						display:inline-block;" />
+						<br />
+					</c:forEach>
+				</div>
+				<div style="float: right;">
+				
+				<!--todo override these classes .ui-orderlist .ui-orderlist-list -->
+					<p:orderList value="#{keyholders.listKeyHolders}" var="keyholder"
+						converter="keyholderConverter" itemValue="#{keyholder}"
+						controlsLocation="right" style="text-align:center;" 
+						>
+						<!-- valueChangeListener="#{keyholders.processPriority}" -->
+						<!-- <p:column style="width:25%">
+							<h:outputText value="#{keyholder.priority}"/>
+					
+						</p:column> --> 
+						<!--margin-bottom:12px;   -->
+						<p:column
+							style="width:170px; background-color:gray; color:white;
+							white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:block;">
+							<h:outputText id="kContactName" value="#{keyholder.contactName}"
+								title="#{keyholder.contactName}">
+
+							</h:outputText>
+						</p:column>
+					</p:orderList>
+				</div>
+				</div>
+				<div style="text-align: center;">
+
+					<p:commandButton value="Cancel"
+						onclick="PF('sequenceDialog').hide();" styleClass="dialogButton" />
+					<p:commandButton value="Update" styleClass="dialogButton"
+						oncomplete="PF('sequenceDialog').hide();"
+						action="#{keyholders.saveKeyHoldersSequence}" />
+					<!-- oncomplete="sequenceDialog.hide()" -->
+				</div>
+			</div>
+		</h:form>
+
+	</p:dialog>
+	<!-- END OF DIALOG -->
+</ui:composition>

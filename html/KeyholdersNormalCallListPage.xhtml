@@ -1,0 +1,366 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	template="MainTemplate.xhtml">
+
+
+	<ui:define name="contentPanel">
+
+		<div id="Wrapper">
+
+
+			<ui:include src="./snippets/MenuBars/MenuBarKeyholdersSnippet.xhtml" />
+			<ui:include src="./snippets/DlgCallListSequence.xhtml" />
+			<ui:include src="./snippets/DlgEditKeyholder.xhtml" />
+			<ui:include src="./snippets/DlgAddKeyholder.xhtml" />
+			<h:form id="frmKeyholdersPage" prependId="false">
+				<div class="threequartersplus30">
+					<div class="userPanel">
+						User:
+						<p:outputLabel value="#{userInfo.userName}"
+							style="font-size:15px !important; font-weight:bold !important;" />
+					</div>
+				</div>
+				<div class="" style="float: left; padding-left: 10px;">
+					<p:messages showDetails="true" id="listMsg" />
+					<h3>
+						<c:choose>
+							<c:when test="${keyholders.showNormal}">
+								<b>KEY HOLDER MANAGEMENT - NORMAL CALL LISTS</b>
+							</c:when>
+							<c:otherwise>
+								<b>KEY HOLDER MANAGEMENT - HOLIDAY CALL LISTS</b>
+							</c:otherwise>
+						</c:choose>
+					</h3>
+
+					<h3>
+						<div style="text-align:right;"><!-- padding-left: 735px; -->
+							<b>ACTIVE CALL LISTS</b>
+						</div>
+					</h3>
+					<p:dataTable widgetVar="Tb" id="tbKeyholdersList" var="row"
+						value="#{keyholders.keyHoldersList}" rowKey="#{row.keyholderId}"
+						scrollable="true" scrollHeight="205" style="width:975px;"
+						emptyMessage="No Keyholders Exist." styleClass="keyholdersTable"
+						selectionMode="single" resizableColumns="true" scrollWidth="245"
+						frozenColumns="6">
+
+						<p:column width="110">
+							<f:facet name="header">
+								<h:outputText value="CONTACT NAME" />
+							</f:facet>
+							<h:outputText id="contactname" value="#{row.contactName}">
+								<p:tooltip for="contactname" value="#{row.contactName}" />
+							</h:outputText>
+						</p:column>
+						<p:column width="85">
+							<f:facet name="header">
+								<h:outputText value="PHONE NO." />
+							</f:facet>
+							<h:outputText value="#{row.phone}" />
+						</p:column>
+						<p:column width="85">
+							<f:facet name="header">
+								<h:outputText value="SMS NO." />
+							</f:facet>
+							<h:outputText value="#{row.mobile}" />
+						</p:column>
+						<p:column width="110">
+							<f:facet name="header">
+								<h:outputText value="EMAIL" />
+							</f:facet>
+							<h:outputText id="email" value="#{row.email}">
+								<p:tooltip for="email" value="#{row.email}" />
+							</h:outputText>
+						</p:column>
+						<p:column width="22" exportable="false">
+							<f:facet name="header">
+								<h:outputText value="EDIT" />
+							</f:facet>
+							<p:commandLink
+								id="editKeyholder"
+								style="background: url('./images/EditIcon.png');width:25px;height:25px;margin:0 auto;"
+								styleClass="dataTableActions"
+								actionListener="#{keyholders.editKeyholder(row)}"
+								oncomplete="PF('editKeyholderDlg').show();"
+								update=":editKeyholderFrm" />
+						</p:column>
+						<p:column width="40" exportable="false">
+							<f:facet name="header">
+								<h:outputText value="DELETE" />
+							</f:facet>
+							<p:commandLink id="deleteKeyholder"
+								style="background: url('./images/Setting.png');width:25px;height:25px;margin:0 auto;"
+								styleClass="dataTableActions"
+								onclick="PF('confirmDlg').show()">
+								<f:setPropertyActionListener target="#{keyholders.selectedKeyholder}" value="#{row}"/>
+								</p:commandLink>
+						</p:column>
+						<p:columns width="22" value="#{keyholders.listTypes}" var="column"
+							columnIndexVar="colIndex" style="width:22px;">
+							<f:facet name="header">
+								<p:commandLink value="#{column.displayName}" id="ListType"
+									style="color:#3BCAFF; text-shadow: 0 1px #3bcaff;"
+									oncomplete="PF('sequenceDialog').show();" update=":sequenceDlg"
+									action="#{keyholders.retrieveListKeyholders(column)}">
+									<!-- <f:setPropertyActionListener target="#{keyholders.selectedList}" value="24/7"/> -->
+								</p:commandLink>
+							</f:facet>
+							<!-- style="background: url('./images/Setting.png');width:25px;height:25px;margin:0px auto 0px;" -->
+							<!-- working  -->
+							<!-- <h:commandLink rendered="#{row.keyholderListIds.contains(column.keyholderListId)}"
+								value="yes"
+								styleClass="dataTableActions" style="height:25px;margin:-15px -33px;">
+								<p:graphicImage value="./images/Setting.png" width="25px" height="25px"></p:graphicImage>
+								</h:commandLink> -->
+							<!-- working  -->
+							<!-- <c:set var="contactType" value="#{row.contact_type}"/>
+							<c:choose>
+								<c:when test="${contactType eq 1}">
+									111111111111
+       								<c:set var="contactString" value="Call"></c:set>
+    							</c:when>
+								<c:when test="${contactType eq 2}">
+       								<c:set var="contactString" value="Call And Sms"></c:set>
+    							</c:when>
+    							<c:when test="${contactType eq '3'}">
+       								<c:set var="contactString" value="Sms"></c:set>
+    							</c:when>
+    							<c:when test="${contactType eq 4}">
+    								44444444444444
+       								<c:set var="contactString" value="Sms And Email"></c:set>
+    							</c:when>
+    							<c:when test="${contactType eq 5}">
+    								55555555555555
+       								<c:set var="contactString" value="Email"></c:set>
+    							</c:when>
+    							<c:when test="${contactType == 6}">
+    								66666666
+       								<c:set var="contactString" value="Call And Email"></c:set>
+    							</c:when>
+    							<c:when test="${contactType eq 7}">
+       								<c:set var="contactString" value="Call, Sms And Email"></c:set>
+    							</c:when>
+								<c:otherwise>
+									<c:set var="contactString" value="Yes"></c:set>
+								</c:otherwise>
+							</c:choose> -->
+<!-- rendered="#{row.keyholderListIds.contains(column.keyholderListId)}" -->
+							<h:commandLink
+								
+								rendered="#{row.keyholderListIds.contains(column.keyholderListId)}"
+								styleClass="dataTableActions" style="height:25px;width:100%;">
+								<h:outputText style="margin-left:-140px;"
+									value="#{row.idWithContactType[column.keyholderListId].contactString}" />
+								<!-- <h:outputText value="#{row.contact_type}"></h:outputText> -->
+								<p:graphicImage value="#{row.idWithContactType[column.keyholderListId].iconName}" width="25px"
+									height="25px"
+									style="display:block;margin-top:-17px;margin-left:auto;margin-right:auto;" />
+							</h:commandLink>
+						</p:columns>
+						<f:facet name="footer"></f:facet>
+					</p:dataTable>
+					<!-- <p:dataTable widgetVar="Tb" id="tbKeyholdersList" var="row"
+						value="#{keyholders.keyHoldersList}" rowKey="#{row.keyholderId}"
+						scrollable="true" scrollHeight="125" emptyMessage="No Keyholders."
+						styleClass="keyholdersTable" selectionMode="single"
+						resizableColumns="true">
+
+						<p:column width="110">
+							<f:facet name="header">
+								<h:outputText value="CONTACT NAME" />
+							</f:facet>
+							<h:outputText id="contactname" value="#{row.contactName}">
+								<p:tooltip for="contactname" value="#{row.contactName}" />
+							</h:outputText>
+						</p:column>
+						<p:column width="85">
+							<f:facet name="header">
+								<h:outputText value="PHONE NO." />
+							</f:facet>
+							<h:outputText value="#{row.phone}" />
+						</p:column>
+						<p:column width="85">
+							<f:facet name="header">
+								<h:outputText value="SMS NO." />
+							</f:facet>
+							<h:outputText value="#{row.mobile}" />
+						</p:column>
+						<p:column width="110">
+							<f:facet name="header">
+								<h:outputText value="EMAIL" />
+							</f:facet>
+							<h:outputText id="email" value="#{row.email}">
+								<p:tooltip for="email" value="#{row.email}" />
+							</h:outputText>
+						</p:column>
+						<p:column width="22">
+							<f:facet name="header">
+								<h:outputText value="EDIT" />
+							</f:facet>
+							<h:commandLink
+								style="background: url('./images/Setting.png');width:25px;height:25px;margin:0 auto;"
+								styleClass="dataTableActions" />
+						</p:column>
+						<p:column width="40">
+							<f:facet name="header">
+								<h:outputText value="DELETE" />
+							</f:facet>
+							<h:commandLink
+								style="background: url('./images/Setting.png');width:25px;height:25px;margin:0 auto;"
+								styleClass="dataTableActions" />
+						</p:column>
+						<p:column width="22">
+							<f:facet name="header">
+								<p:commandLink value="24/7" styleClass="blue"
+									oncomplete="PF('sequenceDialog').show();" update=":sequenceDlg"
+									ajax="true"
+									actionListener="#{keyholders.retrieveListKeyholders('24/7')}">
+									<f:setPropertyActionListener target="#{keyholders.selectedList}" value="24/7"/>
+								</p:commandLink>
+							</f:facet>
+							<h:commandLink rendered="#{row.displayName=='24/7'}"
+								style="background: url('./images/Setting.png');width:25px;height:25px;margin:0 auto;"
+								styleClass="dataTableActions" />
+						</p:column>
+						<p:column width="22">
+							<f:facet name="header">
+								<p:commandLink value="WKD" styleClass="blue"
+									oncomplete="PF('sequenceDialog').show();" update=":sequenceDlg"
+									ajax="true"
+									actionListener="#{keyholders.retrieveListKeyholders('WKD')}">
+									<f:setPropertyActionListener target="#{keyholders.selectedList}" value="WKD"/>
+								</p:commandLink>
+
+							</f:facet>
+							<h:commandLink rendered="#{row.displayName=='WKD'}"
+								style="background: url('./images/Setting.png');width:25px;height:25px;margin:0 auto;"
+								styleClass="dataTableActions" />
+						</p:column>
+						<p:column width="22">
+							<f:facet name="header">
+								<p:commandLink value="WKN" styleClass="blue"
+									oncomplete="PF('sequenceDialog').show();" update=":sequenceDlg"
+									ajax="true"
+									actionListener="#{keyholders.retrieveListKeyholders('WKN')}">
+									<f:setPropertyActionListener target="#{keyholders.selectedList}" value="WKN"/>
+								</p:commandLink>
+
+
+							</f:facet>
+							<h:commandLink rendered="#{row.displayName=='WKN'}"
+								style="background: url('./images/Setting.png');width:25px;height:25px;margin:0 auto;"
+								styleClass="dataTableActions" />
+						</p:column>
+						<p:column width="22">
+							<f:facet name="header">
+								<p:commandLink value="SAD" styleClass="blue"
+									oncomplete="PF('sequenceDialog').show();" update=":sequenceDlg"
+									ajax="true"
+									actionListener="#{keyholders.retrieveListKeyholders('SAD')}">
+									<f:setPropertyActionListener target="#{keyholders.selectedList}" value="SAD"/>
+								</p:commandLink>
+
+							</f:facet>
+							<h:commandLink rendered="#{row.displayName=='SAD'}"
+								style="background: url('./images/Setting.png');width:25px;height:25px;margin:0 auto;"
+								styleClass="dataTableActions" />
+						</p:column>
+						<p:column width="22">
+							<f:facet name="header">
+								<p:commandLink value="SAN" styleClass="blue"
+									oncomplete="PF('sequenceDialog').show();" update=":sequenceDlg"
+									ajax="true"
+									actionListener="#{keyholders.retrieveListKeyholders('SAN')}">
+									<f:setPropertyActionListener target="#{keyholders.selectedList}" value="SAN"/>
+								</p:commandLink>
+
+							</f:facet>
+							<h:commandLink rendered="#{row.displayName=='SAN'}"
+								style="background: url('./images/Setting.png');width:25px;height:25px;margin:0 auto;"
+								styleClass="dataTableActions" />
+						</p:column>
+						<p:column width="22">
+							<f:facet name="header">
+								<p:commandLink value="SUD" styleClass="blue"
+									oncomplete="PF('sequenceDialog').show();" update=":sequenceDlg"
+									ajax="true"
+									actionListener="#{keyholders.retrieveListKeyholders('SUD')}">
+									<f:setPropertyActionListener target="#{keyholders.selectedList}" value="SUD"/>
+								</p:commandLink>
+
+							</f:facet>
+							<h:commandLink rendered="#{row.displayName=='SUD'}"
+								style="background: url('./images/Setting.png');width:25px;height:25px;margin:0 auto;"
+								styleClass="dataTableActions" />
+						</p:column>
+						<p:column width="22">
+							<f:facet name="header">
+								<p:commandLink value="SUN" styleClass="blue"
+									oncomplete="PF('sequenceDialog').show();" update=":sequenceDlg"
+									ajax="true"
+									actionListener="#{keyholders.retrieveListKeyholders('SUN')}">
+									<f:setPropertyActionListener target="#{keyholders.selectedList}" value="SUN"/>
+								</p:commandLink>
+
+							</f:facet>
+							<h:commandLink rendered="#{row.displayName=='SUN'}"
+								style="background: url('./images/Setting.png');width:25px;height:25px;margin:0 auto;"
+								styleClass="dataTableActions" />
+						</p:column>
+
+
+						<f:facet name="footer"></f:facet>
+					</p:dataTable> -->
+					<div class="threequartersplus30" style="margin-top: 6px;margin-bottom:0px;">
+						<table>
+							<tr>
+								<td><h:commandLink
+										action="#{keyholders.showKeyholders(true)}"
+										style="background: url('./images/ViewKeyholder2.png') no-repeat left;
+									background-size:100% 100%;
+									width:50px;height:50px;
+									display:block;margin:0 auto;" />
+									<b><h:outputText value="VIEW NORMAL" /></b></td>
+								<td><h:commandLink
+										action="#{keyholders.showKeyholders(false)}"
+										style="background: url('./images/ViewHolidayKeyholder2.png') no-repeat left;
+									background-size:100% 100%;
+									width:50px;height:50px;
+									display:block;margin:0 auto;" />
+									<b><h:outputText value="VIEW HOLIDAY" /></b></td>
+								<td><p:commandLink
+										id="addKeyholderBtn"
+										action="#{keyholders.initializeNewKeyholder}"
+										oncomplete="PF('addKeyholderDlg').show();"
+										update=":addKeyholderDlg"
+										style="background: url('./images/AddKeyHolderIcon2.png') no-repeat left;
+									background-size:100% 100%;
+									width:50px;height:50px;
+									display:block;margin:0 auto;" />
+									<b><h:outputText value="ADD KEYHOLDER" /></b></td>
+							</tr>
+						</table>
+					</div>
+				</div>
+			</h:form>
+			<p:confirmDialog widgetVar="confirmDlg" header="Delete Keyholder"
+				appendTo="@(body)" closable="false" style="background:#c0d4cf !important"
+				 message="Are you sure you want to delete the selected keyholder ?">
+				<h:form prependId="false">
+					<h:panelGrid columns="2">
+						<p:commandButton value="Delete" id="deleteKeyholderBtn"
+							actionListener="#{keyholders.deleteKeyholder}"
+							oncomplete="PF('confirmDlg').hide()"/>
+						<p:commandButton value="Close" onclick="PF('confirmDlg').hide()" />
+					</h:panelGrid>
+				</h:form>
+
+			</p:confirmDialog>
+		</div>
+	</ui:define>
+</ui:composition>

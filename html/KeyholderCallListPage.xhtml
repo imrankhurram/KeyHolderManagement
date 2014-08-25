@@ -1,0 +1,160 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	template="MainTemplate.xhtml">
+
+
+	<ui:define name="contentPanel">
+
+		<div id="Wrapper">
+
+
+			<ui:include
+				src="./snippets/MenuBars/MenuBarKeyholderListSnippet.xhtml" />
+			<ui:include src="./snippets/DlgAddCallList.xhtml" />
+			<ui:include src="./snippets/DlgEditCallList.xhtml" />
+			<h:form id="frmKeyholderCallListPage" prependId="false">
+				<div class="threequartersplus30">
+					<div class="userPanel">
+						User:
+						<p:outputLabel value="#{userInfo.userName}"
+							style="font-size:15px !important; font-weight:bold !important;" />
+					</div>
+				</div>
+				<div class="" style="float: left; padding-left: 10px;">
+					<p:messages showDetails="true" id="varMsg"/>
+					<h3>
+						<c:choose>
+							<c:when test="${keyholdercalllist.showNormal}">
+								<b>NORMAL CALL LISTS MANAGEMENT</b>
+							</c:when>
+							<c:otherwise>
+								<b>HOLIDAY CALL LISTS MANAGEMENT</b>
+							</c:otherwise>
+						</c:choose>
+					</h3>
+					<p:dataTable widgetVar="TbCallList" id="tbKeyholderCallList"
+						var="row" value="#{keyholdercalllist.departmentKeyholdersLists}"
+						rowKey="#{row.keyholderListId}" scrollable="true"
+						scrollHeight="205" emptyMessage="No Call List Exist."
+						styleClass="keyholdersTable" selectionMode="single"
+						resizableColumns="true">
+
+						<p:column width="110">
+							<f:facet name="header">
+								<h:outputText value="LIST NAME" />
+							</f:facet>
+							<h:outputText id="listname" value="#{row.displayName}">
+								<p:tooltip for="listname" value="#{row.displayName}" />
+							</h:outputText>
+						</p:column>
+						<p:column width="85">
+							<f:facet name="header">
+								<h:outputText value="DESCRIPTION" />
+							</f:facet>
+							<h:outputText value="#{row.description}" />
+						</p:column>
+						<p:column width="85">
+							<f:facet name="header">
+								<h:outputText value="START TIME" />
+							</f:facet>
+							<h:outputText value="#{row.occupancyStart}" />
+						</p:column>
+						<p:column width="85">
+							<f:facet name="header">
+								<h:outputText value="END TIME" />
+							</f:facet>
+							<h:outputText value="#{row.occupancyEnd}" />
+						</p:column>
+						<c:if test="${not keyholdercalllist.showNormal}">
+							<p:column width="85">
+								<f:facet name="header">
+									<h:outputText value="START DATE" />
+								</f:facet>
+								<h:outputText value="#{row.startDate}" />
+							</p:column>
+							<p:column width="85">
+								<f:facet name="header">
+									<h:outputText value="END DATE" />
+								</f:facet>
+								<h:outputText value="#{row.endDate}" />
+							</p:column>
+						</c:if>
+						<p:column width="22" exportable="false">
+							<f:facet name="header">
+								<h:outputText value="EDIT" />
+							</f:facet>
+							<p:commandLink
+								id="editCallList"
+								style="background: url('./images/EditIcon.png');width:25px;height:25px;margin:0 auto;"
+								styleClass="dataTableActions" 
+								actionListener="#{keyholdercalllist.editCallListPreProcessor(row)}"
+								oncomplete="PF('editCallListDialog').show();"
+								update=":editKeyHldsList" />
+						</p:column>
+						<p:column width="40" exportable="false">
+							<f:facet name="header">
+								<h:outputText value="DELETE" />
+							</f:facet>
+							<p:commandLink
+								id="deleteCallList"
+								style="background: url('./images/Setting.png');width:25px;height:25px;margin:0 auto;"
+								styleClass="dataTableActions" 
+								onclick="PF('confirmDlg').show()">
+								<f:setPropertyActionListener target="#{keyholdercalllist.selectedCallList}" value="#{row}"></f:setPropertyActionListener>
+							</p:commandLink>
+						</p:column>
+						<f:facet name="footer"></f:facet>
+					</p:dataTable>
+					<div class="threequartersplus30" style="margin-top: 6px;margin-bottom:0px;">
+						<table>
+							<tr>
+								<td><h:commandLink
+										action="#{keyholdercalllist.showKeyholders(true)}"
+										style="background: url('./images/SensorList.png') no-repeat left;
+									background-size:100% 100%;
+									width:50px;height:50px;
+									display:block;margin:0 auto;" />
+									<b><h:outputText value="VIEW NORMAL" /></b></td>
+								<td><h:commandLink
+										id="showHolidayCallListsBtn"
+										action="#{keyholdercalllist.showKeyholders(false)}"
+										style="background: url('./images/SensorList2.png') no-repeat left;
+									background-size:100% 100%;
+									width:50px;height:50px;
+									display:block;margin:0 auto;" />
+									<b><h:outputText value="VIEW HOLIDAY" /></b></td>
+								<td><p:commandLink
+										id="addCallListBtn"
+										action="#{keyholdercalllist.initializeNewCallList}"
+										oncomplete="PF('addCallListDialog').show();"
+										update=":addCallListDlg"
+										style="background: url('./images/SensorList.png') no-repeat left;
+									background-size:100% 100%;
+									width:50px;height:50px;
+									display:block;margin:0 auto;" />
+									<b><h:outputText value="ADD CALL LIST" /></b></td>
+							</tr>
+						</table>
+					</div>
+				</div>
+			</h:form>
+			<p:confirmDialog widgetVar="confirmDlg" header="Delete Call List"
+				appendTo="@(body)" closable="false" style="background:#c0d4cf !important"
+				 message="Are you sure you want to delete the selected call list ?">
+				<h:form prependId="false">
+					<h:panelGrid columns="2">
+						<p:commandButton value="Delete" id="deleteCallListBtn"
+							actionListener="#{keyholdercalllist.deleteCallList}"
+							oncomplete="PF('confirmDlg').hide()"/>
+						<p:commandButton value="Close" onclick="PF('confirmDlg').hide()" />
+					</h:panelGrid>
+				</h:form>
+
+			</p:confirmDialog>
+		</div>
+	</ui:define>
+</ui:composition>
