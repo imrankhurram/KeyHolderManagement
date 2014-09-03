@@ -1,0 +1,56 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	template="MainTemplate.xhtml">
+
+
+	<ui:define name="contentPanel">
+	<div id="Wrapper">
+		<ui:include src="./snippets/MenuBars/MenuBarCustomersSnippet.xhtml" />
+		
+		
+			<h:form id="frmCustomerPage">
+				<div class="quarterminus30">
+					<div class="userPanel">
+					User: <p:outputLabel value="#{userInfo.userName}" style="font-size:15px !important; font-weight:bold !important;"/>
+					</div>
+				</div>
+				<div class="threequartersplus30">
+				<h:commandLink
+				style="background: url('./images/SensorList.png') no-repeat left;
+				background-size:100% 100%;
+				width:50px;height:50px;
+				display:block;margin-bottom:10px;"/>
+					<h3>
+						<b>CUSTOMER LIST</b>
+					</h3>
+					<p:dataTable widgetVar="Tb" id="tbCusomterList" var="row"
+						value="#{users.customersList}" rowKey="#{row.id}"
+						scrollable="true" scrollHeight="295" 
+						emptyMessage="No customers."
+					 	resizableColumns="true">
+
+						<p:column width="215">
+							<f:facet name="header">
+								<h:outputText value="NAME" />
+							</f:facet>
+							<h:outputText value="#{row.name}" />
+						</p:column>
+						<p:column width="115">
+							<f:facet name="header">
+								<h:outputText value="VIEW" />
+							</f:facet>
+							<h:commandLink id="viewCustomer" action="#{users.viewCustomerUsers(row.id)}"
+								style="background: url('./images/ViewWebsites.png')" styleClass="deptdataTableActions"/>
+						</p:column>
+						<f:facet name="footer"></f:facet>
+					</p:dataTable>
+				</div>
+			</h:form>
+		
+	</div>
+	</ui:define>
+</ui:composition>

@@ -1,0 +1,44 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+	<h:form>
+		<div class="logoPanel" style="margin-top: 30px;">
+			<img src="./images/logo.jpg" width="250" height="120" />
+		</div>
+		<div class="mainMenu">
+			<ul id="nav">
+				<li><h:commandLink style="background: url('./images/Home.png')"
+						styleClass="mainMenuButton" title="Back to Tutela Website">
+						<!-- TODO action back to tutela website -->
+
+					</h:commandLink></li>
+				<c:choose>
+					<c:when
+						test="${(userInfo.userType=='WebAdmin') || (userInfo.userType=='WebReadOnly')}">
+						<li><h:commandLink
+								style="background: url('./images/BackButton.png')"
+								action="#{keyholdersmenubar.actionDepartmentsBack}"
+								styleClass="mainMenuButton" title="Back to Websites">
+								<!-- TODO action back to tutela website -->
+
+							</h:commandLink></li>
+
+					</c:when>
+					<c:otherwise>
+						<li><h:commandLink
+								action="#{keyholdersmenubar.actionKeyholdersBack}"
+								style="background: url('./images/BackButton.png')"
+								styleClass="mainMenuButton" title="Back to Departments">
+
+							</h:commandLink></li>
+					</c:otherwise>
+				</c:choose>
+
+			</ul>
+		</div>
+	</h:form>
+
+</ui:composition>
