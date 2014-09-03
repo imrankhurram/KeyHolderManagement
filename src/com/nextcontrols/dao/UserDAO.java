@@ -1,18 +1,18 @@
 package com.nextcontrols.dao;
 
 import java.io.Serializable;
-import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.sql.Timestamp;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import com.nextcontrols.domain.Customer;
 import com.nextcontrols.domain.User;
 import com.nextcontrols.utility.ServiceProperties;
 
@@ -42,16 +42,57 @@ public class UserDAO implements IUserDAO, Serializable{
 	}
 	private UserDAO() {}
 	
-	@Override
-	public List<User> getUserList() {
-		int customer_id=Integer.parseInt(getCustomerId());
-		List<User> userList=new ArrayList<User>();
-		String query="SELECT * FROM [users] WHERE [customer_id]=" + customer_id;
+	public List<Integer> getCustomerIds(int userId){
+		List<Integer> customerList=new ArrayList<Integer>();
+		String query="SELECT * FROM [user_customer] WHERE [user_id]=" + userId;
 		Connection dbConn = null;
 		Statement stmnt = null;
 		ResultSet results = null;
 		try{
-			dbConn=ConnectionBean.getInstance().getMYSQLConnection();
+			dbConn=ConnectionBean.getInstance().getBureauConnection();
+			stmnt=dbConn.createStatement();
+			results=stmnt.executeQuery(query);
+			while (results.next()){
+				customerList.add(results.getInt("customer_id"));
+//				System.out.println("user id: "+newUser.getUserId()+"--pin expires: "+results.getTimestamp("pincodeExpires"));
+			}
+		}catch (SQLException e){
+			e.printStackTrace();
+		}finally{
+			try {
+				results.close();
+				stmnt.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			results =null;
+			stmnt =null;
+			dbConn = null;
+		}
+
+		return customerList;
+
+	}
+	
+	@Override
+	public List<User> getUserList(List<Integer> customerIds) {
+//		int customer_id=Integer.parseInt(getCustomerId());
+		StringBuilder customerIdsList=new StringBuilder("(");
+		for(Integer id:customerIds){
+			customerIdsList.append("'");
+			customerIdsList.append(id);
+			customerIdsList.append("'");
+			customerIdsList.append(",");
+		}
+		customerIdsList.replace(customerIdsList.lastIndexOf(","), customerIdsList.length(), ")");
+		List<User> userList=new ArrayList<User>();
+		String query="SELECT * FROM [users] join [customers] on users.customer_id=customers.customer_id WHERE users.customer_id IN" + customerIdsList.toString()
+				+" order by customers.name, users.firstName, users.lastName";
+		Connection dbConn = null;
+		Statement stmnt = null;
+		ResultSet results = null;
+		try{
+			dbConn=ConnectionBean.getInstance().getBureauConnection();
 			stmnt=dbConn.createStatement();
 			results=stmnt.executeQuery(query);
 			while (results.next()){
@@ -61,10 +102,12 @@ public class UserDAO implements IUserDAO, Serializable{
 						results.getString("city"),results.getString("zip"),results.getString("county"),
 						results.getString("country"), results.getString("username"), results.getString("password"),
 						results.getByte("termsAndConditions"), results.getByte("termsAndConditionsOfService"),results.getInt("customer_id"),
-						results.getString("pincode"), results.getByte("enabled"), results.getDate("passwordExpires"),
-						results.getDate("pincodeExpires"), results.getShort("pincodeFailureCount"), results.getByte("isdeleted"),
+						results.getString("pincode"), results.getByte("enabled"), results.getTimestamp("passwordExpires"),
+						results.getTimestamp("pincodeExpires"), results.getShort("pincodeFailureCount"), results.getByte("isdeleted"),
 						results.getString("userBureauType"));
+				newUser.setDivisionName(results.getString("name"));
 				userList.add(newUser);
+//				System.out.println("user id: "+newUser.getUserId()+"--pin expires: "+results.getTimestamp("pincodeExpires"));
 			}
 		}catch (SQLException e){
 			e.printStackTrace();
@@ -81,6 +124,116 @@ public class UserDAO implements IUserDAO, Serializable{
 		}
 
 		return userList;
+	}
+	public List<Customer> getCustomerList() {
+		List<Customer> customerList=new ArrayList<Customer>();
+		String query="SELECT * FROM [customers] order by name";
+		Connection dbConn = null;
+		Statement stmnt = null;
+		ResultSet results = null;
+		try{
+			dbConn=ConnectionBean.getInstance().getBureauConnection();
+			stmnt=dbConn.createStatement();
+			results=stmnt.executeQuery(query);
+			while (results.next()){
+				Customer customer=new Customer(results.getInt("customer_id"), results.getInt("version"), results.getString("name"), results.getString("businesstype"));
+				
+				customerList.add(customer);
+			}
+		}catch (SQLException e){
+			e.printStackTrace();
+		}finally{
+			try {
+				results.close();
+				stmnt.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			results =null;
+			stmnt =null;
+			dbConn = null;
+		}
+		
+		return customerList;
+	}
+	public List<User> getUserList() {
+		List<User> userList=new ArrayList<User>();
+		String query="SELECT * FROM [users]";
+		Connection dbConn = null;
+		Statement stmnt = null;
+		ResultSet results = null;
+		try{
+			dbConn=ConnectionBean.getInstance().getBureauConnection();
+			stmnt=dbConn.createStatement();
+			results=stmnt.executeQuery(query);
+			while (results.next()){
+				User newUser=new User(results.getInt("user_id"), results.getString("userWebType"),
+						results.getString("userConfgType"),results.getString("title"),results.getString("firstName"), results.getString("lastName"),
+						results.getString("email"), results.getString("workphone"),results.getString("contactNumber"),results.getString("mobilePhone"),results.getString("address"),
+						results.getString("city"),results.getString("zip"),results.getString("county"),
+						results.getString("country"), results.getString("username"), results.getString("password"),
+						results.getByte("termsAndConditions"), results.getByte("termsAndConditionsOfService"),results.getInt("customer_id"),
+						results.getString("pincode"), results.getByte("enabled"), results.getTimestamp("passwordExpires"),
+						results.getTimestamp("pincodeExpires"), results.getShort("pincodeFailureCount"), results.getByte("isdeleted"),
+						results.getString("userBureauType"));
+				userList.add(newUser);
+//				System.out.println("user id: "+newUser.getUserId()+"--pin expires: "+results.getTimestamp("pincodeExpires"));
+			}
+		}catch (SQLException e){
+			e.printStackTrace();
+		}finally{
+			try {
+				results.close();
+				stmnt.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			results =null;
+			stmnt =null;
+			dbConn = null;
+		}
+		
+		return userList;
+	}
+	public Map<Integer,String> getDivisionNames(List<Integer> customerIds){
+		Map<Integer,String> divisionNames=new HashMap<Integer,String>();
+//		if(customerIds==null)
+//			return departmentList;
+		StringBuilder customerIdsList=new StringBuilder("(");
+		for(Integer id:customerIds){
+			customerIdsList.append("'");
+			customerIdsList.append(id);
+			customerIdsList.append("'");
+			customerIdsList.append(",");
+		}
+		customerIdsList.replace(customerIdsList.lastIndexOf(","), customerIdsList.length(), ")");
+		String query="SELECT * FROM [customers] WHERE [customer_id] IN " + customerIdsList+";";
+		Connection dbConn = null;
+		Statement stmnt = null;
+		ResultSet results = null;
+		try{
+			dbConn=ConnectionBean.getInstance().getBureauConnection();
+			stmnt=dbConn.createStatement();
+			results=stmnt.executeQuery(query);
+			while (results.next()){
+			divisionNames.put(results.getInt("customer_id"), results.getString("name"));
+			}
+		}catch (SQLException e){
+			e.printStackTrace();
+		}finally{
+			try {
+				results.close();
+				stmnt.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			results =null;
+			stmnt =null;
+			dbConn = null;
+		}
+
+		return divisionNames;
+
 	}
 
 	public void addUser(String userWebType,
@@ -320,9 +473,10 @@ public class UserDAO implements IUserDAO, Serializable{
 		Statement stmnt = null;
 		
 		try{
-			dbConn=ConnectionBean.getInstance().getMYSQLConnection();
+			dbConn=ConnectionBean.getInstance().getBureauConnection();
 			stmnt=dbConn.createStatement();
 			stmnt.executeUpdate(query);
+			stmnt.close();
 		    dbConn = ConnectionBean.getInstance().getMYSQLConnection();
 		    stmnt = dbConn.createStatement();
 		    stmnt.executeUpdate(querySql);
@@ -340,6 +494,77 @@ public class UserDAO implements IUserDAO, Serializable{
 		}
 
 
+	}
+	public void modifyUsers(List<User> users){
+		String queryMySql="update `users`"+
+						"set enabled ="+
+						"case";
+		String query = "update [users]" +
+				  " set [enabled] ="+ 
+				  " case";
+				for(User user: users){
+					query += " when [user_id] ="+ user.getUserId()+" then "+user.getEnabled()+"";
+					queryMySql += " when user_id ="+ user.getUserId()+" then "+user.getEnabled()+"";
+				}
+				query+=" else [enabled]";
+				query+=" end";
+				query+=" ,[passwordExpires] ="+ 
+				" case";
+				
+				queryMySql+=" else enabled";
+				queryMySql+=" end";
+				queryMySql+=" ,passwordExpires ="+ 
+						" case";
+				
+				for(User user: users){
+//					System.out.println("pExp:"+new java.sql.Date(user.getPasswordExpires().getTime()));
+					query += " when [user_id] ="+ user.getUserId()+" then '"+(new java.sql.Timestamp(user.getPasswordExpires().getTime()))+"'";
+					queryMySql += " when user_id ="+ user.getUserId()+" then '"+(new java.sql.Timestamp(user.getPasswordExpires().getTime()))+"'";
+				}
+				query+=" else [passwordExpires]";
+				query+=" end";
+				query+=" ,[pincodeExpires] ="+ 
+				" case";
+				
+				queryMySql+=" else passwordExpires";
+				queryMySql+=" end";
+				queryMySql+=" ,pincodeExpires ="+ 
+						" case";
+				for(User user: users){
+					query += " when [user_id] ="+ user.getUserId()+" then '"+(new java.sql.Timestamp(user.getPincodeExpires().getTime()))+"'";
+					queryMySql += " when user_id ="+ user.getUserId()+" then '"+(new java.sql.Timestamp(user.getPincodeExpires().getTime()))+"'";
+				}
+				query+=" else [pincodeExpires]";
+				query+=" end";
+				
+				queryMySql+=" else pincodeExpires";
+				queryMySql+=" end";
+				
+		Connection dbConn = null;
+		Statement stmnt = null;
+		
+		try{
+			dbConn=ConnectionBean.getInstance().getBureauConnection();
+			stmnt=dbConn.createStatement();
+			stmnt.executeUpdate(query);
+			stmnt.close();
+			dbConn = ConnectionBean.getInstance().getMYSQLConnection();
+			stmnt = dbConn.createStatement();
+			stmnt.executeUpdate(queryMySql);
+			
+		}catch (SQLException e) {
+			e.printStackTrace();
+		}finally{
+			try {
+				stmnt.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			stmnt =null;
+			dbConn = null;
+		}
+		
+		
 	}
 
 	public void deleteUser(int user_id){
@@ -721,16 +946,17 @@ public class UserDAO implements IUserDAO, Serializable{
 
 
 	
-
-	public void setCustomerId() {
-		this.customerId = ServiceProperties.getInstance().getCustomerId();
-	}
-
-
-	public String getCustomerId() {
-		setCustomerId();
-		return customerId;
-	}
+//
+//	public void setCustomerId() {
+////		this.customerId = ServiceProperties.getInstance().getCustomerId();
+//		
+//	}
+//
+//
+//	public String getCustomerId() {
+//		setCustomerId();
+//		return customerId;
+//	}
 
 
 

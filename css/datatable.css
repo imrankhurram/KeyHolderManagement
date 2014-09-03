@@ -83,12 +83,12 @@ margin: auto;
 background: #c0d4cf;
 }
 .ui-datatable-even{
-	background: #EDE5CE !important;	
-	color:#686868 !important;
+	background: #EDE5CE;	
+	color:#686868;
 }
 .ui-datatable-odd{
-	background: #fff !important;	
-	color:#686868 !important;
+	background: #fff;	
+	color:#686868;
 }
 .ui-datatable-scrollable-header{
 	background: #9e9f9e !important;

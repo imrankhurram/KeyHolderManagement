@@ -17,11 +17,15 @@
 			<ui:include src="./snippets/DlgEditKeyholder.xhtml" />
 			<ui:include src="./snippets/DlgAddKeyholder.xhtml" />
 			<h:form id="frmKeyholdersPage" prependId="false">
-				<div class="threequartersplus30">
-					<div class="userPanel">
+				<div class="threequartersplus30" style="width:100%;">
+					<div class="userPanel" style="float: left">
 						User:
 						<p:outputLabel value="#{userInfo.userName}"
 							style="font-size:15px !important; font-weight:bold !important;" />
+					</div>
+					<div
+						style="background: #a8a8a8; border: 1px solid black; color: white; float: right; font-size: 13px; font-weight: bold; padding: 3px 3px 3px 20px; width: 185px;margin-right:-15px;">
+						V= Voice, S= SMS, E= Email
 					</div>
 				</div>
 				<div class="" style="float: left; padding-left: 10px;">
@@ -38,7 +42,8 @@
 					</h3>
 
 					<h3>
-						<div style="text-align:right;"><!-- padding-left: 735px; -->
+						<div style="text-align: right;">
+							<!-- padding-left: 735px; -->
 							<b>ACTIVE CALL LISTS</b>
 						</div>
 					</h3>
@@ -46,8 +51,7 @@
 						value="#{keyholders.keyHoldersList}" rowKey="#{row.keyholderId}"
 						scrollable="true" scrollHeight="205" style="width:975px;"
 						emptyMessage="No Keyholders Exist." styleClass="keyholdersTable"
-						selectionMode="single" resizableColumns="true" scrollWidth="245"
-						frozenColumns="6">
+						resizableColumns="true" scrollWidth="245" frozenColumns="6">
 
 						<p:column width="110">
 							<f:facet name="header">
@@ -81,8 +85,7 @@
 							<f:facet name="header">
 								<h:outputText value="EDIT" />
 							</f:facet>
-							<p:commandLink
-								id="editKeyholder"
+							<p:commandLink id="editKeyholder"
 								style="background: url('./images/EditIcon.png');width:25px;height:25px;margin:0 auto;"
 								styleClass="dataTableActions"
 								actionListener="#{keyholders.editKeyholder(row)}"
@@ -94,14 +97,14 @@
 								<h:outputText value="DELETE" />
 							</f:facet>
 							<p:commandLink id="deleteKeyholder"
-								style="background: url('./images/Setting.png');width:25px;height:25px;margin:0 auto;"
-								styleClass="dataTableActions"
-								onclick="PF('confirmDlg').show()">
-								<f:setPropertyActionListener target="#{keyholders.selectedKeyholder}" value="#{row}"/>
-								</p:commandLink>
+								style="background: url('./images/DeleteKeyholders.png');width:25px;height:25px;margin:0 auto;"
+								styleClass="dataTableActions" onclick="PF('confirmDlg').show()">
+								<f:setPropertyActionListener
+									target="#{keyholders.selectedKeyholder}" value="#{row}" />
+							</p:commandLink>
 						</p:column>
-						<p:columns width="22" value="#{keyholders.listTypes}" var="column"
-							columnIndexVar="colIndex" style="width:22px;">
+						<p:columns width="22" value="#{keyholders.listTypes}" var="column" id="scrollableColumns"
+							columnIndexVar="colIndex" style="width:22px; " styleClass="scrollableColumns">
 							<f:facet name="header">
 								<p:commandLink value="#{column.displayName}" id="ListType"
 									style="color:#3BCAFF; text-shadow: 0 1px #3bcaff;"
@@ -149,18 +152,22 @@
 									<c:set var="contactString" value="Yes"></c:set>
 								</c:otherwise>
 							</c:choose> -->
-<!-- rendered="#{row.keyholderListIds.contains(column.keyholderListId)}" -->
-							<h:commandLink
-								
+							<!-- rendered="#{row.keyholderListIds.contains(column.keyholderListId)}" -->
+							<p:commandLink oncomplete="PF('contactTypeDlg').show();"
+								action="#{keyholders.editContactType(row,column.keyholderListId)}"
+								update=":contactTypeDlg"
 								rendered="#{row.keyholderListIds.contains(column.keyholderListId)}"
 								styleClass="dataTableActions" style="height:25px;width:100%;">
 								<h:outputText style="margin-left:-140px;"
 									value="#{row.idWithContactType[column.keyholderListId].contactString}" />
+								<!-- <f:setPropertyActionListener
+									target="#{keyholders.selectedKeyholder}" value="#{row}" /> -->
 								<!-- <h:outputText value="#{row.contact_type}"></h:outputText> -->
-								<p:graphicImage value="#{row.idWithContactType[column.keyholderListId].iconName}" width="25px"
-									height="25px"
+								<p:graphicImage
+									value="#{row.idWithContactType[column.keyholderListId].iconName}"
+									width="25px" height="25px"
 									style="display:block;margin-top:-17px;margin-left:auto;margin-right:auto;" />
-							</h:commandLink>
+							</p:commandLink>
 						</p:columns>
 						<f:facet name="footer"></f:facet>
 					</p:dataTable>
@@ -316,7 +323,8 @@
 
 						<f:facet name="footer"></f:facet>
 					</p:dataTable> -->
-					<div class="threequartersplus30" style="margin-top: 6px;margin-bottom:0px;">
+					<div class="threequartersplus30"
+						style="margin-top: 6px; margin-bottom: 0px;">
 						<table>
 							<tr>
 								<td><h:commandLink
@@ -325,16 +333,17 @@
 									background-size:100% 100%;
 									width:50px;height:50px;
 									display:block;margin:0 auto;" />
-									<b><h:outputText value="VIEW NORMAL" /></b></td>
+									<b><h:outputText value="VIEW NORMAL"
+											style="font-size:11px;" /></b></td>
 								<td><h:commandLink
 										action="#{keyholders.showKeyholders(false)}"
 										style="background: url('./images/ViewHolidayKeyholder2.png') no-repeat left;
 									background-size:100% 100%;
 									width:50px;height:50px;
 									display:block;margin:0 auto;" />
-									<b><h:outputText value="VIEW HOLIDAY" /></b></td>
-								<td><p:commandLink
-										id="addKeyholderBtn"
+									<b><h:outputText value="VIEW HOLIDAY"
+											style="font-size:11px" /></b></td>
+								<td><p:commandLink id="addKeyholderBtn"
 										action="#{keyholders.initializeNewKeyholder}"
 										oncomplete="PF('addKeyholderDlg').show();"
 										update=":addKeyholderDlg"
@@ -342,25 +351,47 @@
 									background-size:100% 100%;
 									width:50px;height:50px;
 									display:block;margin:0 auto;" />
-									<b><h:outputText value="ADD KEYHOLDER" /></b></td>
+									<b><h:outputText value="ADD KEYHOLDER"
+											style="font-size:11px" /></b></td>
 							</tr>
 						</table>
 					</div>
 				</div>
 			</h:form>
 			<p:confirmDialog widgetVar="confirmDlg" header="Delete Keyholder"
-				appendTo="@(body)" closable="false" style="background:#c0d4cf !important"
-				 message="Are you sure you want to delete the selected keyholder ?">
+				appendTo="@(body)" closable="false"
+				style="background:#c0d4cf !important"
+				message="Are you sure you want to delete the selected keyholder ?">
 				<h:form prependId="false">
 					<h:panelGrid columns="2">
 						<p:commandButton value="Delete" id="deleteKeyholderBtn"
 							actionListener="#{keyholders.deleteKeyholder}"
-							oncomplete="PF('confirmDlg').hide()"/>
+							oncomplete="PF('confirmDlg').hide()" />
 						<p:commandButton value="Close" onclick="PF('confirmDlg').hide()" />
 					</h:panelGrid>
 				</h:form>
 
 			</p:confirmDialog>
+			<p:dialog widgetVar="contactTypeDlg" id="contactTypeDlg"
+				appendTo="@(body)" closable="true" modal="true"
+				style="background:#c0d4cf !important">
+				<h:form prependId="false">
+					<h:panelGrid columns="1">
+					<p:outputLabel value="#{keyholders.selectedKeyholder.contactName}"></p:outputLabel>
+						<h:panelGrid columns="3">
+							<p:selectBooleanCheckbox value="#{keyholders.selectedVoiceOnly}" style="padding-right:5px;"/>
+							<p:selectBooleanCheckbox value="#{keyholders.selectedSMSOnly}" style="padding-right:5px;" />
+							<p:selectBooleanCheckbox value="#{keyholders.selectedEmailOnly}" />
+
+							<h:outputText style="padding-right:5px;">Voice</h:outputText>
+							<h:outputText style="padding-right:5px;">Sms</h:outputText>
+							<h:outputText>Email</h:outputText>
+						</h:panelGrid>
+						<p:commandButton value="Update" id="updateContactTypeBtn" action="#{keyholders.updateEditedContactType}"
+							oncomplete="PF('contactTypeDlg').hide()" />
+					</h:panelGrid>
+				</h:form>
+			</p:dialog>
 		</div>
 	</ui:define>
 </ui:composition>

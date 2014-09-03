@@ -46,6 +46,9 @@ public class User implements Serializable{
 	private boolean boolDeleted;
 	private Integer checkEnabled=1;
 	private Integer checkDeleted=1;
+	private String divisionName;
+	private Long pinCodeTimeout;
+	private Long passwordTimeout;
 	
 	public User() {}
 
@@ -380,6 +383,34 @@ public class User implements Serializable{
 
 	public byte getUpdateEnabled() {
 		return updateEnabled;
+	}
+
+	public String getDivisionName() {
+		return divisionName;
+	}
+
+	public void setDivisionName(String divisionName) {
+		this.divisionName = divisionName;
+	}
+
+	public Long getPinCodeTimeout() {
+		return pinCodeTimeout;
+	}
+
+	public void setPinCodeTimeout(Long pinCodeTimeout) {
+		this.pinCodeTimeout = pinCodeTimeout;
+	}
+
+	public Long getPasswordTimeout() {
+		return passwordTimeout;
+	}
+
+	public void setPasswordTimeout(Long passwordTimeout) {
+		this.passwordTimeout = passwordTimeout;
+	}
+
+	public void setPincode(String pincode) {
+		this.pincode = pincode;
 	}
 
 }

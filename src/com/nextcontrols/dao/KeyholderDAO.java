@@ -39,8 +39,7 @@ public class KeyholderDAO implements IKeyholderDAO, Serializable {
 
 	public void dbMySQLConnect() {
 		try {
-			dbMySQLConn = ConnectionBean.getInstance()
-					.getMYSQLConnection();
+			dbMySQLConn = ConnectionBean.getInstance().getMYSQLConnection();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -105,7 +104,7 @@ public class KeyholderDAO implements IKeyholderDAO, Serializable {
 				+ " OR kk.list_type LIKE '%Default%')";
 		try {
 			dbMySQLConnect();
-//			System.out.println("query: "+query);
+			// System.out.println("query: "+query);
 			stmnt = dbMySQLConn.createStatement();
 			result = stmnt.executeQuery(query);
 			while (result.next()) {
@@ -115,7 +114,8 @@ public class KeyholderDAO implements IKeyholderDAO, Serializable {
 						result.getString("position"),
 						result.getBoolean("active"), result.getString("phone"),
 						result.getString("mobile"), result.getString("fax"),
-						result.getString("email"), branch_code, result.getInt("contact_type"), false);
+						result.getString("email"), branch_code,
+						result.getInt("contact_type"), false);
 				new_keyholder.setListType(result.getString("list_type"));
 				new_keyholder.setDisplayName(result.getString("display_name"));
 				// System.out.println("keyholder id: "
@@ -133,34 +133,41 @@ public class KeyholderDAO implements IKeyholderDAO, Serializable {
 						result.getString("weekdays_active"));
 				keyholderList.setDescription(result.getString("description"));
 				keyholderList.setDisplayName(result.getString("display_name"));
-			
-				
+
 				if (keyholders.get(result.getInt("keyholder_id")) != null) {
 					Keyholder holder = keyholders.get(result
 							.getInt("keyholder_id"));
 					List<KeyholderList> list = holder.getKeyholderList();
 					list.add(keyholderList);
 					holder.setKeyholderList(list);
-					ContactTypeDetails typeDetails=new ContactTypeDetails();
+					ContactTypeDetails typeDetails = new ContactTypeDetails();
 					typeDetails.setContactType(result.getInt("contact_type"));
-					typeDetails.setContactString(KeyholderUtility.contactTypeText[result.getInt("contact_type")]);
-					typeDetails.setIconName(KeyholderUtility.contactTypeIcon[result.getInt("contact_type")]);
-					Map<Integer, ContactTypeDetails> contactMap=holder.getIdWithContactType();
-					contactMap.put(keyholderList.getKeyholderListId(), typeDetails);
+					typeDetails
+							.setContactString(KeyholderUtility.contactTypeText[result
+									.getInt("contact_type")]);
+					typeDetails
+							.setIconName(KeyholderUtility.contactTypeIcon[result
+									.getInt("contact_type")]);
+					Map<Integer, ContactTypeDetails> contactMap = holder
+							.getIdWithContactType();
+					contactMap.put(keyholderList.getKeyholderListId(),
+							typeDetails);
 					holder.setIdWithContactType(contactMap);
-//					for(Integer id: holder.getIdWithContactType().keySet()){
-//						System.out.println("id: "+id+" - contact type: "+holder.getIdWithContactType().get(id));
-//					}
+					// for(Integer id: holder.getIdWithContactType().keySet()){
+					// System.out.println("id: "+id+" - contact type: "+holder.getIdWithContactType().get(id));
+					// }
 					holder.setContact_type(result.getInt("contact_type"));
-					//useless fields///
-					holder.setContactString(KeyholderUtility.contactTypeText[result.getInt("contact_type")]);
-					holder.setIconName(KeyholderUtility.contactTypeIcon[result.getInt("contact_type")]);
-					//////////////////
+					// useless fields///
+					holder.setContactString(KeyholderUtility.contactTypeText[result
+							.getInt("contact_type")]);
+					holder.setIconName(KeyholderUtility.contactTypeIcon[result
+							.getInt("contact_type")]);
+					// ////////////////
 					List<Integer> listNames = holder.getKeyholderListIds();
 					listNames.add(keyholderList.getKeyholderListId());
 					holder.setKeyholderListIds(listNames);
 					keyholders.put(result.getInt("keyholder_id"), holder);
-					
+
 				} else {
 					List<KeyholderList> keyholdersList = new ArrayList<KeyholderList>();
 					keyholdersList.add(keyholderList);
@@ -169,16 +176,23 @@ public class KeyholderDAO implements IKeyholderDAO, Serializable {
 					List<Integer> listNames = new ArrayList<Integer>();
 					listNames.add(keyholderList.getKeyholderListId());
 					new_keyholder.setKeyholderListIds(listNames);
-					
-					new_keyholder.setContact_type(result.getInt("contact_type"));
-					ContactTypeDetails typeDetails=new ContactTypeDetails();
+
+					new_keyholder
+							.setContact_type(result.getInt("contact_type"));
+					ContactTypeDetails typeDetails = new ContactTypeDetails();
 					typeDetails.setContactType(result.getInt("contact_type"));
-					typeDetails.setContactString(KeyholderUtility.contactTypeText[result.getInt("contact_type")]);
-					typeDetails.setIconName(KeyholderUtility.contactTypeIcon[result.getInt("contact_type")]);
-					Map<Integer, ContactTypeDetails> contactMap=new_keyholder.getIdWithContactType();
-					contactMap.put(keyholderList.getKeyholderListId(), typeDetails);
+					typeDetails
+							.setContactString(KeyholderUtility.contactTypeText[result
+									.getInt("contact_type")]);
+					typeDetails
+							.setIconName(KeyholderUtility.contactTypeIcon[result
+									.getInt("contact_type")]);
+					Map<Integer, ContactTypeDetails> contactMap = new_keyholder
+							.getIdWithContactType();
+					contactMap.put(keyholderList.getKeyholderListId(),
+							typeDetails);
 					new_keyholder.setIdWithContactType(contactMap);
-					
+
 					keyholders
 							.put(result.getInt("keyholder_id"), new_keyholder);
 
@@ -239,7 +253,7 @@ public class KeyholderDAO implements IKeyholderDAO, Serializable {
 					+ " OR kk.list_type LIKE '%Sunday Occupancy%'"
 					+ " OR kk.list_type LIKE '%Sunday OutOfHours%'"
 					+ " OR kk.list_type LIKE '%Default%')";
-//		 System.out.println("query: "+query);
+		// System.out.println("query: "+query);
 		Statement stmnt = null;
 		ResultSet result = null;
 		try {
@@ -326,7 +340,7 @@ public class KeyholderDAO implements IKeyholderDAO, Serializable {
 				+ " AND kk.list_type NOT LIKE '%Sunday Occupancy%'"
 				+ " AND kk.list_type NOT LIKE '%Sunday OutOfHours%'"
 				+ " AND kk.list_type NOT LIKE '%Default%')";
-//		 System.out.println("query: "+query);
+		// System.out.println("query: "+query);
 
 		try {
 			dbMySQLConnect();
@@ -367,17 +381,23 @@ public class KeyholderDAO implements IKeyholderDAO, Serializable {
 					listNames.add(keyholderList.getKeyholderListId());
 					holder.setKeyholderListIds(listNames);
 					holder.setContact_type(result.getInt("contact_type"));
-					ContactTypeDetails typeDetails=new ContactTypeDetails();
+					ContactTypeDetails typeDetails = new ContactTypeDetails();
 					typeDetails.setContactType(result.getInt("contact_type"));
-					typeDetails.setContactString(KeyholderUtility.contactTypeText[result.getInt("contact_type")]);
-					typeDetails.setIconName(KeyholderUtility.contactTypeIcon[result.getInt("contact_type")]);
-					Map<Integer, ContactTypeDetails> contactMap=holder.getIdWithContactType();
-					contactMap.put(keyholderList.getKeyholderListId(), typeDetails);
+					typeDetails
+							.setContactString(KeyholderUtility.contactTypeText[result
+									.getInt("contact_type")]);
+					typeDetails
+							.setIconName(KeyholderUtility.contactTypeIcon[result
+									.getInt("contact_type")]);
+					Map<Integer, ContactTypeDetails> contactMap = holder
+							.getIdWithContactType();
+					contactMap.put(keyholderList.getKeyholderListId(),
+							typeDetails);
 					holder.setIdWithContactType(contactMap);
-//					for(Integer id: holder.getIdWithContactType().keySet()){
-//						System.out.println("--id: "+id+" - contact type: "+holder.getIdWithContactType().get(id).getIconName());
-//						}
-					
+					// for(Integer id: holder.getIdWithContactType().keySet()){
+					// System.out.println("--id: "+id+" - contact type: "+holder.getIdWithContactType().get(id).getIconName());
+					// }
+
 					keyholders.put(result.getInt("keyholder_id"), holder);
 				} else {
 					List<KeyholderList> keyholdersList = new ArrayList<KeyholderList>();
@@ -387,30 +407,40 @@ public class KeyholderDAO implements IKeyholderDAO, Serializable {
 					List<Integer> listNames = new ArrayList<Integer>();
 					listNames.add(keyholderList.getKeyholderListId());
 					new_keyholder.setKeyholderListIds(listNames);
-					
-					new_keyholder.setContact_type(result.getInt("contact_type"));
-					ContactTypeDetails typeDetails=new ContactTypeDetails();
+
+					new_keyholder
+							.setContact_type(result.getInt("contact_type"));
+					ContactTypeDetails typeDetails = new ContactTypeDetails();
 					typeDetails.setContactType(result.getInt("contact_type"));
-					typeDetails.setContactString(KeyholderUtility.contactTypeText[result.getInt("contact_type")]);
-					typeDetails.setIconName(KeyholderUtility.contactTypeIcon[result.getInt("contact_type")]);
-					Map<Integer, ContactTypeDetails> contactMap=new_keyholder.getIdWithContactType();
-					contactMap.put(keyholderList.getKeyholderListId(), typeDetails);
+					typeDetails
+							.setContactString(KeyholderUtility.contactTypeText[result
+									.getInt("contact_type")]);
+					typeDetails
+							.setIconName(KeyholderUtility.contactTypeIcon[result
+									.getInt("contact_type")]);
+					Map<Integer, ContactTypeDetails> contactMap = new_keyholder
+							.getIdWithContactType();
+					contactMap.put(keyholderList.getKeyholderListId(),
+							typeDetails);
 					new_keyholder.setIdWithContactType(contactMap);
-					
-//					for(Integer id: new_keyholder.getIdWithContactType().keySet()){
-//					System.out.println("--id: "+id+" - contact type: "+new_keyholder.getIdWithContactType().get(id).getIconName());
-//					}
-					
-					keyholders.put(result.getInt("keyholder_id"), new_keyholder);
+
+					// for(Integer id:
+					// new_keyholder.getIdWithContactType().keySet()){
+					// System.out.println("--id: "+id+" - contact type: "+new_keyholder.getIdWithContactType().get(id).getIconName());
+					// }
+
+					keyholders
+							.put(result.getInt("keyholder_id"), new_keyholder);
 
 				}
 
 			}
 			for (Integer key : keyholders.keySet()) {
 				branchKeyholders.add(keyholders.get(key));
-//				for(Integer id: keyholders.get(key).getIdWithContactType().keySet()){
-//					System.out.println("id: "+id+" - contact type: "+keyholders.get(key).getIdWithContactType().get(id).getIconName());
-//					}
+				// for(Integer id:
+				// keyholders.get(key).getIdWithContactType().keySet()){
+				// System.out.println("id: "+id+" - contact type: "+keyholders.get(key).getIdWithContactType().get(id).getIconName());
+				// }
 				// System.out.println("keyholder id: "
 				// +key);
 			}
@@ -430,51 +460,53 @@ public class KeyholderDAO implements IKeyholderDAO, Serializable {
 		return branchKeyholders;
 	}
 
-//	@Override
-//	public KeyholderList getKeyholdersList(String branch_code, int listId) {
-//		KeyholderList branchKeyholders = null;
-//		String query = "SELECT * FROM keyholders_sitekeyholder ksk"
-//				+ " inner join keyholders_keyholderlist_keyholders kkk on ksk.keyholder_id= kkk.keyholder_id"
-//				+ " inner join keyholders_keyholderlist kk on kkk.keyholder_list_id=kk.keyholder_list_id"
-//				+ " where ksk.branch_code='" + branch_code + "'"
-//				+ " AND kk.keyholder_list_id LIKE '" + listId + "'"
-//				+ " order by list_priority;";
-//		// System.out.println("query: "+query);
-//		Statement stmnt = null;
-//		ResultSet result = null;
-//		try {
-//			dbBureauConnect();
-//			stmnt = dbBureauConn.createStatement();
-//			result = stmnt.executeQuery(query);
-//			while (result.next()) {
-//				branchKeyholders = new KeyholderList(
-//						result.getInt("keyholder_list_id"),
-//						result.getString("list_name"),
-//						result.getString("list_type"),
-//						result.getTimestamp("start_date"),
-//						result.getTimestamp("end_date"),
-//						result.getString("occupancy_start"),
-//						result.getString("occupancy_end"),
-//						result.getString("comments"),
-//						result.getString("weekdays_active"));
-//
-//			}
-//		} catch (SQLException e) {
-//			e.printStackTrace();
-//		} finally {
-//			try {
-//				result.close();
-//				stmnt.close();
-//			} catch (SQLException e) {
-//				e.printStackTrace();
-//			}
-//			dbBureauConn = null;
-//			stmnt = null;
-//			result = null;
-//		}
-//		// System.out.println("list key holders size: "+branchKeyholders.size());
-//		return branchKeyholders;
-//	}
+	// @Override
+	// public KeyholderList getKeyholdersList(String branch_code, int listId) {
+	// KeyholderList branchKeyholders = null;
+	// String query = "SELECT * FROM keyholders_sitekeyholder ksk"
+	// +
+	// " inner join keyholders_keyholderlist_keyholders kkk on ksk.keyholder_id= kkk.keyholder_id"
+	// +
+	// " inner join keyholders_keyholderlist kk on kkk.keyholder_list_id=kk.keyholder_list_id"
+	// + " where ksk.branch_code='" + branch_code + "'"
+	// + " AND kk.keyholder_list_id LIKE '" + listId + "'"
+	// + " order by list_priority;";
+	// // System.out.println("query: "+query);
+	// Statement stmnt = null;
+	// ResultSet result = null;
+	// try {
+	// dbBureauConnect();
+	// stmnt = dbBureauConn.createStatement();
+	// result = stmnt.executeQuery(query);
+	// while (result.next()) {
+	// branchKeyholders = new KeyholderList(
+	// result.getInt("keyholder_list_id"),
+	// result.getString("list_name"),
+	// result.getString("list_type"),
+	// result.getTimestamp("start_date"),
+	// result.getTimestamp("end_date"),
+	// result.getString("occupancy_start"),
+	// result.getString("occupancy_end"),
+	// result.getString("comments"),
+	// result.getString("weekdays_active"));
+	//
+	// }
+	// } catch (SQLException e) {
+	// e.printStackTrace();
+	// } finally {
+	// try {
+	// result.close();
+	// stmnt.close();
+	// } catch (SQLException e) {
+	// e.printStackTrace();
+	// }
+	// dbBureauConn = null;
+	// stmnt = null;
+	// result = null;
+	// }
+	// // System.out.println("list key holders size: "+branchKeyholders.size());
+	// return branchKeyholders;
+	// }
 
 	@Override
 	public List<Keyholder> getListOfKeyholders(String branch_code, int listId) {
@@ -696,8 +728,7 @@ public class KeyholderDAO implements IKeyholderDAO, Serializable {
 	@Override
 	public void updateKeyholdersList(List<Keyholder> listKeyholders,
 			int keyholderListId) {
-		if(listKeyholders==null)
-		{
+		if (listKeyholders == null) {
 			return;
 		}
 		Statement stmnt = null;
@@ -750,8 +781,7 @@ public class KeyholderDAO implements IKeyholderDAO, Serializable {
 				+ " OR kk.list_type LIKE '%Saturday OutOfHours%'"
 				+ " OR kk.list_type LIKE '%Sunday Occupancy%'"
 				+ " OR kk.list_type LIKE '%Sunday OutOfHours%'"
-				+ " OR kk.list_type LIKE '%Default%') AND kdk.dep_id="
-				+ deptId;
+				+ " OR kk.list_type LIKE '%Default%') AND kdk.dep_id=" + deptId;
 		// System.out.println("query: " + query);
 		Statement stmnt = null;
 		ResultSet result = null;
@@ -1182,7 +1212,8 @@ public class KeyholderDAO implements IKeyholderDAO, Serializable {
 		ResultSet result = null;
 		String query = "SELECT * FROM `keyholders_keyholderlist` INNER JOIN `keyholders_department_keyholderlist`"
 				+ "ON `keyholders_keyholderlist`.keyholder_list_id=`keyholders_department_keyholderlist`.keyholder_list_id WHERE dep_id="
-				+ dep_id + " AND (list_type LIKE '%Weekday Occupancy%'"
+				+ dep_id
+				+ " AND (list_type LIKE '%Weekday Occupancy%'"
 				+ " OR list_type LIKE '%Weekday OutOfHours%'"
 				+ " OR list_type LIKE '%Saturday Occupancy%'"
 				+ " OR list_type LIKE '%Saturday OutOfHours%'"
@@ -1233,7 +1264,8 @@ public class KeyholderDAO implements IKeyholderDAO, Serializable {
 		ResultSet result = null;
 		String query = "SELECT * FROM `keyholders_keyholderlist` INNER JOIN `keyholders_department_keyholderlist`"
 				+ "ON `keyholders_keyholderlist`.keyholder_list_id=`keyholders_department_keyholderlist`.keyholder_list_id WHERE dep_id="
-				+ dep_id + " AND (list_type NOT LIKE '%Weekday Occupancy%'"
+				+ dep_id
+				+ " AND (list_type NOT LIKE '%Weekday Occupancy%'"
 				+ " AND list_type NOT LIKE '%Weekday OutOfHours%'"
 				+ " AND list_type NOT LIKE '%Saturday Occupancy%'"
 				+ " AND list_type NOT LIKE '%Saturday OutOfHours%'"
@@ -1241,7 +1273,7 @@ public class KeyholderDAO implements IKeyholderDAO, Serializable {
 				+ " AND list_type NOT LIKE '%Sunday OutOfHours%'"
 				+ " AND list_type NOT LIKE '%Default%')";
 		try {
-//			System.out.println("query: " + query);
+			// System.out.println("query: " + query);
 			dbMySQLConnect();
 			stmnt = dbMySQLConn.createStatement();
 			result = stmnt.executeQuery(query);
@@ -1432,15 +1464,16 @@ public class KeyholderDAO implements IKeyholderDAO, Serializable {
 			stmnt2 = null;
 		}
 	}
-	//used in testing
+
+	// used in testing
 	public KeyholderList getKeyholderListById(int keyholderListId) {
-		KeyholderList new_keyholderList=null;
+		KeyholderList new_keyholderList = null;
 		Statement stmnt = null;
 		ResultSet result = null;
 		String query = "SELECT * FROM `keyholders_keyholderlist`"
-				+ " where keyholder_list_id="+keyholderListId;
+				+ " where keyholder_list_id=" + keyholderListId;
 		try {
-//			System.out.println("query: " + query);
+			// System.out.println("query: " + query);
 			dbMySQLConnect();
 			stmnt = dbMySQLConn.createStatement();
 			result = stmnt.executeQuery(query);
@@ -1459,7 +1492,7 @@ public class KeyholderDAO implements IKeyholderDAO, Serializable {
 						.getString("display_name"));
 				new_keyholderList.setDescription(result
 						.getString("description"));
-				
+
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -1477,6 +1510,7 @@ public class KeyholderDAO implements IKeyholderDAO, Serializable {
 		}
 		return new_keyholderList;
 	}
+
 	public void delDeptKeyholderList(int keyholder_list_id) {
 		Statement stmnt = null;
 		String query = "DELETE FROM `keyholders_keyholderlist` WHERE keyholder_list_id="

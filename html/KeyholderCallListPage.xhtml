@@ -40,7 +40,7 @@
 						var="row" value="#{keyholdercalllist.departmentKeyholdersLists}"
 						rowKey="#{row.keyholderListId}" scrollable="true"
 						scrollHeight="205" emptyMessage="No Call List Exist."
-						styleClass="keyholdersTable" selectionMode="single"
+						styleClass="keyholdersTable"
 						resizableColumns="true">
 
 						<p:column width="110">
@@ -101,7 +101,7 @@
 							</f:facet>
 							<p:commandLink
 								id="deleteCallList"
-								style="background: url('./images/Setting.png');width:25px;height:25px;margin:0 auto;"
+								style="background: url('./images/DeleteKeyholders.png');width:25px;height:25px;margin:0 auto;"
 								styleClass="dataTableActions" 
 								onclick="PF('confirmDlg').show()">
 								<f:setPropertyActionListener target="#{keyholdercalllist.selectedCallList}" value="#{row}"></f:setPropertyActionListener>
@@ -114,29 +114,29 @@
 							<tr>
 								<td><h:commandLink
 										action="#{keyholdercalllist.showKeyholders(true)}"
-										style="background: url('./images/SensorList.png') no-repeat left;
+										style="background: url('./images/ViewNormalCallList.png') no-repeat left;
 									background-size:100% 100%;
 									width:50px;height:50px;
 									display:block;margin:0 auto;" />
-									<b><h:outputText value="VIEW NORMAL" /></b></td>
+									<b><h:outputText value="VIEW NORMAL"  style="font-size:11px"/></b></td>
 								<td><h:commandLink
 										id="showHolidayCallListsBtn"
 										action="#{keyholdercalllist.showKeyholders(false)}"
-										style="background: url('./images/SensorList2.png') no-repeat left;
+										style="background: url('./images/ViewHolidayCallList.png') no-repeat left;
 									background-size:100% 100%;
 									width:50px;height:50px;
 									display:block;margin:0 auto;" />
-									<b><h:outputText value="VIEW HOLIDAY" /></b></td>
+									<b><h:outputText value="VIEW HOLIDAY"  style="font-size:11px"/></b></td>
 								<td><p:commandLink
 										id="addCallListBtn"
 										action="#{keyholdercalllist.initializeNewCallList}"
 										oncomplete="PF('addCallListDialog').show();"
 										update=":addCallListDlg"
-										style="background: url('./images/SensorList.png') no-repeat left;
+										style="background: url('./images/AddKeyHolderIcon2.png') no-repeat left;
 									background-size:100% 100%;
 									width:50px;height:50px;
 									display:block;margin:0 auto;" />
-									<b><h:outputText value="ADD CALL LIST" /></b></td>
+									<b><h:outputText value="ADD CALL LIST" style="font-size:11px" /></b></td>
 							</tr>
 						</table>
 					</div>

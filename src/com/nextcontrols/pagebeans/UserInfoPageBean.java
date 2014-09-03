@@ -328,8 +328,10 @@ public class UserInfoPageBean implements Serializable{
 			ExternalContext ectx = FacesContext.getCurrentInstance().getExternalContext();
 			HttpSession session = (HttpSession)ectx.getSession(false);
 			session.setAttribute("user", this.getUserName()); 
+			session.setAttribute("customerId", currentUser.getCustomer_id()); 
 			session.setAttribute("userId", this.getUserId());
 			session.setAttribute("name", this.getFirstName() + " " + this.getLastName());
+			session.setAttribute("userType",this.getUserType());
 			this.updateUsersActivity();
 			this.loginAudit();
 			wrongDetails=false;

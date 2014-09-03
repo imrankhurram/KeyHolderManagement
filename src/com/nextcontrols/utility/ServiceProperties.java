@@ -30,7 +30,7 @@ import java.util.Properties;
 		public String MYSQLDATABASE;
 		public String PHONEEXTENSIONS;
 		public String CONTACTTYPES;
-		public String CUSTOMERID;
+//		public String CUSTOMERID;
 		public String callOptions;
 		private Properties properties;
 		public static ServiceProperties sProps;
@@ -88,7 +88,7 @@ import java.util.Properties;
 			MYSQLDATABASE=properties.getProperty("messagingservice.TextMessageBean.conString");
 			PHONEEXTENSIONS=properties.getProperty("phone.extensions");
 			CONTACTTYPES=properties.getProperty("contact.types");
-			CUSTOMERID=properties.getProperty("customer.id");
+//			CUSTOMERID=properties.getProperty("customer.id");
 			stream.close();	
 		}
 		
@@ -197,9 +197,9 @@ import java.util.Properties;
 			return callOptions;
 		}
 		
-		public String getCustomerId(){
-			return CUSTOMERID;
-		}
+//		public String getCustomerId(){
+//			return CUSTOMERID;
+//		}
 		
 		
 		static {

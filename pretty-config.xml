@@ -1,31 +1,39 @@
-<pretty-config xmlns="http://ocpsoft.org/schema/rewrite-config-prettyfaces" 
-  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
-  xsi:schemaLocation="http://ocpsoft.org/schema/rewrite-config-prettyfaces
+<pretty-config xmlns="http://ocpsoft.org/schema/rewrite-config-prettyfaces"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://ocpsoft.org/schema/rewrite-config-prettyfaces
                       http://ocpsoft.org/xml/ns/prettyfaces/rewrite-config-prettyfaces.xsd">
 
 	<url-mapping id="login">
 		<pattern value="/Login" />
 		<view-id value="/Login.jsf" />
 	</url-mapping>
-	
+
 	<url-mapping id="Websites">
 		<pattern value="/Websites" />
 		<view-id value="/WebsitesPage.jsf" />
 	</url-mapping>
-	
+
 	<url-mapping id="Departments">
 		<pattern value="/Departments" />
 		<view-id value="/DepartmentsPage.jsf" />
 	</url-mapping>
-	
+
 	<url-mapping id="Keyholders">
 		<pattern value="/Keyholders" />
 		<view-id value="/KeyholdersNormalCallListPage.jsf" />
 	</url-mapping>
-	
+
 	<url-mapping id="CallLists">
 		<pattern value="/CallLists" />
 		<view-id value="/KeyholderCallListPage.jsf" />
 	</url-mapping>
 
+	<url-mapping id="Users">
+		<pattern value="/Users" />
+		<view-id value="/UsersPage.jsf" />
+	</url-mapping>
+	<url-mapping id="Customers">
+		<pattern value="/Customers" />
+		<view-id value="/CustomersPage.jsf" />
+	</url-mapping>
 </pretty-config>

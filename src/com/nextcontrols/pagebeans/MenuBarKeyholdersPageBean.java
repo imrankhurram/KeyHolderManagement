@@ -104,4 +104,37 @@ public class MenuBarKeyholdersPageBean implements Serializable {
 		return "login?faces-redirect=true";
 	}
 
+	public String actionUsersButton() {
+		ExternalContext ectx = FacesContext.getCurrentInstance()
+				.getExternalContext();
+		HttpSession session = (HttpSession) ectx.getSession(false);
+		UsersPageBean userListPageBean = (UsersPageBean) session
+				.getAttribute("users");
+		String userType = (String) session.getAttribute("userType");
+		if (userType.equals("WebAdmin") || userType.equals("WebReadOnly")) {
+			if (userListPageBean != null) {
+				session.removeAttribute("users");
+				userListPageBean.intitializeCustomers();
+				session.setAttribute("users", userListPageBean);
+			} else {
+				userListPageBean = new UsersPageBean();
+				userListPageBean.intitializeCustomers();
+				session.setAttribute("users", userListPageBean);
+			}
+			return "CustomersPage.xhtml?faces-redirect=true";
+				
+		}
+		else{
+		if (userListPageBean != null) {
+			session.removeAttribute("users");
+			userListPageBean.initializeUsers();
+			session.setAttribute("users", userListPageBean);
+		} else {
+			userListPageBean = new UsersPageBean();
+			userListPageBean.initializeUsers();
+			session.setAttribute("users", userListPageBean);
+		}
+		return "UsersPage.xhtml?faces-redirect=true";
+		}
+	}
 }

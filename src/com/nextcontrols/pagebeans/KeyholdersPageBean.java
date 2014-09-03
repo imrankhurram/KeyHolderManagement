@@ -19,6 +19,7 @@ import org.primefaces.context.RequestContext;
 
 import com.nextcontrols.dao.KeyholderDAO;
 import com.nextcontrols.dao.UserAuditDAO;
+import com.nextcontrols.domain.ContactTypeDetails;
 import com.nextcontrols.domain.Department;
 import com.nextcontrols.domain.Keyholder;
 import com.nextcontrols.domain.KeyholderEmail;
@@ -55,6 +56,10 @@ public class KeyholdersPageBean implements Serializable {
 	private List<KeyholderEmail> emails;
 	private List<KeyholderEmail> modEmails;
 	private int emailCount;
+	private boolean selectedVoiceOnly;
+	private boolean selectedSMSOnly;
+	private boolean selectedEmailOnly;
+	private int selectedListId;
 
 	public KeyholdersPageBean() {
 		this.showNormal = true;
@@ -302,18 +307,20 @@ public class KeyholdersPageBean implements Serializable {
 		}
 
 	}
+
 	public boolean validateEditedKeyholder() {
-		FacesMessage message=null;
+		FacesMessage message = null;
 		for (KeyholderListEnablingDetails keyholderList : this.normalList) {
 			if (keyholderList.isEnabled()) {
 				if (!keyholderList.isContactSMS()
 						&& !keyholderList.isContactPhone()
-						&& !keyholderList.isContactEmail()){
-					message = new FacesMessage(FacesMessage.SEVERITY_ERROR,
-							"Please select contact type for the list you have enabled!", "Please select contact type for the list you have enabled!");
+						&& !keyholderList.isContactEmail()) {
+					message = new FacesMessage(
+							FacesMessage.SEVERITY_ERROR,
+							"Please select contact type for the list you have enabled!",
+							"Please select contact type for the list you have enabled!");
 					FacesContext.getCurrentInstance().addMessage(null, message);
-					RequestContext.getCurrentInstance().update(
-							"updateMsg");
+					RequestContext.getCurrentInstance().update("updateMsg");
 					return false;
 				}
 			}
@@ -322,20 +329,22 @@ public class KeyholdersPageBean implements Serializable {
 			if (keyholderList.isEnabled()) {
 				if (!keyholderList.isContactSMS()
 						&& !keyholderList.isContactPhone()
-						&& !keyholderList.isContactEmail()){
-					message = new FacesMessage(FacesMessage.SEVERITY_ERROR,
-							"Please select contact type for the list you have enabled!", "Please select contact type for the list you have enabled!");
+						&& !keyholderList.isContactEmail()) {
+					message = new FacesMessage(
+							FacesMessage.SEVERITY_ERROR,
+							"Please select contact type for the list you have enabled!",
+							"Please select contact type for the list you have enabled!");
 					FacesContext.getCurrentInstance().addMessage(null, message);
-					RequestContext.getCurrentInstance().update(
-							"updateMsg");
+					RequestContext.getCurrentInstance().update("updateMsg");
 					return false;
 				}
 			}
 		}
 		return true;
 	}
+
 	public void saveEditedKeyholder() {
-		if(!validateEditedKeyholder()){
+		if (!validateEditedKeyholder()) {
 			return;
 		}
 		// ///////editing emails and other things
@@ -378,14 +387,14 @@ public class KeyholdersPageBean implements Serializable {
 		ExternalContext ectx = FacesContext.getCurrentInstance()
 				.getExternalContext();
 		HttpSession session = (HttpSession) ectx.getSession(false);
-//		UserAuditDAO.getInstance().insertUserAudit(
-//				new UserAudit(Integer.parseInt(session.getAttribute("userId")
-//						.toString()), new Timestamp(Calendar.getInstance()
-//						.getTime().getTime()), "SiteKeyholderModified",
-//						"The site keyholder "
-//								+ this.selectedKeyholder.getFullName()
-//								+ " was modified", this.selectedDepartment
-//								.getBranch_code()));
+		// UserAuditDAO.getInstance().insertUserAudit(
+		// new UserAudit(Integer.parseInt(session.getAttribute("userId")
+		// .toString()), new Timestamp(Calendar.getInstance()
+		// .getTime().getTime()), "SiteKeyholderModified",
+		// "The site keyholder "
+		// + this.selectedKeyholder.getFullName()
+		// + " was modified", this.selectedDepartment
+		// .getBranch_code()));
 		List<String> auditListNames = new ArrayList<String>();
 		for (KeyholderListEnablingDetails keyholderList : this.normalList) {
 			if (keyholderList.isEnabled()) {
@@ -396,16 +405,16 @@ public class KeyholdersPageBean implements Serializable {
 				KeyholderDAO.getInstance().deleteKeyholderList_Keyholder(
 						this.selectedKeyholder, keyholderList);
 			}
-//			UserAuditDAO.getInstance().insertUserAudit(
-//					new UserAudit(Integer.parseInt(session.getAttribute(
-//							"userId").toString()), new Timestamp(Calendar
-//							.getInstance().getTime().getTime()),
-//							"KeyholdersListModified", "The keyholders list "
-//									+ keyholderList.getDisplayName()
-//									+ " was modified", this.selectedDepartment
-//									.getBranch_code()));
+			// UserAuditDAO.getInstance().insertUserAudit(
+			// new UserAudit(Integer.parseInt(session.getAttribute(
+			// "userId").toString()), new Timestamp(Calendar
+			// .getInstance().getTime().getTime()),
+			// "KeyholdersListModified", "The keyholders list "
+			// + keyholderList.getDisplayName()
+			// + " was modified", this.selectedDepartment
+			// .getBranch_code()));
 		}
-		
+
 		for (KeyholderListEnablingDetails keyholderList : this.holidayList) {
 			if (keyholderList.isEnabled()) {
 				// System.out.println("list name: "+keyholderList.getDisplayName());
@@ -432,9 +441,9 @@ public class KeyholdersPageBean implements Serializable {
 					new UserAudit(Integer.parseInt(session.getAttribute(
 							"userId").toString()), new Timestamp(Calendar
 							.getInstance().getTime().getTime()),
-							"KeyholdersListModified","The site keyholder "
+							"KeyholdersListModified", "The site keyholder "
 									+ this.selectedKeyholder.getFullName()
-									+ " was modified: "+ auditString,
+									+ " was modified: " + auditString,
 							this.selectedDepartment.getBranch_code()));
 		} else if (auditListNames.size() == 1) {
 			auditString = "The keyholder list " + auditListNames
@@ -443,16 +452,17 @@ public class KeyholdersPageBean implements Serializable {
 					new UserAudit(Integer.parseInt(session.getAttribute(
 							"userId").toString()), new Timestamp(Calendar
 							.getInstance().getTime().getTime()),
-							"KeyholdersListModified","The site keyholder "
+							"KeyholdersListModified", "The site keyholder "
 									+ this.selectedKeyholder.getFullName()
-									+ " was modified: "+ auditString,
+									+ " was modified: " + auditString,
 							this.selectedDepartment.getBranch_code()));
 		}
 
 		this.modEmails = null;
 		initializeKeyholders();
 		RequestContext.getCurrentInstance().update("frmKeyholdersPage");
-		RequestContext.getCurrentInstance().execute("PF('editKeyholderDlg').hide();");
+		RequestContext.getCurrentInstance().execute(
+				"PF('editKeyholderDlg').hide();");
 	}
 
 	public void initializeNewKeyholder() {
@@ -524,17 +534,18 @@ public class KeyholdersPageBean implements Serializable {
 	}
 
 	public boolean validateNewKeyholder() {
-		FacesMessage message=null;
+		FacesMessage message = null;
 		for (KeyholderListEnablingDetails keyholderList : this.newNormalList) {
 			if (keyholderList.isEnabled()) {
 				if (!keyholderList.isContactSMS()
 						&& !keyholderList.isContactPhone()
-						&& !keyholderList.isContactEmail()){
-					message = new FacesMessage(FacesMessage.SEVERITY_ERROR,
-							"Please select contact type for the list you have enabled!", "Please select contact type for the list you have enabled!");
+						&& !keyholderList.isContactEmail()) {
+					message = new FacesMessage(
+							FacesMessage.SEVERITY_ERROR,
+							"Please select contact type for the list you have enabled!",
+							"Please select contact type for the list you have enabled!");
 					FacesContext.getCurrentInstance().addMessage(null, message);
-					RequestContext.getCurrentInstance().update(
-							"saveMsg");
+					RequestContext.getCurrentInstance().update("saveMsg");
 					return false;
 				}
 			}
@@ -543,12 +554,13 @@ public class KeyholdersPageBean implements Serializable {
 			if (keyholderList.isEnabled()) {
 				if (!keyholderList.isContactSMS()
 						&& !keyholderList.isContactPhone()
-						&& !keyholderList.isContactEmail()){
-					message = new FacesMessage(FacesMessage.SEVERITY_ERROR,
-							"Please select contact type for the list you have enabled!", "Please select contact type for the list you have enabled!");
+						&& !keyholderList.isContactEmail()) {
+					message = new FacesMessage(
+							FacesMessage.SEVERITY_ERROR,
+							"Please select contact type for the list you have enabled!",
+							"Please select contact type for the list you have enabled!");
 					FacesContext.getCurrentInstance().addMessage(null, message);
-					RequestContext.getCurrentInstance().update(
-							"saveMsg");
+					RequestContext.getCurrentInstance().update("saveMsg");
 					return false;
 				}
 			}
@@ -598,80 +610,82 @@ public class KeyholdersPageBean implements Serializable {
 		ExternalContext ectx = FacesContext.getCurrentInstance()
 				.getExternalContext();
 		HttpSession session = (HttpSession) ectx.getSession(false);
-//		UserAuditDAO.getInstance().insertUserAudit(
-//				new UserAudit(Integer.parseInt(session.getAttribute("userId")
-//						.toString()), new Timestamp(Calendar.getInstance()
-//						.getTime().getTime()), "SiteKeyholderAdded",
-//						"A new site keyholder " + newKeyholder.getFullName()
-//								+ " was added", this.selectedDepartment
-//								.getBranch_code()));
-//		List<String> auditListNames=new ArrayList<String>();
+		// UserAuditDAO.getInstance().insertUserAudit(
+		// new UserAudit(Integer.parseInt(session.getAttribute("userId")
+		// .toString()), new Timestamp(Calendar.getInstance()
+		// .getTime().getTime()), "SiteKeyholderAdded",
+		// "A new site keyholder " + newKeyholder.getFullName()
+		// + " was added", this.selectedDepartment
+		// .getBranch_code()));
+		// List<String> auditListNames=new ArrayList<String>();
 		StringBuilder auditString = new StringBuilder("");
 		for (KeyholderListEnablingDetails keyholderList : this.newNormalList) {
 			if (keyholderList.isEnabled()) {
 				KeyholderDAO.getInstance().saveKeyholderList_Keyholder(
 						this.newKeyholder, keyholderList);
-				auditString.append("The keyholders list "+keyholderList.getDisplayName()+" was modified, ");
+				auditString.append("The keyholders list "
+						+ keyholderList.getDisplayName() + " was modified, ");
 			} else {
 				KeyholderDAO.getInstance().deleteKeyholderList_Keyholder(
 						this.newKeyholder, keyholderList);
-//				auditString.append("The keyholders list "+keyholderList.getDisplayName()+" was modified, ");
+				// auditString.append("The keyholders list "+keyholderList.getDisplayName()+" was modified, ");
 			}
-			
-			
+
 		}
-		
-//		if (auditString.length()> 1) {
-//			UserAuditDAO.getInstance().insertUserAudit(
-//					new UserAudit(Integer.parseInt(session.getAttribute(
-//							"userId").toString()), new Timestamp(Calendar
-//							.getInstance().getTime().getTime()),
-//							"KeyholdersListModified", auditString.toString(), this.selectedDepartment
-//									.getBranch_code()));	
-//		}
-//		auditString = new StringBuilder("");
+
+		// if (auditString.length()> 1) {
+		// UserAuditDAO.getInstance().insertUserAudit(
+		// new UserAudit(Integer.parseInt(session.getAttribute(
+		// "userId").toString()), new Timestamp(Calendar
+		// .getInstance().getTime().getTime()),
+		// "KeyholdersListModified", auditString.toString(),
+		// this.selectedDepartment
+		// .getBranch_code()));
+		// }
+		// auditString = new StringBuilder("");
 		for (KeyholderListEnablingDetails keyholderList : this.newHolidayList) {
 			if (keyholderList.isEnabled()) {
 				KeyholderDAO.getInstance().saveKeyholderList_Keyholder(
 						this.newKeyholder, keyholderList);
-				auditString.append("The keyholders list "+keyholderList.getDisplayName()+" was modified, ");
+				auditString.append("The keyholders list "
+						+ keyholderList.getDisplayName() + " was modified, ");
 			} else {
 				KeyholderDAO.getInstance().deleteKeyholderList_Keyholder(
 						this.newKeyholder, keyholderList);
-//				auditString.append("The keyholders list "+keyholderList.getDisplayName()+" was modified, ");
+				// auditString.append("The keyholders list "+keyholderList.getDisplayName()+" was modified, ");
 			}
-			
-//			UserAuditDAO.getInstance().insertUserAudit(
-//					new UserAudit(Integer.parseInt(session.getAttribute(
-//							"userId").toString()), new Timestamp(Calendar
-//							.getInstance().getTime().getTime()),
-//							"KeyholdersListModified", "The keyholders list "
-//									+ keyholderList.getDisplayName()
-//									+ " was modified", this.selectedDepartment
-//									.getBranch_code()));
+
+			// UserAuditDAO.getInstance().insertUserAudit(
+			// new UserAudit(Integer.parseInt(session.getAttribute(
+			// "userId").toString()), new Timestamp(Calendar
+			// .getInstance().getTime().getTime()),
+			// "KeyholdersListModified", "The keyholders list "
+			// + keyholderList.getDisplayName()
+			// + " was modified", this.selectedDepartment
+			// .getBranch_code()));
 		}
-//		UserAuditDAO.getInstance().insertUserAudit(
-//				new UserAudit(Integer.parseInt(session.getAttribute("userId")
-//						.toString()), new Timestamp(Calendar.getInstance()
-//						.getTime().getTime()), "SiteKeyholderAdded",
-//						"A new site keyholder " + newKeyholder.getFullName()
-//								+ " was added", this.selectedDepartment
-//								.getBranch_code()));
-			UserAuditDAO.getInstance().insertUserAudit(
-					new UserAudit(Integer.parseInt(session.getAttribute(
-							"userId").toString()), new Timestamp(Calendar
-							.getInstance().getTime().getTime()),
-							"KeyholdersListModified", "A new site keyholder " + newKeyholder.getFullName()
-							+ " was added: "+auditString.toString(), this.selectedDepartment
-									.getBranch_code()));	
-		
+		// UserAuditDAO.getInstance().insertUserAudit(
+		// new UserAudit(Integer.parseInt(session.getAttribute("userId")
+		// .toString()), new Timestamp(Calendar.getInstance()
+		// .getTime().getTime()), "SiteKeyholderAdded",
+		// "A new site keyholder " + newKeyholder.getFullName()
+		// + " was added", this.selectedDepartment
+		// .getBranch_code()));
+		UserAuditDAO.getInstance().insertUserAudit(
+				new UserAudit(Integer.parseInt(session.getAttribute("userId")
+						.toString()), new Timestamp(Calendar.getInstance()
+						.getTime().getTime()), "KeyholdersListModified",
+						"A new site keyholder " + newKeyholder.getFullName()
+								+ " was added: " + auditString.toString(),
+						this.selectedDepartment.getBranch_code()));
 
 		this.selectedKeyholder = null;
 		this.newKeyholder = new Keyholder();
 		this.emails = null;
 		initializeKeyholders();
 		RequestContext.getCurrentInstance().update("frmKeyholdersPage");
-		RequestContext.getCurrentInstance().execute("PF('addKeyholderDlg').hide();");
+		RequestContext.getCurrentInstance().execute(
+				"PF('addKeyholderDlg').hide();");
 	}
 
 	public void deleteKeyholder() {
@@ -701,6 +715,71 @@ public class KeyholdersPageBean implements Serializable {
 		this.selectedKeyholder = null;
 		RequestContext.getCurrentInstance().update("frmKeyholdersPage");
 
+	}
+
+	public void editContactType(Keyholder keyholder, int listId) {
+		this.selectedKeyholder = keyholder;
+		this.selectedListId = listId;
+		ContactTypeDetails details = keyholder.getIdWithContactType().get(
+				listId);
+		switch (details.getContactType()) {
+		case 1:
+			this.setSelectedVoiceOnly(true);
+			this.setSelectedSMSOnly(false);
+			this.setSelectedEmailOnly(false);
+			break;
+		case 2:
+			this.setSelectedVoiceOnly(true);
+			this.setSelectedSMSOnly(true);
+			this.setSelectedEmailOnly(false);
+			break;
+		case 3:
+			this.setSelectedVoiceOnly(false);
+			this.setSelectedSMSOnly(true);
+			this.setSelectedEmailOnly(false);
+			break;
+		case 4:
+			this.setSelectedVoiceOnly(false);
+			this.setSelectedSMSOnly(true);
+			this.setSelectedEmailOnly(true);
+			break;
+		case 5:
+			this.setSelectedVoiceOnly(false);
+			this.setSelectedSMSOnly(false);
+			this.setSelectedEmailOnly(true);
+			break;
+		case 6:
+			this.setSelectedVoiceOnly(true);
+			this.setSelectedSMSOnly(false);
+			this.setSelectedEmailOnly(true);
+			break;
+		case 7:
+			this.setSelectedVoiceOnly(true);
+			this.setSelectedSMSOnly(true);
+			this.setSelectedEmailOnly(true);
+			break;
+		default:
+			this.setSelectedVoiceOnly(false);
+			this.setSelectedSMSOnly(false);
+			this.setSelectedEmailOnly(false);
+			break;
+		}
+		// System.out.println("type: " + details.getContactType());
+	}
+
+	public void updateEditedContactType() {
+		KeyholderListEnablingDetails details = new KeyholderListEnablingDetails();
+		details.setKeyholderListId(this.selectedListId);
+		details.setContactEmail(this.selectedEmailOnly);
+		details.setContactPhone(this.selectedVoiceOnly);
+		details.setContactSMS(this.selectedSMSOnly);
+		KeyholderDAO.getInstance().saveKeyholderList_Keyholder(
+				this.selectedKeyholder, details);
+		// System.out.println("type: " + details.getContact_type());
+
+		initializeKeyholders();
+		this.selectedKeyholder = null;
+		RequestContext.getCurrentInstance().update("frmKeyholdersPage");
 	}
 
 	public List<Keyholder> getKeyHoldersList() {
@@ -961,6 +1040,38 @@ public class KeyholdersPageBean implements Serializable {
 
 	public void setEmailCount(int emailCount) {
 		this.emailCount = emailCount;
+	}
+
+	public boolean isSelectedVoiceOnly() {
+		return selectedVoiceOnly;
+	}
+
+	public void setSelectedVoiceOnly(boolean selectedVoiceOnly) {
+		this.selectedVoiceOnly = selectedVoiceOnly;
+	}
+
+	public boolean isSelectedSMSOnly() {
+		return selectedSMSOnly;
+	}
+
+	public void setSelectedSMSOnly(boolean selectedSMSOnly) {
+		this.selectedSMSOnly = selectedSMSOnly;
+	}
+
+	public boolean isSelectedEmailOnly() {
+		return selectedEmailOnly;
+	}
+
+	public void setSelectedEmailOnly(boolean selectedEmailOnly) {
+		this.selectedEmailOnly = selectedEmailOnly;
+	}
+
+	public int getSelectedListId() {
+		return selectedListId;
+	}
+
+	public void setSelectedListId(int selectedListId) {
+		this.selectedListId = selectedListId;
 	}
 
 }

@@ -3,11 +3,17 @@ package com.nextcontrols.dao;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
+import com.nextcontrols.domain.Customer;
 import com.nextcontrols.domain.User;
 
 public interface IUserDAO extends Serializable{
+	public List<Integer> getCustomerIds(int userId);
+	public List<User> getUserList(List<Integer> customerIds);
+	public List<Customer> getCustomerList();
 	public List<User> getUserList();
+	public Map<Integer,String> getDivisionNames(List<Integer> customerIds);
 	public List<User> getAdminUserList();
 	public User getUser(int userId);
 	public User getSpecificUser(String username);
@@ -34,6 +40,7 @@ public interface IUserDAO extends Serializable{
 			String pincode, byte enabled, Date passwordExpires,
 			Date pincodeExpires, short pincodeFailureCount, byte isdeleted,
 			String userBureauType);
+	public void modifyUsers(List<User> users);
 	public void deleteUser(int user_id);
 	public void updateUserStatus(int user_id,byte enabled);
 	

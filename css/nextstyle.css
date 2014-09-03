@@ -52,16 +52,19 @@ body {
 	width: 220px;
 	margin: 0px 10px 20px;
 }
+
 .logoPanel {
 	float: left;
 	width: 640px;
 	margin: 0px 10px 10px;
 }
+
 .quarterminus30 {
 	float: left;
 	width: 190px;
 	margin: 0px 10px 20px;
 }
+
 .quarterminus25 {
 	float: left;
 	width: 210px;
@@ -105,6 +108,7 @@ body {
 	width: 700px;
 	margin: 0 10px 20px;
 }
+
 .threequartersplus30 {
 	float: left;
 	width: 730px;
@@ -116,6 +120,7 @@ body {
 	width: 710px;
 	margin: 0 0px 20px;
 }
+
 .mainMenu {
 	float: right;
 	width: 300px;
@@ -382,7 +387,6 @@ h3 b {
 h3:hover {
 	cursor: pointer;
 	background: #c0d4cf;
-	
 }
 
 h3.active {
@@ -517,7 +521,7 @@ h3.active {
 	background-image: none;
 	margin: .5em 0 0 0;
 	padding: .3em 1em .5em .4em;
-	background:#C0D4CF !important
+	background: #C0D4CF !important
 }
 /*END OF CONFIRMATION DIALOG*/
 
@@ -580,7 +584,7 @@ h3.warning {
 	background: #c0d4cf !important;	
 	border: 1px solid black;
 } */
-#nav li span{
+#nav li span {
 	display: block;
 	text-transform: uppercase;
 	color: #000;
@@ -588,17 +592,25 @@ h3.warning {
 	font-weight: bold;
 	padding-top: 30px;
 }
-.calendarWidget input{
-	background:-moz-linear-gradient(center top , rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0)) repeat scroll 0 0 #C4C4C4 !important;
+
+.calendarWidget input {
+	background: -moz-linear-gradient(center top, rgba(255, 255, 255, 0.8),
+		rgba(255, 255, 255, 0)) repeat scroll 0 0 #C4C4C4 !important;
 }
-.dialog input{
-		background:-moz-linear-gradient(center top , rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0)) repeat scroll 0 0 #C4C4C4 !important;
+
+.dialog input {
+	background: -moz-linear-gradient(center top, rgba(255, 255, 255, 0.8),
+		rgba(255, 255, 255, 0)) repeat scroll 0 0 #C4C4C4 !important;
 }
-.ui-dialog input{
-		background:-moz-linear-gradient(center top , rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0)) repeat scroll 0 0 #C4C4C4 !important;
+
+.ui-dialog input {
+	background: -moz-linear-gradient(center top, rgba(255, 255, 255, 0.8),
+		rgba(255, 255, 255, 0)) repeat scroll 0 0 #C4C4C4 !important;
 }
-.ui-dialog select{
-		background:-moz-linear-gradient(center top , rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0)) repeat scroll 0 0 #C4C4C4 !important;
+
+.ui-dialog select {
+	background: -moz-linear-gradient(center top, rgba(255, 255, 255, 0.8),
+		rgba(255, 255, 255, 0)) repeat scroll 0 0 #C4C4C4 !important;
 }
 
 /* .ui-dialog{
@@ -609,190 +621,267 @@ h3.warning {
 	background:#C0D4CF !important
 } */
 /* End of Required Error */
-.textCenter{
-	text-align:center;
+.textCenter {
+	text-align: center;
 }
-.mainPanel .ui-layout-unit-content{
-	background-position:center top; 
-	background-image: url('../images/Background.png') !important; 
+
+.mainPanel .ui-layout-unit-content {
+	background-position: center top;
+	background-image: url('../images/Background.png') !important;
 	background-repeat: no-repeat !important;
-	background-color:#fff !important
-	
+	background-color: #fff !important
 }
-.userPanel{
+
+.userPanel {
 	font-weight: bold;
-	font-size:15px;
-	color:#00A8B9;
+	font-size: 15px;
+	color: #00A8B9;
 	/* margin-top:10px; */
 }
-.deptdataTableActions{
-	 background-repeat: no-repeat !important;
-	 background-position: left !important;
-	 background-size:100% 100% !important;
-	 width:25px;
-	 height:25px;
-	 display:block;
-	 margin:0px auto;
-}	
-.dataTableActions{
-	 background-repeat: no-repeat !important;
-	 background-position: left !important;
-	 background-size:100% 100% !important;
-	 width:45px;
-	 height:40px;
-	 display:block;
-	 margin:-10px auto -10px;
+
+.deptdataTableActions {
+	background-repeat: no-repeat !important;
+	background-position: left !important;
+	background-size: 100% 100% !important;
+	width: 25px;
+	height: 25px;
+	display: block;
+	margin: 0px auto;
 }
-.mainMenuButton{
-	 background-repeat: no-repeat !important;
-	 background-position: left !important;
-	 background-size:100% 100% !important;
-	 width:50px;
-	 height:50px;
+
+.dataTableActions {
+	background-repeat: no-repeat !important;
+	background-position: left !important;
+	background-size: 100% 100% !important;
+	width: 45px;
+	height: 40px;
+	display: block;
+	margin: -10px auto -10px;
 }
-.keyholdersTable tr{
-	height:34px;
+
+.mainMenuButton {
+	background-repeat: no-repeat !important;
+	background-position: left !important;
+	background-size: 100% 100% !important;
+	width: 50px;
+	height: 50px;
 }
-.blue{
-	color:#43CAFF;
+
+.keyholdersTable tr {
+	height: 34px;
+}
+
+.blue {
+	color: #43CAFF;
 }
 /*this css is to force column width of frozen columns of data table  */
-#tbKeyholdersList .ui-datatable-frozenlayout-left{
-	width:730px;
+#tbKeyholdersList .ui-datatable-frozenlayout-left {
+	width: 730px;
 }
-#tbKeyholderCallList .ui-datatable-frozenlayout-left{
-	width:740px;
+
+#tbKeyholderCallList .ui-datatable-frozenlayout-left {
+	width: 740px;
 }
 /*customizing title bar of sequence dialog  */
-#sequenceDlg .ui-dialog-titlebar{
- background-image: url("../images/Edit.png") !important;
-    background-position: 21px center;
-    background-repeat: no-repeat;
-    background-size: 50px 50px;
-    color: white;
-    font-size: 20px;
-    font-weight: normal;
-    height: 32px;
-    padding-left: 80px;
-    padding-top: 9px;
-}
-#editKeyholderDlg .ui-dialog-titlebar{
- background-image: url("../images/Edit.png") !important;
-    background-position: 21px center;
-    background-repeat: no-repeat;
-    background-size: 50px 50px;
-    color: white;
-    font-size: 20px;
-    font-weight: normal;
-    height: 32px;
-    padding-left: 80px;
-    padding-top: 9px;
-}
-#addKeyholderDlg .ui-dialog-titlebar{
- background-image: url("../images/Edit.png") !important;
-    background-position: 21px center;
-    background-repeat: no-repeat;
-    background-size: 50px 50px;
-    color: white;
-    font-size: 20px;
-    font-weight: normal;
-    height: 32px;
-    padding-left: 80px;
-    padding-top: 9px;
-}
-.ui-dialog-titlebar{
- background-image: url("../images/Edit.png") !important;
-    background-position: 21px center;
-    background-repeat: no-repeat;
-    background-size: 50px 50px;
-    color: white;
-    font-size: 20px;
-    font-weight: normal;
-    height: 32px;
-    padding-left: 80px !important;
-    padding-top: 9px !important;
-}
-#tbEditKeyholdersList .ui-datatable-even{
-	background: #fff !important;	
-	color:black !important;
-}
-#tbEditKeyholdersList .ui-datatable-odd{
-	background: #fff !important;	
-	color:black !important;
-}
-#tbEditKeyholdersList .ui-datatable-scrollable-header{
-	background: #fff !important;
-	color:black !important;
-}
-#tbEditKeyholdersList th{
-	background: #fff !important;
-	color:black !important;
-}
-#tbEditHolidayKeyholdersList .ui-datatable-even{
-	background: #fff !important;	
-	color:black !important;
-}
-#tbEditHolidayKeyholdersList .ui-datatable-odd{
-	background: #fff !important;	
-	color:black !important;
-}
-#tbEditHolidayKeyholdersList .ui-datatable-scrollable-header{
-	background: #fff !important;
-	color:black !important;
-}
-#tbEditHolidayKeyholdersList th{
-	background: #fff !important;
-	color:black !important;
+#sequenceDlg .ui-dialog-titlebar {
+	background-image: url("../images/Edit.png") !important;
+	background-position: 21px center;
+	background-repeat: no-repeat;
+	background-size: 50px 50px;
+	color: white;
+	font-size: 20px;
+	font-weight: normal;
+	height: 32px;
+	padding-left: 80px;
+	padding-top: 9px;
 }
 
-#tbAddKeyholdersList .ui-datatable-even{
-	background: #fff !important;	
-	color:black !important;
-}
-#tbAddKeyholdersList .ui-datatable-odd{
-	background: #fff !important;	
-	color:black !important;
-}
-#tbAddKeyholdersList .ui-datatable-scrollable-header{
-	background: #fff !important;
-	color:black !important;
-}
-#tbAddKeyholdersList th{
-	background: #fff !important;
-	color:black !important;
+#editKeyholderDlg .ui-dialog-titlebar {
+	background-image: url("../images/Edit.png") !important;
+	background-position: 21px center;
+	background-repeat: no-repeat;
+	background-size: 50px 50px;
+	color: white;
+	font-size: 20px;
+	font-weight: normal;
+	height: 32px;
+	padding-left: 80px;
+	padding-top: 9px;
 }
 
-#tbAddHolidayKeyholdersList .ui-datatable-even{
-	background: #fff !important;	
-	color:black !important;
+#addKeyholderDlg .ui-dialog-titlebar {
+	background-image: url("../images/Edit.png") !important;
+	background-position: 21px center;
+	background-repeat: no-repeat;
+	background-size: 50px 50px;
+	color: white;
+	font-size: 20px;
+	font-weight: normal;
+	height: 32px;
+	padding-left: 80px;
+	padding-top: 9px;
 }
-#tbAddHolidayKeyholdersList .ui-datatable-odd{
-	background: #fff !important;	
-	color:black !important;
+
+.ui-dialog-titlebar {
+	background-image: url("../images/Edit.png") !important;
+	background-position: 21px center;
+	background-repeat: no-repeat;
+	background-size: 50px 50px;
+	color: white;
+	font-size: 20px;
+	font-weight: normal;
+	height: 32px;
+	padding-left: 80px !important;
+	padding-top: 9px !important;
 }
-#tbAddHolidayKeyholdersList .ui-datatable-scrollable-header{
+
+#tbEditKeyholdersList .ui-datatable-even {
 	background: #fff !important;
-	color:black !important;
+	color: black !important;
 }
-#tbAddHolidayKeyholdersList th{
+
+#tbEditKeyholdersList .ui-datatable-odd {
 	background: #fff !important;
-	color:black !important;
+	color: black !important;
 }
-.settingsIcon{
+
+#tbEditKeyholdersList .ui-datatable-scrollable-header {
+	background: #fff !important;
+	color: black !important;
+}
+
+#tbEditKeyholdersList th {
+	background: #fff !important;
+	color: black !important;
+}
+
+#tbEditHolidayKeyholdersList .ui-datatable-even {
+	background: #fff !important;
+	color: black !important;
+}
+
+#tbEditHolidayKeyholdersList .ui-datatable-odd {
+	background: #fff !important;
+	color: black !important;
+}
+
+#tbEditHolidayKeyholdersList .ui-datatable-scrollable-header {
+	background: #fff !important;
+	color: black !important;
+}
+
+#tbEditHolidayKeyholdersList th {
+	background: #fff !important;
+	color: black !important;
+}
+
+#tbAddKeyholdersList .ui-datatable-even {
+	background: #fff !important;
+	color: black !important;
+}
+
+#tbAddKeyholdersList .ui-datatable-odd {
+	background: #fff !important;
+	color: black !important;
+}
+
+#tbAddKeyholdersList .ui-datatable-scrollable-header {
+	background: #fff !important;
+	color: black !important;
+}
+
+#tbAddKeyholdersList th {
+	background: #fff !important;
+	color: black !important;
+}
+
+#tbAddHolidayKeyholdersList .ui-datatable-even {
+	background: #fff !important;
+	color: black !important;
+}
+
+#tbAddHolidayKeyholdersList .ui-datatable-odd {
+	background: #fff !important;
+	color: black !important;
+}
+
+#tbAddHolidayKeyholdersList .ui-datatable-scrollable-header {
+	background: #fff !important;
+	color: black !important;
+}
+
+#tbAddHolidayKeyholdersList th {
+	background: #fff !important;
+	color: black !important;
+}
+
+.settingsIcon {
 	background-image: url('./images/Setting.png');
 }
-.ui-orderlist .ui-orderlist-list{
-	height:100%;
-	min-height:200px;
+
+.ui-orderlist .ui-orderlist-list {
+	height: 100%;
+	min-height: 200px;
 }
-.timePanel .ui-panel-content{
-	padding:0px;
+
+.timePanel .ui-panel-content {
+	padding: 0px;
 }
-.ui-button{
-	background-image:linear-gradient(to bottom, #51AFB1 0%, #4498A2 100%) !important;
-	text-shadow:none !important;
-	color:white !important;
+
+.ui-button {
+	background-image: linear-gradient(to bottom, #51AFB1 0%, #4498A2 100%)
+		!important;
+	text-shadow: none !important;
+	color: white !important;
 }
-.ui-datatable-scrollable-footer{
-	padding-top:0px !important;
+
+.ui-datatable-scrollable-footer {
+	padding-top: 0px !important;
+}
+
+.highligtedRow {
+	background: #FECAC1 !important;
+	color: black !important;
+}
+
+.greenButton {
+	background-size: 100% 100%;
+	background-color: #199DAF;
+	width: 65px;
+	height: 65px;
+	line-height: 15px;
+	text-align: center;
+	display: table-cell;
+	font-weight: bold;
+	vertical-align: middle;
+	margin: 0 auto;
+	color: white !important;
+	border-radius:3px;
+}
+.greenButton:hover {
+	background-size: 100% 100%;
+	background-color: #67B7C5;
+	width: 65px;
+	height: 65px;
+	line-height: 15px;
+	text-align: center;
+	display: table-cell;
+	font-weight: bold;
+	vertical-align: middle;
+	margin: 0 auto;
+	color: white;
+	border-radius:3px;
+}
+#contactTypeDlg .ui-dialog-titlebar{
+	background-image: none !important;
+	background-size:0px !important;
+	height:0px;
+}
+.ui-datatable th.scrollableColumns{
+	background: #acadac !important;
+	border:1px solid #a8a8a8;
+}
+.ui-datatable th.scrollableColumns:hover{
+	background: #9E9F9E !important;
+	border:1px solid #a8a8a8;
 }
