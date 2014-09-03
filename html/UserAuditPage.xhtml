@@ -1,0 +1,79 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	template="MainTemplate.xhtml">
+
+
+	<ui:define name="contentPanel">
+		<div id="Wrapper">
+			<ui:include src="./snippets/MenuBars/MenuBarUserAuditSnippet.xhtml" />
+
+
+			<h:form id="frmUsersPage" prependId="false">
+				<div class="quarterminus30" style="margin: 0 10px 5px; width: 100%">
+					<div class="userPanel" style="float: left">
+						User:
+						<p:outputLabel value="#{userInfo.userName}"
+							style="font-size:15px !important; font-weight:bold !important;" />
+					</div>
+				</div>
+				<div class="" style="float: left; padding-left: 10px;">
+					<p:messages showDetail="false" id="userMsg" />
+					<h3>
+						<b>User Activity</b>
+					</h3>
+					<!-- style="width:775px;" -->
+					<p:dataTable widgetVar="Tb" id="tbActivitiesList" var="row"
+						value="#{useractivity.userActivities}" rows="200"
+						 paginator="true" paginatorAlwaysVisible="false" paginatorPosition="bottom"
+						scrollable="true" scrollHeight="205" style="width:975px;"
+						emptyMessage="No User Activity."
+						resizableColumns="true">
+
+						<p:column width="70">
+							<!--105  -->
+							<f:facet name="header">
+								<h:outputText value="DATE" />
+							</f:facet>
+							<h:outputText id="date" value="#{row.loggedDate}">
+								<p:tooltip for="date" value="#{row.loggedDate}" />
+							</h:outputText>
+						</p:column>
+						<p:column width="70">
+							<!--65  -->
+							<f:facet name="header">
+								<h:outputText value="NAME" />
+							</f:facet>
+							<h:outputText id="name" value="#{row.userName}">
+								<p:tooltip for="name" value="#{row.userName}" />
+							</h:outputText>
+						</p:column>
+						<p:column width="70">
+							<!--65  -->
+							<f:facet name="header">
+								<h:outputText value="SITE/DEPARTMENT" />
+							</f:facet>
+							<h:outputText id="siteName" value="#{row.siteName}">
+								<p:tooltip for="siteName" value="#{row.siteName}" />
+							</h:outputText>
+						</p:column>
+						<p:column width="215">
+							<!--65  -->
+							<f:facet name="header">
+								<h:outputText value="ACTIVITY" />
+							</f:facet>
+							<h:outputText id="activity" value="#{row.actionDescription}">
+								<p:tooltip for="activity" value="#{row.actionDescription}" />
+							</h:outputText>
+						</p:column>
+						<f:facet name="footer"></f:facet>
+					</p:dataTable>
+				</div>
+			</h:form>
+
+		</div>
+	</ui:define>
+</ui:composition>
