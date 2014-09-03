@@ -32,8 +32,14 @@
 		<pattern value="/Users" />
 		<view-id value="/UsersPage.jsf" />
 	</url-mapping>
+	
 	<url-mapping id="Customers">
 		<pattern value="/Customers" />
 		<view-id value="/CustomersPage.jsf" />
+	</url-mapping>
+	
+	<url-mapping id="UserActivity">
+		<pattern value="/UserActivity" />
+		<view-id value="/UserAuditPage.jsf" />
 	</url-mapping>
 </pretty-config>

@@ -61,6 +61,24 @@ public class DepartmentsPageBean implements Serializable {
 			session.setAttribute("keyholders", keyholdersPageBean);
 		}
 	}
+	public String showAudits(String branch_code){
+		ExternalContext ectx = FacesContext.getCurrentInstance()
+				.getExternalContext();
+		HttpSession session = (HttpSession) ectx.getSession(false);
+		UserActivityPageBean userActivityPageBean = (UserActivityPageBean) session
+				.getAttribute("useractivity");
+		if(userActivityPageBean!=null){
+			session.removeAttribute("useractivity");
+			userActivityPageBean.initializeAudits(branch_code);
+			session.setAttribute("useractivity", userActivityPageBean);
+		}else{
+			userActivityPageBean=new UserActivityPageBean();
+			userActivityPageBean.initializeAudits(branch_code);
+			session.setAttribute("useractivity", userActivityPageBean);
+		}
+		return "UserAuditPage.xhtml?faces-redirect=true";
+		
+	}
 	public Department getSelectedDepartment() {
 		return selectedDepartment;
 	}

@@ -9,6 +9,7 @@ public interface IUserAuditDAO {
 	public void insertUserAudit(final UserAudit puserAudit);
 	public List<UserAudit> getUserAudits() ;
 	public int countUserIdles(int userId);
+	public List<UserAudit> getUserAuditsforUsers(List<Integer> userIds,String siteCode);
 	public List<UserAudit> getSpecificUserAudits(int user_id,String siteCode);
 	public List<UserAudit> getDateSpecificUserAudits(int user_id,String siteCode,Date dateFrom, Date dateTo);
 	public int avgAlarmHandlingTime(String username,Date dateFrom,Date dateTo);

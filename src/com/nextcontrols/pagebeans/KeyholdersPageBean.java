@@ -159,9 +159,9 @@ public class KeyholdersPageBean implements Serializable {
 				new UserAudit(Integer.parseInt(session.getAttribute("userId")
 						.toString()), new Timestamp(Calendar.getInstance()
 						.getTime().getTime()), "KeyholdersInListUpdated",
-						"The keyholders in the list "
+						"The sequence of keyholders in the list "
 								+ selectedList.getDisplayName()
-								+ " were updated", this.selectedDepartment
+								+ " was updated", this.selectedDepartment
 								.getBranch_code()));
 		// org.primefaces.context.RequestContext context =
 		// RequestContext.getCurrentInstance();

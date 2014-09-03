@@ -125,6 +125,47 @@ public class UserDAO implements IUserDAO, Serializable{
 
 		return userList;
 	}
+	@Override
+	public List<Integer> getUsersListInCustomer(int userId) {
+		List<Integer> userIdsList=new ArrayList<Integer>();
+		String query="SELECT a.user_id FROM [users] as a join [users] as u on a.customer_id=u.customer_id WHERE u.user_id="+userId;
+		Connection dbConn = null;
+		Statement stmnt = null;
+		ResultSet results = null;
+		try{
+			dbConn=ConnectionBean.getInstance().getBureauConnection();
+			stmnt=dbConn.createStatement();
+			results=stmnt.executeQuery(query);
+			while (results.next()){
+//				User newUser=new User(results.getInt("user_id"), results.getString("userWebType"),
+//						results.getString("userConfgType"),results.getString("title"),results.getString("firstName"), results.getString("lastName"),
+//						results.getString("email"), results.getString("workphone"),results.getString("contactNumber"),results.getString("mobilePhone"),results.getString("address"),
+//						results.getString("city"),results.getString("zip"),results.getString("county"),
+//						results.getString("country"), results.getString("username"), results.getString("password"),
+//						results.getByte("termsAndConditions"), results.getByte("termsAndConditionsOfService"),results.getInt("customer_id"),
+//						results.getString("pincode"), results.getByte("enabled"), results.getTimestamp("passwordExpires"),
+//						results.getTimestamp("pincodeExpires"), results.getShort("pincodeFailureCount"), results.getByte("isdeleted"),
+//						results.getString("userBureauType"));
+//				newUser.setDivisionName(results.getString("name"));
+				userIdsList.add((Integer)results.getInt("user_id"));
+//				System.out.println("user id: "+newUser.getUserId()+"--pin expires: "+results.getTimestamp("pincodeExpires"));
+			}
+		}catch (SQLException e){
+			e.printStackTrace();
+		}finally{
+			try {
+				results.close();
+				stmnt.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			results =null;
+			stmnt =null;
+			dbConn = null;
+		}
+		
+		return userIdsList;
+	}
 	public List<Customer> getCustomerList() {
 		List<Customer> customerList=new ArrayList<Customer>();
 		String query="SELECT * FROM [customers] order by name";
@@ -924,7 +965,7 @@ public class UserDAO implements IUserDAO, Serializable{
 		Statement stmnt = null;
 		ResultSet results = null;
 		try{
-			dbConn=ConnectionBean.getInstance().getMYSQLConnection();
+			dbConn=ConnectionBean.getInstance().getBureauConnection();
 			stmnt=dbConn.createStatement();
 			results=stmnt.executeQuery(query);
 			while (results.next()){

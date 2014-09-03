@@ -11,6 +11,7 @@ import com.nextcontrols.domain.User;
 public interface IUserDAO extends Serializable{
 	public List<Integer> getCustomerIds(int userId);
 	public List<User> getUserList(List<Integer> customerIds);
+	public List<Integer> getUsersListInCustomer(int userId);
 	public List<Customer> getCustomerList();
 	public List<User> getUserList();
 	public Map<Integer,String> getDivisionNames(List<Integer> customerIds);

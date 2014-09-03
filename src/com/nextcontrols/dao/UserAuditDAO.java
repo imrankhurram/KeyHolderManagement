@@ -206,6 +206,49 @@ public class UserAuditDAO implements IUserAuditDAO, Serializable{
 		
 		return idles;
 	}
+	@Override
+	public List<UserAudit> getUserAuditsforUsers(List<Integer> userIds,String siteCode) {
+		StringBuilder userIdsList=new StringBuilder("(");
+		for(Integer id:userIds){
+			userIdsList.append("'");
+			userIdsList.append(id);
+			userIdsList.append("'");
+			userIdsList.append(",");
+		}
+		userIdsList.replace(userIdsList.lastIndexOf(","), userIdsList.length(), ")");
+		IUserDAO userDB= UserDAO.getInstance();
+		List<UserAudit> listOfAudits=new ArrayList<UserAudit>();
+		String query="SELECT * FROM `audits_useraudit` as adt join `departments` as dept on adt.site_code=dept.branch_code WHERE user_id IN "+userIdsList.toString()+" AND site_code='"+siteCode+"' order by audit_date";
+		Connection dbConn = null;
+		Statement stmnt=null;
+		ResultSet result=null;
+		System.out.println("query: "+query);
+		try{
+			dbConn=ConnectionBean.getInstance().getMYSQLConnection();
+			stmnt=dbConn.createStatement();
+			result=stmnt.executeQuery(query);
+			while(result.next()){
+				UserAudit newAudit=new UserAudit(result.getInt("user_id"),result.getTimestamp("audit_date"),result.getString("action_type"),result.getString("action_description"),result.getString("site_code"));
+				newAudit.setSiteName(result.getString("display_name"));
+				newAudit.setUserName(userDB.getUserName(newAudit.getUserId()));
+				listOfAudits.add(newAudit);
+			}
+		}catch (SQLException e){
+			e.printStackTrace();
+		}finally{
+			try {
+				result.close();
+				stmnt.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			dbConn=null;
+			stmnt=null;
+			result=null;
+		}
+		
+		return listOfAudits;
+	}
 
 	@Override
 	public List<UserAudit> getSpecificUserAudits(int user_id, String siteCode) {

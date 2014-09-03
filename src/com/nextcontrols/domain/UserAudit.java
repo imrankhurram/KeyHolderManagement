@@ -16,6 +16,7 @@ public class UserAudit implements Serializable{
 	private String actionType;
 	private String actionDescription;
 	private String siteCode;
+	private String siteName="";
 	private String userName="";
 	private String loggedDate;
 	
@@ -87,4 +88,13 @@ public class UserAudit implements Serializable{
 	public void setLoggedDate(String loggedDate) {
 		this.loggedDate = loggedDate;
 	}
+
+	public String getSiteName() {
+		return siteName;
+	}
+
+	public void setSiteName(String siteName) {
+		this.siteName = siteName;
+	}
+	
 }
