@@ -16,6 +16,7 @@
 				src="./snippets/MenuBars/MenuBarKeyholderListSnippet.xhtml" />
 			<ui:include src="./snippets/DlgAddCallList.xhtml" />
 			<ui:include src="./snippets/DlgEditCallList.xhtml" />
+			<ui:include src="./snippets/DlgCallListSequence4Lists.xhtml" />
 			<h:form id="frmKeyholderCallListPage" prependId="false">
 				<div class="threequartersplus30">
 					<div class="userPanel">
@@ -105,6 +106,19 @@
 								styleClass="dataTableActions" 
 								onclick="PF('confirmDlg').show()">
 								<f:setPropertyActionListener target="#{keyholdercalllist.selectedCallList}" value="#{row}"></f:setPropertyActionListener>
+							</p:commandLink>
+						</p:column>
+						<p:column width="40" exportable="false">
+							<f:facet name="header">
+								<h:outputText value="MANAGE" />
+							</f:facet>
+							<p:commandLink
+								id="manageCallList"
+								style="background: url('./images/Setting.png');width:25px;height:25px;margin:0 auto;"
+								oncomplete="PF('sequenceDialog').show();" update=":sequenceDlg"
+									action="#{keyholdercalllist.retrieveListKeyholders(row)}"
+								styleClass="dataTableActions">
+								<!-- <f:setPropertyActionListener target="#{keyholdercalllist.selectedCallList}" value="#{row}"></f:setPropertyActionListener> -->
 							</p:commandLink>
 						</p:column>
 						<f:facet name="footer"></f:facet>

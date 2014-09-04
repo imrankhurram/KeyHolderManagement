@@ -47,15 +47,19 @@ public class KeyholderCallListPageBean implements Serializable {
 	private List<SelectItem> listType;
 	private int typeNumb;
 	private KeyholderList selectedCallList;
+	private List<Keyholder> listKeyHolders;
+	private int listKeyHoldersSize;
 
 	public KeyholderCallListPageBean() {
 		this.showNormal = true;
 		this.departmentKeyholdersLists = new ArrayList<KeyholderList>();
+		this.listKeyHolders = new ArrayList<Keyholder>();
 		hours = new ArrayList<SelectItem>();
 		minutes = new ArrayList<SelectItem>();
 		endHours = new ArrayList<SelectItem>();
 		listType = new ArrayList<SelectItem>();
 		typeNumb = 0;
+		this.listKeyHoldersSize = 0;
 	}
 
 	public void initializeKeyholdersLists(Department selectedDepartment) {
@@ -98,8 +102,8 @@ public class KeyholderCallListPageBean implements Serializable {
 	}
 
 	public void saveNewCallList() {
-//		System.out.println("list type selectd: "
-//				+ this.newCallList.getListType());
+		// System.out.println("list type selectd: "
+		// + this.newCallList.getListType());
 		this.newCallList.setListName(this.newCallList.getDisplayName());
 		if (typeNumb == 1 || typeNumb == 3) {// special occasion or custom list
 												// type
@@ -145,7 +149,7 @@ public class KeyholderCallListPageBean implements Serializable {
 	}
 
 	public void deleteCallList() {
-		KeyholderList callList=this.selectedCallList;
+		KeyholderList callList = this.selectedCallList;
 		if (callList != null) {
 			if (callList.getListType().equals("Default") == false) {
 				KeyholderDAO.getInstance().delDeptKeyholderList(
@@ -161,14 +165,14 @@ public class KeyholderCallListPageBean implements Serializable {
 										+ callList.getDisplayName()
 										+ " was deleted",
 								this.selectedDepartment.getBranch_code()));
-//				FacesMessage message = new FacesMessage();
-//				message.setDetail("The selected call list "
-//						+ callList.getDisplayName() + " was deleted");
-//				message.setSummary("The selected call list "
-//						+ callList.getDisplayName() + " was deleted");
-//				message.setSeverity(FacesMessage.SEVERITY_INFO);
-//				FacesContext.getCurrentInstance().addMessage(null, message);
-				this.selectedCallList=null;
+				// FacesMessage message = new FacesMessage();
+				// message.setDetail("The selected call list "
+				// + callList.getDisplayName() + " was deleted");
+				// message.setSummary("The selected call list "
+				// + callList.getDisplayName() + " was deleted");
+				// message.setSeverity(FacesMessage.SEVERITY_INFO);
+				// FacesContext.getCurrentInstance().addMessage(null, message);
+				this.selectedCallList = null;
 				initializeKeyholdersLists();
 				RequestContext.getCurrentInstance().update(
 						"frmKeyholderCallListPage");
@@ -179,10 +183,9 @@ public class KeyholderCallListPageBean implements Serializable {
 				message.setSummary("The Default KeyholderList cannot be deleted");
 				message.setSeverity(FacesMessage.SEVERITY_ERROR);
 				FacesContext.getCurrentInstance().addMessage(null, message);
-				RequestContext.getCurrentInstance().update(
-						"varMsg");
-//				RequestContext.getCurrentInstance().update(
-//						"frmKeyholderCallListPage");
+				RequestContext.getCurrentInstance().update("varMsg");
+				// RequestContext.getCurrentInstance().update(
+				// "frmKeyholderCallListPage");
 			}
 		}
 
@@ -199,7 +202,7 @@ public class KeyholderCallListPageBean implements Serializable {
 			String[] listEnd = selectedCallList.getOccupancyEnd().split(":");
 			endHour = listEnd[0];
 			endMinutes = listEnd[1];
-			
+
 			if (this.selectedCallList.getListType().equals("Special Occasion")) {
 				typeNumb = 1;
 			} else if ((this.selectedCallList.getListType()
@@ -229,7 +232,6 @@ public class KeyholderCallListPageBean implements Serializable {
 			System.out.println("typeNumb: " + typeNumb);
 
 		}
-		
 
 	}
 
@@ -277,6 +279,49 @@ public class KeyholderCallListPageBean implements Serializable {
 		}
 		initializeKeyholdersLists();
 		RequestContext.getCurrentInstance().update("frmKeyholderCallListPage");
+	}
+
+	public void retrieveListKeyholders(KeyholderList selectedList) {
+		this.selectedCallList = selectedList;
+		this.listKeyHolders.clear();
+		// System.out.println("selected list : " +
+		// selectedList.getDisplayName());
+		// this.chosenList = KeyholderDAO.getInstance().getKeyholdersList(
+		// this.selectedDepartment.getBranch_code(),
+		// selectedList.getKeyholderListId());
+		// System.out.println("selected dept:"+this.selectedDepartment.getBranch_code());
+		// System.out.println("selected list:"+selectedList.getKeyholderListId());
+		this.listKeyHolders = KeyholderDAO.getInstance().getListOfKeyholders(
+				this.selectedDepartment.getBranch_code(),
+				selectedList.getKeyholderListId());
+		this.listKeyHoldersSize = this.listKeyHolders.size();
+
+	}
+
+	public void saveKeyHoldersSequence() {
+		// System.out.println("save keyholder sequence called");
+		for (int i = 0; i < listKeyHolders.size(); i++) {
+			// System.out.println("name: "+listKeyHolders.get(i).getContactName());
+			listKeyHolders.get(i).setPriority(i + 1);
+
+		}
+		KeyholderDAO.getInstance().updateKeyholdersList(listKeyHolders,
+				this.selectedCallList.getKeyholderListId());
+		ExternalContext ectx = FacesContext.getCurrentInstance()
+				.getExternalContext();
+		HttpSession session = (HttpSession) ectx.getSession(false);
+		UserAuditDAO.getInstance().insertUserAudit(
+				new UserAudit(Integer.parseInt(session.getAttribute("userId")
+						.toString()), new Timestamp(Calendar.getInstance()
+						.getTime().getTime()), "KeyholdersInListUpdated",
+						"The sequence of keyholders in the list "
+								+ this.selectedCallList.getDisplayName()
+								+ " was updated", this.selectedDepartment
+								.getBranch_code()));
+		// org.primefaces.context.RequestContext context =
+		// RequestContext.getCurrentInstance();
+		// context.execute("sequenceDialog.hide()");
+
 	}
 
 	public KeyholderList getSelectedCallList() {
@@ -494,6 +539,22 @@ public class KeyholderCallListPageBean implements Serializable {
 		} else {
 			typeNumb = 3;
 		}
+	}
+
+	public List<Keyholder> getListKeyHolders() {
+		return listKeyHolders;
+	}
+
+	public void setListKeyHolders(List<Keyholder> listKeyHolders) {
+		this.listKeyHolders = listKeyHolders;
+	}
+
+	public int getListKeyHoldersSize() {
+		return listKeyHoldersSize;
+	}
+
+	public void setListKeyHoldersSize(int listKeyHoldersSize) {
+		this.listKeyHoldersSize = listKeyHoldersSize;
 	}
 
 }

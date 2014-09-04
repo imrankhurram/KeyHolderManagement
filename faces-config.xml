@@ -22,6 +22,10 @@ MessageResources
    <converter-id>keyholderConverter</converter-id>
    <converter-class>com.nextcontrols.utility.KeyholderConverter</converter-class>
 </converter>
+<converter>
+   <converter-id>keyholderConverter4CallList</converter-id>
+   <converter-class>com.nextcontrols.utility.KeyholderConverter4CallList</converter-class>
+</converter>
 
 </faces-config>
 
