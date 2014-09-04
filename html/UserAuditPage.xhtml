@@ -12,28 +12,51 @@
 			<ui:include src="./snippets/MenuBars/MenuBarUserAuditSnippet.xhtml" />
 
 
-			<h:form id="frmUsersPage" prependId="false">
-				<div class="quarterminus30" style="margin: 0 10px 5px; width: 100%">
+			<h:form id="frmUsersAuditPage" prependId="false">
+				<div class="quarterminus30">
 					<div class="userPanel" style="float: left">
 						User:
 						<p:outputLabel value="#{userInfo.userName}"
 							style="font-size:15px !important; font-weight:bold !important;" />
 					</div>
+					<h:panelGrid columns="2"
+						style="background-color: #4498a2;border-width:2px; text-align: center;width:100%;margin-top:36px;">
+						<!--border-style:solid;  -->
+						<h:outputText value="From  : " />
+						<p:calendar id="dateFromHist" value="#{useractivity.dateFrom}"
+							effect="slideDown" pattern="dd/MM/yyyy" binding="#{date1Input}"
+							styleClass="calendarWidget">
+							<p:ajax event="dateSelect" update="dateToHist" />
+						</p:calendar>
+						<!--dd/MM/yyyy HH:mm  -->
+						<h:outputText value="To  : " />
+						<p:calendar id="dateToHist" value="#{useractivity.dateTo}"
+							mindate="#{useractivity.dateFrom}"
+							effect="slideDown"
+							pattern="dd/MM/yyyy" validator="dateValidator"
+							styleClass="calendarWidget">
+							<f:attribute name="startDate" value="#{useractivity.dateFrom}" />
+						</p:calendar>
+
+						<h:outputText value="" />
+						<p:commandButton value="Update" update="tbActivitiesList"
+							action="#{useractivity.updateDataTable}" ajax="false"
+							style="width:100px !important;line-height:1.6 !important;height: 30px !important;-webkit-border-radius:5px !important;border-radius:5px !important;-moz-border-radius:5px !important" />
+					</h:panelGrid>
 				</div>
-				<div class="" style="float: left; padding-left: 10px;">
-					<p:messages showDetail="false" id="userMsg" />
-					<h3>
+				<div class="threequartersplus30">
+					<p:messages showDetail="false" id="userMsg" autoUpdate="true"/>
+					<h3 style="width: 730px;">
 						<b>User Activity</b>
 					</h3>
 					<!-- style="width:775px;" -->
 					<p:dataTable widgetVar="Tb" id="tbActivitiesList" var="row"
-						value="#{useractivity.userActivities}" rows="200"
-						 paginator="true" paginatorAlwaysVisible="false" paginatorPosition="bottom"
-						scrollable="true" scrollHeight="205" style="width:975px;"
-						emptyMessage="No User Activity."
-						resizableColumns="true">
+						value="#{useractivity.userActivities}" rows="200" paginator="true"
+						paginatorAlwaysVisible="false" paginatorPosition="bottom"
+						scrollable="true" scrollHeight="295" style="width:760px;"
+						emptyMessage="No User Activity." resizableColumns="true">
 
-						<p:column width="70">
+						<p:column width="75">
 							<!--105  -->
 							<f:facet name="header">
 								<h:outputText value="DATE" />
@@ -42,7 +65,7 @@
 								<p:tooltip for="date" value="#{row.loggedDate}" />
 							</h:outputText>
 						</p:column>
-						<p:column width="70">
+						<p:column width="60">
 							<!--65  -->
 							<f:facet name="header">
 								<h:outputText value="NAME" />
@@ -51,7 +74,7 @@
 								<p:tooltip for="name" value="#{row.userName}" />
 							</h:outputText>
 						</p:column>
-						<p:column width="70">
+						<p:column width="85">
 							<!--65  -->
 							<f:facet name="header">
 								<h:outputText value="SITE/DEPARTMENT" />

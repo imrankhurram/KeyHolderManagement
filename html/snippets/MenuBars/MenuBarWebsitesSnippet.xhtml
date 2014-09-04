@@ -1,29 +1,35 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
-xmlns:ui="http://java.sun.com/jsf/facelets"
-xmlns:f="http://java.sun.com/jsf/core"
-xmlns:h="http://java.sun.com/jsf/html"
-xmlns:p="http://primefaces.org/ui"
-xmlns:c="http://java.sun.com/jsp/jstl/core">
-<h:form>
-	<div class="logoPanel" style="margin-top:30px;">
-		<img src="./images/logo.jpg" width="250" height="120"/>
-	</div>
-	<div class="mainMenu">
-		 <ul id="nav">
-		    <li><h:commandLink 
-						style="background: url('./images/Home.png')"
-						styleClass="mainMenuButton" title="Back to Tutela Website"><!-- TODO action back to tutela website -->
-						
-						</h:commandLink></li> 
-	       <c:if test="${(userInfo.userType=='WebAdmin') || (userInfo.userType=='WebReadOnly')}">
-				<li><h:commandLink action="#{keyholdersmenubar.actionUsersButton}"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+	<h:form>
+		<div class="logoPanel" style="margin-top: 30px;">
+			<img src="./images/bigger_tutela_logo.jpg" width="250" height="120" />
+		</div>
+		<div class="mainMenu">
+			<ul id="nav">
+				<li><h:commandLink style="background: url('./images/Home.png')"
+						styleClass="mainMenuButton" title="Back to Tutela Website">
+						<!-- TODO action back to tutela website -->
+
+					</h:commandLink></li>
+				<c:if
+					test="${(userInfo.userType=='WebAdmin') || (userInfo.userType=='WebReadOnly')}">
+					<li><h:commandLink
+							action="#{keyholdersmenubar.actionUsersButton}"
 							style="background: url('./images/SensorList2.png')"
 							styleClass="mainMenuButton" title="Users">
-							
-							</h:commandLink></li> 
-	        </c:if>
-	    </ul> 
-	</div>
-</h:form>
-	
+
+						</h:commandLink></li>
+				</c:if>
+				<li><h:commandLink action="#{keyholdersmenubar.actionLogout}"
+						style="background: url('./images/Logout.png')"
+						styleClass="mainMenuButton" title="Logout">
+					</h:commandLink></li>
+			</ul>
+		</div>
+	</h:form>
+
 </ui:composition>
