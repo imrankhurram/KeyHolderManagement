@@ -27,11 +27,11 @@
 						</h:commandLink></li>
 				</c:if>
 				<c:if
-					test="${(userInfo.userType!='WebAdmin') &amp;&amp; (userInfo.userType!='WebReadOnly')}">
+					test="${not userInfo.areManyWebsites}">
 					<c:if test="${userInfo.userType!='UserByPermissions'}">
 						<li><h:commandLink
 								action="#{keyholdersmenubar.actionUsersButton}"
-								style="background: url('./images/SensorList2.png')"
+								style="background: url('./images/UsersIcon.png')"
 								styleClass="mainMenuButton" title="Users">
 
 							</h:commandLink></li>

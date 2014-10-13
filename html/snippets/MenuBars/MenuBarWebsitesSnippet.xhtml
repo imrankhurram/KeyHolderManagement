@@ -15,15 +15,17 @@
 						<!-- TODO action back to tutela website -->
 
 					</h:commandLink></li>
-				<c:if
-					test="${(userInfo.userType=='WebAdmin') || (userInfo.userType=='WebReadOnly')}">
-					<li><h:commandLink
-							action="#{keyholdersmenubar.actionUsersButton}"
-							style="background: url('./images/SensorList2.png')"
-							styleClass="mainMenuButton" title="Users">
+				<!-- <c:if
+					test="${(userInfo.areManyWebsites=='WebAdmin') || (userInfo.userType=='WebReadOnly')}"> -->
+					<c:if test="${userInfo.userType!='UserByPermissions'}">
+						<li><h:commandLink
+								action="#{keyholdersmenubar.actionUsersButton}"
+								style="background: url('./images/UsersIcon.png')"
+								styleClass="mainMenuButton" title="Users">
 
-						</h:commandLink></li>
-				</c:if>
+							</h:commandLink></li>
+					</c:if>
+				<!-- </c:if> -->
 				<li><h:commandLink action="#{keyholdersmenubar.actionLogout}"
 						style="background: url('./images/Logout.png')"
 						styleClass="mainMenuButton" title="Logout">

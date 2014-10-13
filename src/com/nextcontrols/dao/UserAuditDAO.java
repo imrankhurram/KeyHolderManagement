@@ -185,6 +185,47 @@ public class UserAuditDAO implements IUserAuditDAO, Serializable {
 			dbConn = null;
 		}
 	}
+	@Override
+	public void insertUserAdminAudit(String userId, String event, String eventDesc,String branchCode,int websiteId) {
+		//working here
+		PreparedStatement pstmt = null;
+		Connection dbConn = null;
+		String query = "";
+		query = "INSERT INTO [webGUI_Auditing] ([user_id],[audit_date],[branchCode],[event],[eventDesc],[website_id]) "
+				+ "VALUES(?,?,?,?,?,?);";
+		try {
+			dbConn = ConnectionBean.getInstance().getSQLConnection();
+			pstmt = dbConn.prepareStatement(query);
+			pstmt.setString(1,userId);
+			pstmt.setTimestamp(2, new Timestamp(Calendar.getInstance()
+					.getTime().getTime()));// pstmt.setTimestamp(2,
+											// userAudit.getAuditDate());
+			pstmt.setString(3, branchCode);
+			pstmt.setString(4, event);
+			if (branchCode != null) {
+				pstmt.setString(5, branchCode);
+			} else {
+				pstmt.setNull(5, Types.VARCHAR);
+			}
+			if (websiteId != -1) {
+				pstmt.setInt(6, websiteId);
+			} else {
+				pstmt.setNull(6, Types.INTEGER);
+			}
+			pstmt.executeUpdate();
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				pstmt.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			pstmt = null;
+			dbConn = null;
+		}
+	}
 
 	@Override
 	public int countUserIdles(int userId) {

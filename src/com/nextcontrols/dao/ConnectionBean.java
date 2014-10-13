@@ -40,7 +40,7 @@ public class ConnectionBean implements Serializable{
 //		}
 //		return dbSQLConn;
 //	}
-	public Connection getBureauConnection() throws SQLException{
+	public Connection getSQLConnection() throws SQLException{
 //		System.out.println((dbBureauConn==null) ? true :  dbBureauConn.isClosed());
 		if (dbBureauConn==null){
 			dbBureauConn=ServiceProperties.getInstance().getBureauConnection();

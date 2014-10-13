@@ -18,12 +18,13 @@
 					User: <p:outputLabel value="#{userInfo.userName}" style="font-size:15px !important; font-weight:bold !important;"/>
 					</div>
 				</div>
-				<div class="threequartersplus30">
+				<!-- <div class="threequartersplus30">
 				<h:commandLink
 				style="background: url('./images/SensorList.png') no-repeat left;
 				background-size:100% 100%;
 				width:50px;height:50px;
-				display:block;margin-bottom:10px;"/>
+				display:block;margin-bottom:10px;"/> -->
+				<div class="" style="float: left; padding-left: 10px;">
 					<h3>
 						<b>CUSTOMER LIST</b>
 					</h3>
@@ -43,7 +44,7 @@
 							<f:facet name="header">
 								<h:outputText value="VIEW" />
 							</f:facet>
-							<h:commandLink id="viewCustomer" action="#{users.viewCustomerUsers(row.id)}"
+							<h:commandLink id="viewCustomer" action="#{users.viewCustomerUsers(row.id,row.name)}"
 								style="background: url('./images/ViewWebsites.png')" styleClass="deptdataTableActions"/>
 						</p:column>
 						<f:facet name="footer"></f:facet>

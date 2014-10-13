@@ -78,6 +78,9 @@ public class MenuBarKeyholdersPageBean implements Serializable {
 		ExternalContext ectx = FacesContext.getCurrentInstance()
 				.getExternalContext();
 		HttpSession session = (HttpSession) ectx.getSession(false);
+		if((Boolean)session.getAttribute("usersOnly")){
+			return "";
+		}
 		boolean areManyWebsites = (boolean) session
 				.getAttribute("areManyWebsites");
 		if (areManyWebsites) {

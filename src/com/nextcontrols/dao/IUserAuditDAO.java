@@ -7,6 +7,7 @@ import com.nextcontrols.domain.UserAudit;
 
 public interface IUserAuditDAO {
 	public void insertUserAudit(final UserAudit puserAudit);
+	public void insertUserAdminAudit(String userId, String event, String eventDesc,String branchCode,int websiteId);
 	public List<UserAudit> getUserAudits() ;
 	public int countUserIdles(int userId);
 	public List<UserAudit> getUserAuditsforUsers(List<Integer> userIds,String siteCode,Date fromDate,Date toDate);

@@ -10,6 +10,8 @@
 	<ui:define name="contentPanel">
 		<div id="Wrapper">
 			<ui:include src="./snippets/MenuBars/MenuBarUsersSnippet.xhtml" />
+			<ui:include src="./snippets/DlgAddUser.xhtml" />
+			<ui:include src="./snippets/DlgEditUser.xhtml" />
 
 			<h:form id="frmUsersPage" prependId="false">
 				<div class="quarterminus30" style="margin: 0 10px 5px; width: 100%">
@@ -43,12 +45,11 @@
 					<p:dataTable widgetVar="Tb" id="tbUsersList" var="row"
 						value="#{users.usersList}" rowKey="#{row.userId}"
 						scrollable="true" scrollHeight="205" style="width:975px;"
-						filteredValue="#{users.filteredUsersList}"
-						rowStyleClass="${(row.pinCodeTimeout lt 90 || row.passwordTimeout lt 90)?'highligtedRow':''}"
-						emptyMessage="No User." editable="true" editMode="cell"
+						selection="#{users.selectedUser}" selectionMode="single"
+						filteredValue="#{users.filteredUsersList}" emptyMessage="No User."
 						resizableColumns="true">
 
-						<p:column width="115" sortBy="#{row.divisionName}"
+						<p:column width="70" sortBy="#{row.divisionName}"
 							filterBy="#{row.divisionName}">
 							<!--105  -->
 							<f:facet name="header">
@@ -85,83 +86,42 @@
 								<p:tooltip for="userName" value="#{row.username}" />
 							</h:outputText>
 						</p:column>
-						<p:column width="75" sortBy="#{row.pinCodeTimeout}">
-							<!--55  -->
-							<f:facet name="header">
-								<h:outputText value="PINCODE TIMEOUT" />
-							</f:facet>
-							<p:cellEditor>
-								<f:facet name="output">
-									<h:outputText id="pincodeTimout"
-										value="${row.pinCodeTimeout lt 0?'Expired':row.pinCodeTimeout}">
-										<p:tooltip for="pincodeTimout"
-											value="${row.pinCodeTimeout lt 0?'Expired':row.pinCodeTimeout}" />
-									</h:outputText>
-								</f:facet>
-								<f:facet name="input">
-									<h:inputText value="#{row.pinCodeTimeout}"
-										validatorMessage="Value must not be more than 365">
-										<!-- <f:validateLongRange maximum="365"></f:validateLongRange> -->
-									</h:inputText>
-								</f:facet>
-							</p:cellEditor>
-						</p:column>
-						<p:column width="75" sortBy="#{row.passwordTimeout}">
-							<!--55  -->
-							<f:facet name="header">
-								<h:outputText value="PASSWORD TIMEOUT" />
-							</f:facet>
-							<p:cellEditor>
-								<f:facet name="output">
-									<!-- <h:outputText value="${row.passwordExpires}"/> -->
-									<h:outputText id="passwordTimout"
-										value="${row.passwordTimeout lt 0?'Expired':row.passwordTimeout}">
-										<p:tooltip for="passwordTimout"
-											value="${row.passwordTimeout lt 0?'Expired':row.passwordTimeout}" />
-									</h:outputText>
-								</f:facet>
-								<f:facet name="input">
-									<h:inputText value="#{row.passwordTimeout}"
-										validatorMessage="Value must not be more than 365">
-										<!-- <f:validateLongRange maximum="365"></f:validateLongRange> -->
-									</h:inputText>
-								</f:facet>
-							</p:cellEditor>
-						</p:column>
-						<p:column width="55" style="text-align:center;"
-							sortBy="#{row.boolEnabled}">
-							<f:facet name="header">
-								<h:outputText value="ENABLE" />
-							</f:facet>
-							<p:cellEditor>
-								<f:facet name="output">
-									<p:outputLabel id="enabled" value="${row.boolEnabled?'o':'x'}">
-									</p:outputLabel>
-								</f:facet>
-								<f:facet name="input">
-									<h:selectBooleanCheckbox value="#{row.boolEnabled}" />
-								</f:facet>
-							</p:cellEditor>
-						</p:column>
 						<f:facet name="footer"></f:facet>
 					</p:dataTable>
 					<div class="threequartersplus30"
 						style="margin-top: 6px; margin-bottom: 0px; width: 100%">
 						<table style="float: left">
 							<tr>
-								<td><h:commandLink value="CONFIRM CHANGES"
-										action="#{users.saveChanges}" styleClass="greenButton" /></td>
-								<td><p:commandLink value="CANCEL CHANGES"
-										action="#{users.cancelChanges}" styleClass="greenButton" /></td>
-								<td><p:commandLink value="USER ADMIN"
-										action="UsersAdminPage.xhtml?faces-redirect=true" styleClass="greenButton" /></td>
+								<td><p:commandLink value="ADD USER"
+										actionListener="#{users.initializeNewUser}"
+										update=":addUserDlg" styleClass="greenButton"
+										oncomplete="PF('addUserDlg').show();" /></td>
+								<td><p:commandLink value="MODIFY USER"
+										actionListener="#{users.initializeEditUser}"
+										update=":editUserFrm" styleClass="greenButton" /></td>
+								<td><p:commandLink value="DELETE USER"
+										action="#{users.checkUserSelection}" styleClass="greenButton" /></td>
 							</tr>
 						</table>
 
 					</div>
+
 				</div>
 			</h:form>
+			<p:confirmDialog widgetVar="confirmDlg" header="Delete User"
+				appendTo="@(body)" closable="false"
+				style="background:#c0d4cf !important"
+				message="Are you sure you want to delete the selected User ?">
+				<h:form prependId="false">
+					<h:panelGrid columns="2">
+						<p:commandButton value="Delete" id="deleteUserBtn"
+							actionListener="#{users.deleteUser}"
+							oncomplete="PF('confirmDlg').hide()" />
+						<p:commandButton value="Close" onclick="PF('confirmDlg').hide()" />
+					</h:panelGrid>
+				</h:form>
 
+			</p:confirmDialog>
 		</div>
 	</ui:define>
 </ui:composition>

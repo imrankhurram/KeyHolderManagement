@@ -10,6 +10,7 @@ import com.nextcontrols.domain.User;
 
 public interface IUserDAO extends Serializable{
 	public List<Integer> getCustomerIds(int userId);
+	public List<Customer> getCustomerOfUser(int userId);
 	public List<User> getUserList(List<Integer> customerIds);
 	public List<Integer> getUsersListInCustomer(int userId);
 	public List<Customer> getCustomerList();
@@ -32,7 +33,7 @@ public interface IUserDAO extends Serializable{
 			byte termsAndConditions, byte termsAndConditionsOfService,
 			String pincode, byte enabled, Date passwordExpires,
 			Date pincodeExpires, short pincodeFailureCount, byte isdeleted,
-			String userBureauType);
+			String userBureauType,int customer_id,List<Customer> customers);
 	public void modifyUser(int user_id,String userWebType,
 			String userConfgType, String title,String firstName, String lastName,
 			String email, String workPhone,String contactNumber,String mobilePhone,String address,
@@ -41,6 +42,7 @@ public interface IUserDAO extends Serializable{
 			String pincode, byte enabled, Date passwordExpires,
 			Date pincodeExpires, short pincodeFailureCount, byte isdeleted,
 			String userBureauType);
+	public void modifyUserCustomers(int user_id, List<Customer> customers);
 	public void modifyUsers(List<User> users);
 	public void deleteUser(int user_id);
 	public void updateUserStatus(int user_id,byte enabled);

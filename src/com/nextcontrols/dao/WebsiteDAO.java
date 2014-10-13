@@ -48,7 +48,7 @@ public class WebsiteDAO implements IWebsiteDAO, Serializable {
 		ResultSet rs =null; 
 		String query=" [key_get_assignedwebsites](?)";
 		try {
-			conn = ConnectionBean.getInstance().getBureauConnection();
+			conn = ConnectionBean.getInstance().getSQLConnection();
 			stmnt = conn.prepareCall(query);
 			stmnt.setInt(1, userId);
 			
@@ -83,7 +83,7 @@ public class WebsiteDAO implements IWebsiteDAO, Serializable {
 		Statement stmnt =null;
 		ResultSet results = null;
 		try{
-			dbConn=ConnectionBean.getInstance().getBureauConnection();
+			dbConn=ConnectionBean.getInstance().getSQLConnection();
 			stmnt=dbConn.createStatement();
 			results=stmnt.executeQuery(query);
 			while (results.next()){
