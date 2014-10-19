@@ -6,6 +6,7 @@
 	<property name="src" value="./src" />
 	<property name="dist" value="./dist" />
 
+	<!--<property name="warfile" value="${dist}/usermanagement.war" />-->
 	<property name="warfile" value="${dist}/keyholdermanagement.war" />
 	<property name="html" value="./html" />
 	<property name="css" value="./css" />

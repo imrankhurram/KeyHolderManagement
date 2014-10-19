@@ -43,13 +43,13 @@ public class ConnectionBean implements Serializable{
 	public Connection getSQLConnection() throws SQLException{
 //		System.out.println((dbBureauConn==null) ? true :  dbBureauConn.isClosed());
 		if (dbBureauConn==null){
-			dbBureauConn=ServiceProperties.getInstance().getBureauConnection();
-			System.out.println("Creating Bureau Connection when null " );
+			dbBureauConn=ServiceProperties.getInstance().getSQLConnection();
+			System.out.println("Creating SQL Connection when null " );
 		}
 		else if (dbBureauConn.isClosed()){
 			count++;
-			dbBureauConn=ServiceProperties.getInstance().getBureauConnection();	
-			System.out.println("Creating Bureau Connection when closed " );
+			dbBureauConn=ServiceProperties.getInstance().getSQLConnection();	
+			System.out.println("Creating SQL Connection when closed " );
 		}
 		return dbBureauConn;
 	}

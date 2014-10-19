@@ -372,37 +372,44 @@ public class UserDAO implements IUserDAO, Serializable {
 
 	}
 
-	public void addUser(String userWebType,
-			String userConfgType, String title,String firstName, String lastName,
-			String email, String workPhone,String contactNumber,String mobilePhone,String address,
-			String city,String zip,String county,String country, String username, String password,
-			byte termsAndConditions, byte termsAndConditionsOfService,
-			String pincode, byte enabled, Date passwordExpires,
-			Date pincodeExpires, short pincodeFailureCount, byte isdeleted,
-			String userBureauType,int customer_id, List<Customer> customers){
+	public void addUser(String userWebType, String userConfgType, String title,
+			String firstName, String lastName, String email, String workPhone,
+			String contactNumber, String mobilePhone, String address,
+			String city, String zip, String county, String country,
+			String username, String password, byte termsAndConditions,
+			byte termsAndConditionsOfService, String pincode, byte enabled,
+			Date passwordExpires, Date pincodeExpires,
+			short pincodeFailureCount, byte isdeleted, String userBureauType,
+			int customer_id, List<Customer> customers) {
 
 		String query;
 		Connection dbConn = null;
 		PreparedStatement stmnt = null;
 		ResultSet results = null;
-		int userId=-1;
-//		java.sql.Date passwdExpire=new java.sql.Date(passwordExpires.getTime());
-//		java.sql.Date pinExpire=new java.sql.Date(pincodeExpires.getTime());
-//		query="INSERT INTO [users]" +
-//		"VALUES ('"+userWebType + "','" + userConfgType + "','" + title + "','" + firstName + "','" +
-//		lastName + "','" + email + "','" + workPhone + "','" + contactNumber + "','" + mobilePhone + "','" +
-//		address + "','" + city + "','" + zip + "','" + county + "','" + country + "','" + username + "','" +
-//		password + "'," + termsAndConditions + "," + termsAndConditionsOfService + "," + customer_id + ",'" +
-//		pincode + "'," + enabled + ",'" + passwdExpire + "','" + pinExpire + "'," + pincodeFailureCount + "," +
-//		isdeleted + ",'" + userBureauType + "')";
-		query="INSERT INTO [users] ([userWebType] ,[userConfgType] ,[title] ,[firstName]  ,[lastName] ,[email]" +
-				" ,[workPhone],[contactNumber] ,[mobilePhone]  ,[address] ,[city]  ,[zip]  ,[county] ,[country] " +
-				" ,[username] ,[password]  ,[termsAndConditions]  ,[termsAndConditionsOfService] ,[customer_id] " +
-				" ,[pincode]  ,[enabled]  ,[passwordExpires] ,[pincodeExpires] ,[pincodeFailureCount] ,[isdeleted] ,[userBureauType]) " +
-				" VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
-		try{
-			dbConn=ConnectionBean.getInstance().getSQLConnection();
-			stmnt=dbConn.prepareStatement(query,
+		int userId = -1;
+		// java.sql.Date passwdExpire=new
+		// java.sql.Date(passwordExpires.getTime());
+		// java.sql.Date pinExpire=new java.sql.Date(pincodeExpires.getTime());
+		// query="INSERT INTO [users]" +
+		// "VALUES ('"+userWebType + "','" + userConfgType + "','" + title +
+		// "','" + firstName + "','" +
+		// lastName + "','" + email + "','" + workPhone + "','" + contactNumber
+		// + "','" + mobilePhone + "','" +
+		// address + "','" + city + "','" + zip + "','" + county + "','" +
+		// country + "','" + username + "','" +
+		// password + "'," + termsAndConditions + "," +
+		// termsAndConditionsOfService + "," + customer_id + ",'" +
+		// pincode + "'," + enabled + ",'" + passwdExpire + "','" + pinExpire +
+		// "'," + pincodeFailureCount + "," +
+		// isdeleted + ",'" + userBureauType + "')";
+		query = "INSERT INTO [users] ([userWebType] ,[userConfgType] ,[title] ,[firstName]  ,[lastName] ,[email]"
+				+ " ,[workPhone],[contactNumber] ,[mobilePhone]  ,[address] ,[city]  ,[zip]  ,[county] ,[country] "
+				+ " ,[username] ,[password]  ,[termsAndConditions]  ,[termsAndConditionsOfService] ,[customer_id] "
+				+ " ,[pincode]  ,[enabled]  ,[passwordExpires] ,[pincodeExpires] ,[pincodeFailureCount] ,[isdeleted] ,[userBureauType]) "
+				+ " VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+		try {
+			dbConn = ConnectionBean.getInstance().getSQLConnection();
+			stmnt = dbConn.prepareStatement(query,
 					PreparedStatement.RETURN_GENERATED_KEYS);
 			stmnt.setString(1, userWebType);
 			stmnt.setString(2, userConfgType);
@@ -417,28 +424,30 @@ public class UserDAO implements IUserDAO, Serializable {
 			stmnt.setString(11, city);
 			stmnt.setString(12, zip);
 			stmnt.setString(13, county);
-			stmnt.setString(14,country);
+			stmnt.setString(14, country);
 			stmnt.setString(15, username);
 			stmnt.setString(16, password);
 			stmnt.setByte(17, termsAndConditions);
 			stmnt.setByte(18, termsAndConditionsOfService);
 			stmnt.setInt(19, customer_id);
 			stmnt.setString(20, pincode);
-			stmnt.setByte(21,enabled);
-			stmnt.setTimestamp(22,new java.sql.Timestamp(passwordExpires.getTime()));
-			stmnt.setTimestamp(23,new java.sql.Timestamp(pincodeExpires.getTime()));
+			stmnt.setByte(21, enabled);
+			stmnt.setTimestamp(22,
+					new java.sql.Timestamp(passwordExpires.getTime()));
+			stmnt.setTimestamp(23,
+					new java.sql.Timestamp(pincodeExpires.getTime()));
 			stmnt.setShort(24, pincodeFailureCount);
 			stmnt.setByte(25, isdeleted);
 			stmnt.setString(26, userBureauType);
-			
+
 			stmnt.executeUpdate();
 			results = stmnt.getGeneratedKeys();
 			while (results.next()) {
 				userId = results.getInt(1);
 			}
-		}catch (SQLException e) {
+		} catch (SQLException e) {
 			e.printStackTrace();
-		}finally{
+		} finally {
 			try {
 				stmnt.close();
 			} catch (SQLException e) {
@@ -447,13 +456,13 @@ public class UserDAO implements IUserDAO, Serializable {
 			stmnt = null;
 		}
 		try {
-			String queryMysql = "INSERT INTO `users` VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)"; 
+			String queryMysql = "INSERT INTO `users` VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 			String querySql = "SELECT TOP 1 * FROM [users] ORDER BY user_id DESC";
 			stmnt = dbConn.prepareStatement(querySql);
 			ResultSet rs = stmnt.executeQuery();
 			dbConn = ConnectionBean.getInstance().getMYSQLConnection();
 			PreparedStatement statement = dbConn.prepareStatement(queryMysql);
-			while(rs.next()) {
+			while (rs.next()) {
 				statement.setInt(1, rs.getInt("user_id"));
 				statement.setString(2, rs.getString("userWebType"));
 				statement.setString(3, rs.getString("userConfgType"));
@@ -472,7 +481,8 @@ public class UserDAO implements IUserDAO, Serializable {
 				statement.setString(16, rs.getString("username"));
 				statement.setString(17, rs.getString("password"));
 				statement.setByte(18, rs.getByte("termsAndConditions"));
-				statement.setByte(19, rs.getByte("termsAndConditionsOfService"));
+				statement
+						.setByte(19, rs.getByte("termsAndConditionsOfService"));
 				statement.setInt(20, rs.getInt("customer_id"));
 				statement.setString(21, rs.getString("pincode"));
 				statement.setByte(22, rs.getByte("enabled"));
@@ -483,10 +493,9 @@ public class UserDAO implements IUserDAO, Serializable {
 				statement.setString(27, rs.getString("userBureauType"));
 			}
 			statement.executeUpdate();
-		}
-		catch(SQLException ex) {
+		} catch (SQLException ex) {
 			ex.printStackTrace();
-		}finally{
+		} finally {
 			try {
 				stmnt.close();
 			} catch (SQLException e) {
@@ -495,36 +504,38 @@ public class UserDAO implements IUserDAO, Serializable {
 			stmnt = null;
 			dbConn = null;
 		}
-		query="INSERT INTO [user_customer] ([user_id] ,[customer_id]) ";
-		//working here
-				for(Customer customer:customers){
-				query+=" VALUES(?,?),";
-				}
-				query=query.substring(0,query.lastIndexOf(","));
-		try{
-			dbConn=ConnectionBean.getInstance().getSQLConnection();
-			stmnt=dbConn.prepareStatement(query,
-					PreparedStatement.RETURN_GENERATED_KEYS);
-			int i=1;
-			for(Customer customer:customers){
-			stmnt.setInt(i, userId);
-			stmnt.setInt((++i), customer.getId());
-			i++;
+		if (customers.size() > 0) {
+			query = "INSERT INTO [user_customer] ([user_id] ,[customer_id]) ";
+			// working here
+			for (Customer customer : customers) {
+				query += " VALUES(?,?),";
 			}
-			stmnt.executeUpdate();
-			results = stmnt.getGeneratedKeys();
-			while (results.next()) {
-				userId = results.getInt(1);
-			}
-		}catch (SQLException e) {
-			e.printStackTrace();
-		}finally{
+			query = query.substring(0, query.lastIndexOf(","));
 			try {
-				stmnt.close();
+				dbConn = ConnectionBean.getInstance().getSQLConnection();
+				stmnt = dbConn.prepareStatement(query);
+				int i = 1;
+				for (Customer customer : customers) {
+					stmnt.setInt(i, userId);
+					stmnt.setInt((++i), customer.getId());
+					i++;
+				}
+				stmnt.executeUpdate();
+				System.out.println("getting generated keys");
+				// results = stmnt.getGeneratedKeys();
+				// while (results.next()) {
+				// userId = results.getInt(1);
+				// }
 			} catch (SQLException e) {
 				e.printStackTrace();
+			} finally {
+				try {
+					stmnt.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+				stmnt = null;
 			}
-			stmnt = null;
 		}
 	}
 
@@ -637,8 +648,10 @@ public class UserDAO implements IUserDAO, Serializable {
 		}
 
 	}
-	public void modifyUserCustomers(int user_id, List<Customer> customers){
-		String query = "DELETE FROM [user_customer] WHERE [user_id] = "+user_id;
+
+	public void modifyUserCustomers(int user_id, List<Customer> customers) {
+		String query = "DELETE FROM [user_customer] WHERE [user_id] = "
+				+ user_id;
 
 		Connection dbConn = null;
 		Statement stmnt = null;
@@ -648,12 +661,12 @@ public class UserDAO implements IUserDAO, Serializable {
 			stmnt = dbConn.createStatement();
 			stmnt.executeUpdate(query);
 			stmnt.close();
-			query="INSERT INTO [user_customer] (user_id,customer_id) VALUES ";
-			for(Customer customer:customers){
-				query+="("+user_id + ","+customer.getId()+"),";
+			query = "INSERT INTO [user_customer] (user_id,customer_id) VALUES ";
+			for (Customer customer : customers) {
+				query += "(" + user_id + "," + customer.getId() + "),";
 			}
-			query=query.substring(0,query.lastIndexOf(","));
-			
+			query = query.substring(0, query.lastIndexOf(","));
+
 			dbConn = ConnectionBean.getInstance().getSQLConnection();
 			stmnt = dbConn.createStatement();
 			stmnt.executeUpdate(query);
@@ -670,8 +683,8 @@ public class UserDAO implements IUserDAO, Serializable {
 			dbConn = null;
 		}
 
-
 	}
+
 	public void modifyUsers(List<User> users) {
 		String queryMySql = "update `users`" + "set enabled =" + "case";
 		String query = "update [users]" + " set [enabled] =" + " case";
@@ -807,139 +820,139 @@ public class UserDAO implements IUserDAO, Serializable {
 		}
 	}
 
-	@Override
-	public List<User> getAdminUserList() {
-		int customer_id = 0;
-		List<User> userList = new ArrayList<User>();
-		String query = "SELECT [customer_id] FROM [customers] WHERE [name]='Next Control Systems'";
-		Connection dbConn = null;
-		Statement stmnt = null;
-		ResultSet results = null;
-		try {
-			dbConn = ConnectionBean.getInstance().getMYSQLConnection();
-			stmnt = dbConn.createStatement();
-			results = stmnt.executeQuery(query);
-			while (results.next()) {
-				customer_id = results.getInt("customer_id");
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-			try {
-				results.close();
-				stmnt.close();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-			results = null;
-			stmnt = null;
-		}
+//	@Override
+//	public List<User> getAdminUserList() {
+//		int customer_id = 0;
+//		List<User> userList = new ArrayList<User>();
+//		String query = "SELECT [customer_id] FROM [customers] WHERE [name]='Next Control Systems'";
+//		Connection dbConn = null;
+//		Statement stmnt = null;
+//		ResultSet results = null;
+//		try {
+//			dbConn = ConnectionBean.getInstance().getMYSQLConnection();
+//			stmnt = dbConn.createStatement();
+//			results = stmnt.executeQuery(query);
+//			while (results.next()) {
+//				customer_id = results.getInt("customer_id");
+//			}
+//		} catch (SQLException e) {
+//			e.printStackTrace();
+//		} finally {
+//			try {
+//				results.close();
+//				stmnt.close();
+//			} catch (SQLException e) {
+//				e.printStackTrace();
+//			}
+//			results = null;
+//			stmnt = null;
+//		}
+//
+//		query = "SELECT * FROM [users] WHERE [customer_id]=" + customer_id;
+//		try {
+//			stmnt = dbConn.createStatement();
+//			results = stmnt.executeQuery(query);
+//			while (results.next()) {
+//				User newUser = new User(results.getInt("user_id"),
+//						results.getString("userWebType"),
+//						results.getString("userConfgType"),
+//						results.getString("title"),
+//						results.getString("firstName"),
+//						results.getString("lastName"),
+//						results.getString("email"),
+//						results.getString("workphone"),
+//						results.getString("contactNumber"),
+//						results.getString("mobilePhone"),
+//						results.getString("address"),
+//						results.getString("city"), results.getString("zip"),
+//						results.getString("county"),
+//						results.getString("country"),
+//						results.getString("username"),
+//						results.getString("password"),
+//						results.getByte("termsAndConditions"),
+//						results.getByte("termsAndConditionsOfService"),
+//						results.getInt("customer_id"),
+//						results.getString("pincode"),
+//						results.getByte("enabled"),
+//						results.getDate("passwordExpires"),
+//						results.getDate("pincodeExpires"),
+//						results.getShort("pincodeFailureCount"),
+//						results.getByte("isdeleted"),
+//						results.getString("userBureauType"));
+//				userList.add(newUser);
+//			}
+//		} catch (SQLException e) {
+//			e.printStackTrace();
+//		} finally {
+//			try {
+//				results.close();
+//				stmnt.close();
+//			} catch (SQLException e) {
+//				e.printStackTrace();
+//			}
+//			results = null;
+//			stmnt = null;
+//			dbConn = null;
+//		}
+//
+//		return userList;
+//	}
 
-		query = "SELECT * FROM [users] WHERE [customer_id]=" + customer_id;
-		try {
-			stmnt = dbConn.createStatement();
-			results = stmnt.executeQuery(query);
-			while (results.next()) {
-				User newUser = new User(results.getInt("user_id"),
-						results.getString("userWebType"),
-						results.getString("userConfgType"),
-						results.getString("title"),
-						results.getString("firstName"),
-						results.getString("lastName"),
-						results.getString("email"),
-						results.getString("workphone"),
-						results.getString("contactNumber"),
-						results.getString("mobilePhone"),
-						results.getString("address"),
-						results.getString("city"), results.getString("zip"),
-						results.getString("county"),
-						results.getString("country"),
-						results.getString("username"),
-						results.getString("password"),
-						results.getByte("termsAndConditions"),
-						results.getByte("termsAndConditionsOfService"),
-						results.getInt("customer_id"),
-						results.getString("pincode"),
-						results.getByte("enabled"),
-						results.getDate("passwordExpires"),
-						results.getDate("pincodeExpires"),
-						results.getShort("pincodeFailureCount"),
-						results.getByte("isdeleted"),
-						results.getString("userBureauType"));
-				userList.add(newUser);
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-			try {
-				results.close();
-				stmnt.close();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-			results = null;
-			stmnt = null;
-			dbConn = null;
-		}
-
-		return userList;
-	}
-
-	@Override
-	public User getUser(int userId) {
-		User user = new User();
-		String query = "SELECT * FROM [users] WHERE [user_id]=" + userId;
-		Connection dbConn = null;
-		Statement stmnt = null;
-		ResultSet results = null;
-		try {
-			dbConn = ConnectionBean.getInstance().getMYSQLConnection();
-			stmnt = dbConn.createStatement();
-			results = stmnt.executeQuery(query);
-			while (results.next()) {
-				user = new User(results.getInt("user_id"),
-						results.getString("userWebType"),
-						results.getString("userConfgType"),
-						results.getString("title"),
-						results.getString("firstName"),
-						results.getString("lastName"),
-						results.getString("email"),
-						results.getString("workphone"),
-						results.getString("contactNumber"),
-						results.getString("mobilePhone"),
-						results.getString("address"),
-						results.getString("city"), results.getString("zip"),
-						results.getString("county"),
-						results.getString("country"),
-						results.getString("username"),
-						results.getString("password"),
-						results.getByte("termsAndConditions"),
-						results.getByte("termsAndConditionsOfService"),
-						results.getInt("customer_id"),
-						results.getString("pincode"),
-						results.getByte("enabled"),
-						results.getDate("passwordExpires"),
-						results.getDate("pincodeExpires"),
-						results.getShort("pincodeFailureCount"),
-						results.getByte("isdeleted"),
-						results.getString("userBureauType"));
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-			try {
-				results.close();
-				stmnt.close();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-			results = null;
-			stmnt = null;
-			dbConn = null;
-		}
-
-		return user;
-	}
+//	@Override
+//	public User getUser(int userId) {
+//		User user = new User();
+//		String query = "SELECT * FROM [users] WHERE [user_id]=" + userId;
+//		Connection dbConn = null;
+//		Statement stmnt = null;
+//		ResultSet results = null;
+//		try {
+//			dbConn = ConnectionBean.getInstance().getMYSQLConnection();
+//			stmnt = dbConn.createStatement();
+//			results = stmnt.executeQuery(query);
+//			while (results.next()) {
+//				user = new User(results.getInt("user_id"),
+//						results.getString("userWebType"),
+//						results.getString("userConfgType"),
+//						results.getString("title"),
+//						results.getString("firstName"),
+//						results.getString("lastName"),
+//						results.getString("email"),
+//						results.getString("workphone"),
+//						results.getString("contactNumber"),
+//						results.getString("mobilePhone"),
+//						results.getString("address"),
+//						results.getString("city"), results.getString("zip"),
+//						results.getString("county"),
+//						results.getString("country"),
+//						results.getString("username"),
+//						results.getString("password"),
+//						results.getByte("termsAndConditions"),
+//						results.getByte("termsAndConditionsOfService"),
+//						results.getInt("customer_id"),
+//						results.getString("pincode"),
+//						results.getByte("enabled"),
+//						results.getDate("passwordExpires"),
+//						results.getDate("pincodeExpires"),
+//						results.getShort("pincodeFailureCount"),
+//						results.getByte("isdeleted"),
+//						results.getString("userBureauType"));
+//			}
+//		} catch (SQLException e) {
+//			e.printStackTrace();
+//		} finally {
+//			try {
+//				results.close();
+//				stmnt.close();
+//			} catch (SQLException e) {
+//				e.printStackTrace();
+//			}
+//			results = null;
+//			stmnt = null;
+//			dbConn = null;
+//		}
+//
+//		return user;
+//	}
 
 	@Override
 	public User getSpecificUser(String username) {
@@ -1121,41 +1134,41 @@ public class UserDAO implements IUserDAO, Serializable {
 		return email;
 	}
 
-	@Override
-	public int countUserHandledAlms(String username) {
-		int almsCount = 0;
-		String query = "SELECT (SELECT count(*) FROM `audits_alarmaudit` WHERE username='SDimov')/COUNT(*) FROM ( SELECT DATE_FORMAT(t1.audit_time, '%Y-%m-%d %H:59:59') AS period"
-				+ " FROM `audits_alarmaudit` t1 INNER JOIN (SELECT DATE_FORMAT(audit_time, '%Y-%m-%d %H') AS period FROM `audits_alarmaudit` "
-				+ "WHERE username=? GROUP BY DATE_FORMAT(audit_time, '%Y-%m-%d %H')) as rollups ON DATE_FORMAT(t1.audit_time, '%Y-%m-%d %H') >= rollups.period "
-				+ "WHERE username=? GROUP BY DATE_FORMAT(t1.audit_time, '%Y-%m-%d %H')) AS a; ";
-		Connection dbConn = null;
-		PreparedStatement stmnt = null;
-		ResultSet result = null;
-		try {
-			dbConn = ServiceProperties.getInstance().getConnectionMQSQLDB();
-			stmnt = dbConn.prepareStatement(query);
-			stmnt.setString(1, username);
-			stmnt.setString(2, username);
-			result = stmnt.executeQuery();
-			while (result.next()) {
-				almsCount = result.getInt(1);
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-			try {
-				result.close();
-				stmnt.close();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-			result = null;
-			stmnt = null;
-			dbConn = null;
-		}
-
-		return almsCount;
-	}
+//	@Override
+//	public int countUserHandledAlms(String username) {
+//		int almsCount = 0;
+//		String query = "SELECT (SELECT count(*) FROM `audits_alarmaudit` WHERE username='SDimov')/COUNT(*) FROM ( SELECT DATE_FORMAT(t1.audit_time, '%Y-%m-%d %H:59:59') AS period"
+//				+ " FROM `audits_alarmaudit` t1 INNER JOIN (SELECT DATE_FORMAT(audit_time, '%Y-%m-%d %H') AS period FROM `audits_alarmaudit` "
+//				+ "WHERE username=? GROUP BY DATE_FORMAT(audit_time, '%Y-%m-%d %H')) as rollups ON DATE_FORMAT(t1.audit_time, '%Y-%m-%d %H') >= rollups.period "
+//				+ "WHERE username=? GROUP BY DATE_FORMAT(t1.audit_time, '%Y-%m-%d %H')) AS a; ";
+//		Connection dbConn = null;
+//		PreparedStatement stmnt = null;
+//		ResultSet result = null;
+//		try {
+//			dbConn = ServiceProperties.getInstance().getConnectionMQSQLDB();
+//			stmnt = dbConn.prepareStatement(query);
+//			stmnt.setString(1, username);
+//			stmnt.setString(2, username);
+//			result = stmnt.executeQuery();
+//			while (result.next()) {
+//				almsCount = result.getInt(1);
+//			}
+//		} catch (SQLException e) {
+//			e.printStackTrace();
+//		} finally {
+//			try {
+//				result.close();
+//				stmnt.close();
+//			} catch (SQLException e) {
+//				e.printStackTrace();
+//			}
+//			result = null;
+//			stmnt = null;
+//			dbConn = null;
+//		}
+//
+//		return almsCount;
+//	}
 
 	@Override
 	public String getUserName(int userId) {

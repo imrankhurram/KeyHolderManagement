@@ -15,7 +15,7 @@
 </h:head>
 
 <h:body
-	style="background-position:center top; background-image: url(./images/Background.png); background-repeat: no-repeat;">
+	style="background-position:center top; background-image: url(./images/login_screen.png); background-repeat: no-repeat;">
 	<center>
 		<f:view>
 			<h:form>
@@ -28,36 +28,31 @@
 				<br />
 				<br />
 				<br />
-				<div style="background-color:#CECECD;min-width:350px;min-height:210px;display:inline-block;border-radius:15px;">
+				<br />
+				<br />
+				<br />
+				<br />
+				<div
+					style="min-width: 350px; min-height: 210px; display: inline-block; border-radius: 15px;">
 					<h:outputText value="Wrong username and/or password"
 						style="color:red;font-weight:bold;"
 						rendered="#{userInfo.wrongDetails==true}" />
 					<br /> <br />
 					<table>
 						<tr>
-							<td align="left"><h:outputLabel value="Username"
-									for="username" style="font-size: 12px;font-family:Arial;" /></td>
 							<td><p:inputText value="#{userInfo.userName}" id="username"
-									size="28" required="true"
+									size="28" required="true" placeholder="Username"
+									style="color:#2CA3B1; width:135px;height:25px;padding-left:35px;background-color:#E6E6E6 !important; border:0px;box-shadow: 0 0 0 #8f8f8f inset !important;border-radius:7px;font-size:13px !important;background-repeat:no-repeat !important;background-position:6px 6px !important;background-image: url(./images/UsernameIcon.png) !important;"
 									requiredMessage="You must provide username" /></td>
 						</tr>
 						<p:focus for="username" />
 						<tr />
-						<tr />
-						<tr />
-						<tr />
-						<tr />
 						<tr>
-							<td align="left"><h:outputLabel value="Password"
-									for="password" style="font-size: 12px;font-family:Arial;" /></td>
 							<td><p:password value="#{userInfo.password}" id="password"
-									feedback="false" required="true"
+									feedback="false" required="true" placeholder="Password"
+									style="color:#2CA3B1; width:135px;height:25px;padding-left:35px;background-color:#E6E6E6 !important;border:0px;box-shadow: 0 0 0 #8f8f8f inset !important;border-radius:7px;font-size:13px !important;background-repeat:no-repeat !important;background-position:6px 6px !important;background-image: url(./images/PasswordIcon.png) !important;"
 									requiredMessage="You must provide password" size="28" /></td>
 						</tr>
-						<tr />
-						<tr />
-						<tr />
-						<tr />
 						<tr />
 						<!-- <tr><td align="left">
 			<h:outputLabel value="Extension" style="font-size: 12px;font-family:Arial;"/></td>
@@ -65,23 +60,24 @@
 
 						<!-- </tr> -->
 						<tr>
-							<p:commandButton id="hidden"
+							<!-- <p:commandButton id="hidden"
 								style="width:0px !important;height:0px !important;border:none !important;background:none !important;"
-								action="#{userInfo.processLogin}" immediate="false" />
+								action="#{userInfo.processLogin}" immediate="false" /> -->
 							<td align="right" colspan="3"><h:commandButton
-									action="#{userInfo.processLogin}" type="image"
-									image="./images/button_login.png" /></td>
+									style="background:#5dbbc9;border: 0 none;border-radius: 7px;color: white;font-size: 13px;height: 33px;width: 174px;"
+									action="#{userInfo.processLogin}" value="Log In" /></td>
+
 						</tr>
-						<tr>
+						<!-- <tr>
 							<td align="right" colspan="3"><p:commandLink
 									value="Problems Logging On?"
 									action="ResetPasswordPage?faces-redirect=true" immediate="true"
 									style="color:#000000;font-size: 12px;font-family:Arial;text-decoration:none;" />
 							</td>
-						</tr>
-						<tr>
+						</tr> -->
+						<!-- <tr>
 							<td><input type="hidden" value="#{userInfo.checkReciversOk}" /></td>
-						</tr>
+						</tr> -->
 
 					</table>
 				</div>
@@ -92,8 +88,12 @@
 			<br />
 			<br />
 			<br />
-
-			<div id="copytext" style="font-size: 12px; font-family: Arial;">
+			<br />
+			<br />
+			<br />
+			<br />
+			<div id="copytext"
+				style="font-size: 12px; font-family: Arial; color: white;">
 				Copyright © 2014 Next Control Systems Ltd All rights
 				reserved,Version 1.0.0.01 Released 01/06/2014</div>
 		</f:view>

@@ -185,9 +185,11 @@ public class UserAuditDAO implements IUserAuditDAO, Serializable {
 			dbConn = null;
 		}
 	}
+
 	@Override
-	public void insertUserAdminAudit(String userId, String event, String eventDesc,String branchCode,int websiteId) {
-		//working here
+	public void insertUserAdminAudit(String userId, String eventDesc,
+			String branchCode, int websiteId) {
+		// working here
 		PreparedStatement pstmt = null;
 		Connection dbConn = null;
 		String query = "";
@@ -196,17 +198,17 @@ public class UserAuditDAO implements IUserAuditDAO, Serializable {
 		try {
 			dbConn = ConnectionBean.getInstance().getSQLConnection();
 			pstmt = dbConn.prepareStatement(query);
-			pstmt.setString(1,userId);
+			pstmt.setString(1, userId);
 			pstmt.setTimestamp(2, new Timestamp(Calendar.getInstance()
 					.getTime().getTime()));// pstmt.setTimestamp(2,
 											// userAudit.getAuditDate());
-			pstmt.setString(3, branchCode);
-			pstmt.setString(4, event);
 			if (branchCode != null) {
-				pstmt.setString(5, branchCode);
+				pstmt.setString(3, branchCode);
 			} else {
-				pstmt.setNull(5, Types.VARCHAR);
+				pstmt.setNull(3, Types.VARCHAR);
 			}
+			pstmt.setString(4, "Account admin");
+			pstmt.setString(5, eventDesc);
 			if (websiteId != -1) {
 				pstmt.setInt(6, websiteId);
 			} else {
@@ -227,37 +229,37 @@ public class UserAuditDAO implements IUserAuditDAO, Serializable {
 		}
 	}
 
-	@Override
-	public int countUserIdles(int userId) {
-		int idles = 0;
-		String query = "SELECT count(*) FROM `audits_useraudit` WHERE user_id=? and action_description like 'The user has been inactive%';";
-		Connection dbConn = null;
-		PreparedStatement count = null;
-		ResultSet result = null;
-		try {
-			dbConn = ServiceProperties.getInstance().getConnectionMQSQLDB();
-			count = dbConn.prepareStatement(query);
-			count.setInt(1, userId);
-			result = count.executeQuery();
-			while (result.next()) {
-				idles = result.getInt(1);
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-			try {
-				result.close();
-				count.close();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-			dbConn = null;
-			count = null;
-			result = null;
-		}
-
-		return idles;
-	}
+//	@Override
+//	public int countUserIdles(int userId) {
+//		int idles = 0;
+//		String query = "SELECT count(*) FROM `audits_useraudit` WHERE user_id=? and action_description like 'The user has been inactive%';";
+//		Connection dbConn = null;
+//		PreparedStatement count = null;
+//		ResultSet result = null;
+//		try {
+//			dbConn = ServiceProperties.getInstance().getConnectionMQSQLDB();
+//			count = dbConn.prepareStatement(query);
+//			count.setInt(1, userId);
+//			result = count.executeQuery();
+//			while (result.next()) {
+//				idles = result.getInt(1);
+//			}
+//		} catch (SQLException e) {
+//			e.printStackTrace();
+//		} finally {
+//			try {
+//				result.close();
+//				count.close();
+//			} catch (SQLException e) {
+//				e.printStackTrace();
+//			}
+//			dbConn = null;
+//			count = null;
+//			result = null;
+//		}
+//
+//		return idles;
+//	}
 
 	@Override
 	public List<UserAudit> getUserAuditsforUsers(List<Integer> userIds,
@@ -280,11 +282,13 @@ public class UserAuditDAO implements IUserAuditDAO, Serializable {
 				+ "' AND adt.audit_date <= '"
 				+ new java.sql.Timestamp(toDate.getTime())
 				+ "') "
-				+ " AND site_code='" + siteCode + "' AND application_type='KeyholderMGT' order by audit_date";
+				+ " AND site_code='"
+				+ siteCode
+				+ "' AND application_type='KeyholderMGT' order by audit_date";
 		Connection dbConn = null;
 		Statement stmnt = null;
 		ResultSet result = null;
-//		 System.out.println("query: "+query);
+		// System.out.println("query: "+query);
 		try {
 			dbConn = ConnectionBean.getInstance().getMYSQLConnection();
 			stmnt = dbConn.createStatement();
@@ -449,386 +453,386 @@ public class UserAuditDAO implements IUserAuditDAO, Serializable {
 		return listOfAudits;
 	}
 
-	@Override
-	public int avgAlarmHandlingTime(String username, Date dateFrom, Date dateTo) {
-		int avgTime = 0;
-		String query = "";
-		if ((dateFrom == null) && (dateTo == null)) {
-			query = "SELECT AVG(time_taken) FROM `alarming_alarm` INNER JOIN `audits_alarmaudit` on `alarming_alarm`.alarm_id=`audits_alarmaudit`.alarm_id "
-					+ "WHERE `audits_alarmaudit`.username='" + username + "';";
-		} else if ((dateFrom != null) && (dateTo == null)) {
-			query = "SELECT AVG(time_taken) FROM `alarming_alarm` INNER JOIN `audits_alarmaudit` on `alarming_alarm`.alarm_id=`audits_alarmaudit`.alarm_id "
-					+ "WHERE `audits_alarmaudit`.username='"
-					+ username
-					+ "' and finish_time>='" + dateFrom + "');";
-		} else if ((dateFrom == null) && (dateTo != null)) {
-			query = "SELECT AVG(time_taken) FROM `alarming_alarm` INNER JOIN `audits_alarmaudit` on `alarming_alarm`.alarm_id=`audits_alarmaudit`.alarm_id "
-					+ "WHERE `audits_alarmaudit`.username='"
-					+ username
-					+ "' and finish_time<='" + dateTo + "');";
-		} else {
-			query = "SELECT AVG(time_taken) FROM `alarming_alarm` INNER JOIN `audits_alarmaudit` on `alarming_alarm`.alarm_id=`audits_alarmaudit`.alarm_id "
-					+ "WHERE `audits_alarmaudit`.username='"
-					+ username
-					+ "' and (finish_time>='"
-					+ dateFrom
-					+ "' and finish_time<='" + dateTo + "');";
-		}
-		Connection dbConn = null;
-		Statement stmnt = null;
-		ResultSet result = null;
-		try {
-			dbConn = ConnectionBean.getInstance().getMYSQLConnection();
-			stmnt = dbConn.createStatement();
-			result = stmnt.executeQuery(query);
-			while (result.next()) {
-				avgTime = result.getInt(1);
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-			try {
-				result.close();
-				stmnt.close();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-			dbConn = null;
-			stmnt = null;
-			result = null;
-		}
-		return avgTime;
-	}
-
-	@Override
-	public int maxAlarmHandlingTime(String username, Date dateFrom, Date dateTo) {
-		int maxTime = 0;
-		String query = "";
-		if ((dateFrom == null) && (dateTo == null)) {
-			query = "SELECT MAX(time_taken) FROM `alarming_alarm` INNER JOIN `audits_alarmaudit` on `alarming_alarm`.alarm_id=`audits_alarmaudit`.alarm_id "
-					+ "WHERE `audits_alarmaudit`.username='" + username + "';";
-		} else if ((dateFrom != null) && (dateTo == null)) {
-			query = "SELECT MAX(time_taken) FROM `alarming_alarm` INNER JOIN `audits_alarmaudit` on `alarming_alarm`.alarm_id=`audits_alarmaudit`.alarm_id "
-					+ "WHERE `audits_alarmaudit`.username='"
-					+ username
-					+ "' and finish_time>='" + dateFrom + "');";
-		} else if ((dateFrom == null) && (dateTo != null)) {
-			query = "SELECT MAX(time_taken) FROM `alarming_alarm` INNER JOIN `audits_alarmaudit` on `alarming_alarm`.alarm_id=`audits_alarmaudit`.alarm_id "
-					+ "WHERE `audits_alarmaudit`.username='"
-					+ username
-					+ "' and finish_time<='" + dateTo + "');";
-		} else {
-			query = "SELECT MAX(time_taken) FROM `alarming_alarm` INNER JOIN `audits_alarmaudit` on `alarming_alarm`.alarm_id=`audits_alarmaudit`.alarm_id "
-					+ "WHERE `audits_alarmaudit`.username='"
-					+ username
-					+ "' and (finish_time>='"
-					+ dateFrom
-					+ "' and finish_time<='" + dateTo + "');";
-		}
-		Connection dbConn = null;
-		Statement stmnt = null;
-		ResultSet result = null;
-
-		try {
-			dbConn = ConnectionBean.getInstance().getMYSQLConnection();
-			stmnt = dbConn.createStatement();
-			result = stmnt.executeQuery(query);
-			while (result.next()) {
-				maxTime = result.getInt(1);
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-			try {
-				result.close();
-				stmnt.close();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-			dbConn = null;
-			stmnt = null;
-			result = null;
-
-		}
-		return maxTime;
-	}
-
-	@Override
-	public int minAlarmHandlingTime(String username, Date dateFrom, Date dateTo) {
-		int minTime = 0;
-		String query = "";
-		if ((dateFrom == null) && (dateTo == null)) {
-			query = "SELECT MIN(time_taken) FROM `alarming_alarm` INNER JOIN `audits_alarmaudit` on `alarming_alarm`.alarm_id=`audits_alarmaudit`.alarm_id "
-					+ "WHERE `audits_alarmaudit`.username='" + username + "';";
-		} else if ((dateFrom != null) && (dateTo == null)) {
-			query = "SELECT MIN(time_taken) FROM `alarming_alarm` INNER JOIN `audits_alarmaudit` on `alarming_alarm`.alarm_id=`audits_alarmaudit`.alarm_id "
-					+ "WHERE `audits_alarmaudit`.username='"
-					+ username
-					+ "' and finish_time>='" + dateFrom + "');";
-		} else if ((dateFrom == null) && (dateTo != null)) {
-			query = "SELECT MIN(time_taken) FROM `alarming_alarm` INNER JOIN `audits_alarmaudit` on `alarming_alarm`.alarm_id=`audits_alarmaudit`.alarm_id "
-					+ "WHERE `audits_alarmaudit`.username='"
-					+ username
-					+ "' and finish_time<='" + dateTo + "');";
-		} else {
-			query = "SELECT MIN(time_taken) FROM `alarming_alarm` INNER JOIN `audits_alarmaudit` on `alarming_alarm`.alarm_id=`audits_alarmaudit`.alarm_id "
-					+ "WHERE `audits_alarmaudit`.username='"
-					+ username
-					+ "' and (finish_time>='"
-					+ dateFrom
-					+ "' and finish_time<='" + dateTo + "');";
-		}
-		Connection dbConn = null;
-		Statement stmnt = null;
-		ResultSet result = null;
-		try {
-			dbConn = ConnectionBean.getInstance().getMYSQLConnection();
-			stmnt = dbConn.createStatement();
-			result = stmnt.executeQuery(query);
-			while (result.next()) {
-				minTime = result.getInt(1);
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-			try {
-				result.close();
-				stmnt.close();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-			dbConn = null;
-			stmnt = null;
-			result = null;
-		}
-		return minTime;
-	}
-
-	@Override
-	public int totalAlmsHandled(String username, Date dateFrom, Date dateTo) {
-		int count = 0;
-		String query = "";
-		if ((dateFrom == null) && (dateTo == null)) {
-			query = "SELECT COUNT(*) FROM `alarming_alarm` INNER JOIN `audits_alarmaudit` on `alarming_alarm`.alarm_id=`audits_alarmaudit`.alarm_id "
-					+ "WHERE `audits_alarmaudit`.username='"
-					+ username
-					+ "' and (finish_time is not null) and `audits_alarmaudit`.action_taken!='Cleared';";
-		} else if ((dateFrom != null) && (dateTo == null)) {
-			query = "SELECT COUNT(*) FROM `alarming_alarm` INNER JOIN `audits_alarmaudit` on `alarming_alarm`.alarm_id=`audits_alarmaudit`.alarm_id "
-					+ "WHERE `audits_alarmaudit`.username='"
-					+ username
-					+ "' and (finish_time is not null) and `audits_alarmaudit`.action_taken!='Cleared' "
-					+ "and finish_time>='" + dateFrom + "');";
-		} else if ((dateFrom == null) && (dateTo != null)) {
-			query = "SELECT COUNT(*) FROM `alarming_alarm` INNER JOIN `audits_alarmaudit` on `alarming_alarm`.alarm_id=`audits_alarmaudit`.alarm_id "
-					+ "WHERE `audits_alarmaudit`.username='"
-					+ username
-					+ "' and (finish_time is not null) and `audits_alarmaudit`.action_taken!='Cleared' "
-					+ "and finish_time<='" + dateTo + "');";
-		} else {
-			query = "SELECT COUNT(*) FROM `alarming_alarm` INNER JOIN `audits_alarmaudit` on `alarming_alarm`.alarm_id=`audits_alarmaudit`.alarm_id "
-					+ "WHERE `audits_alarmaudit`.username='"
-					+ username
-					+ "' and (finish_time is not null) and `audits_alarmaudit`.action_taken!='Cleared' and "
-					+ "(finish_time>='"
-					+ dateFrom
-					+ "' and finish_time<='"
-					+ dateTo + "');";
-		}
-		Connection dbConn = null;
-		Statement stmnt = null;
-		ResultSet result = null;
-		try {
-			dbConn = ConnectionBean.getInstance().getMYSQLConnection();
-			stmnt = dbConn.createStatement();
-			result = stmnt.executeQuery(query);
-			while (result.next()) {
-				count = result.getInt(1);
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-			try {
-				result.close();
-				stmnt.close();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-			dbConn = null;
-			stmnt = null;
-			result = null;
-		}
-		return count;
-	}
-
-	@Override
-	public int totalAlmsCleared(String username, Date dateFrom, Date dateTo) {
-		int count = 0;
-		String query = "";
-		if ((dateFrom == null) && (dateTo == null)) {
-			query = "SELECT COUNT(*) FROM `alarming_alarm` INNER JOIN `audits_alarmaudit` on `alarming_alarm`.alarm_id=`audits_alarmaudit`.alarm_id "
-					+ "WHERE `audits_alarmaudit`.username='"
-					+ username
-					+ "' and (finish_time is not null) and `audits_alarmaudit`.action_taken='Cleared';";
-		} else if ((dateFrom != null) && (dateTo == null)) {
-			query = "SELECT COUNT(*) FROM `alarming_alarm` INNER JOIN `audits_alarmaudit` on `alarming_alarm`.alarm_id=`audits_alarmaudit`.alarm_id "
-					+ "WHERE `audits_alarmaudit`.username='"
-					+ username
-					+ "' and (finish_time is not null) and `audits_alarmaudit`.action_taken='Cleared' "
-					+ "and finish_time>='" + dateFrom + "');";
-		} else if ((dateFrom == null) && (dateTo != null)) {
-			query = "SELECT COUNT(*) FROM `alarming_alarm` INNER JOIN `audits_alarmaudit` on `alarming_alarm`.alarm_id=`audits_alarmaudit`.alarm_id "
-					+ "WHERE `audits_alarmaudit`.username='"
-					+ username
-					+ "' and (finish_time is not null) and `audits_alarmaudit`.action_taken='Cleared' "
-					+ "and finish_time<='" + dateTo + "');";
-		} else {
-			query = "SELECT COUNT(*) FROM `alarming_alarm` INNER JOIN `audits_alarmaudit` on `alarming_alarm`.alarm_id=`audits_alarmaudit`.alarm_id "
-					+ "WHERE `audits_alarmaudit`.username='"
-					+ username
-					+ "' and (finish_time is not null) and `audits_alarmaudit`.action_taken='Cleared' and "
-					+ "(finish_time>='"
-					+ dateFrom
-					+ "' and finish_time<='"
-					+ dateTo + "');";
-		}
-		Connection dbConn = null;
-		Statement stmnt = null;
-		ResultSet result = null;
-		try {
-			dbConn = ConnectionBean.getInstance().getMYSQLConnection();
-			stmnt = dbConn.createStatement();
-			result = stmnt.executeQuery(query);
-			while (result.next()) {
-				count = result.getInt(1);
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-			try {
-				result.close();
-				stmnt.close();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-			dbConn = null;
-			stmnt = null;
-			result = null;
-		}
-		return count;
-	}
-
-	@Override
-	public int totalAlmsHeld(String username, Date dateFrom, Date dateTo) {
-		int count = 0;
-		String query = "";
-		if ((dateFrom == null) && (dateTo == null)) {
-			query = "SELECT COUNT(*) FROM `alarming_alarm` INNER JOIN `audits_alarmaudit` on `alarming_alarm`.alarm_id=`audits_alarmaudit`.alarm_id "
-					+ "WHERE `audits_alarmaudit`.username='"
-					+ username
-					+ "' and (finish_time is not null) and `alarming_alarm`.time_held>0;";
-		} else if ((dateFrom != null) && (dateTo == null)) {
-			query = "SELECT COUNT(*) FROM `alarming_alarm` INNER JOIN `audits_alarmaudit` on `alarming_alarm`.alarm_id=`audits_alarmaudit`.alarm_id "
-					+ "WHERE `audits_alarmaudit`.username='"
-					+ username
-					+ "' and (finish_time is not null) and `alarming_alarm`.time_held>0 "
-					+ "and finish_time>='" + dateFrom + "');";
-		} else if ((dateFrom == null) && (dateTo != null)) {
-			query = "SELECT COUNT(*) FROM `alarming_alarm` INNER JOIN `audits_alarmaudit` on `alarming_alarm`.alarm_id=`audits_alarmaudit`.alarm_id "
-					+ "WHERE `audits_alarmaudit`.username='"
-					+ username
-					+ "' and (finish_time is not null) and `alarming_alarm`.time_held>0 "
-					+ "and finish_time<='" + dateTo + "');";
-		} else {
-			query = "SELECT COUNT(*) FROM `alarming_alarm` INNER JOIN `audits_alarmaudit` on `alarming_alarm`.alarm_id=`audits_alarmaudit`.alarm_id "
-					+ "WHERE `audits_alarmaudit`.username='"
-					+ username
-					+ "' and (finish_time is not null) and `alarming_alarm`.time_held>0 and "
-					+ "(finish_time>='"
-					+ dateFrom
-					+ "' and finish_time<='"
-					+ dateTo + "');";
-		}
-		Connection dbConn = null;
-		Statement stmnt = null;
-		ResultSet result = null;
-		try {
-			dbConn = ConnectionBean.getInstance().getMYSQLConnection();
-			stmnt = dbConn.createStatement();
-			result = stmnt.executeQuery(query);
-			while (result.next()) {
-				count = result.getInt(1);
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-			try {
-				result.close();
-				stmnt.close();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-			dbConn = null;
-			stmnt = null;
-			result = null;
-		}
-		return count;
-	}
-
-	@Override
-	public int totalAlmsOverdue(String username, Date dateFrom, Date dateTo) {
-		int count = 0;
-		String query = "";
-		if ((dateFrom == null) && (dateTo == null)) {
-			query = "SELECT COUNT(*) FROM `alarming_alarm` INNER JOIN `audits_alarmaudit` on `alarming_alarm`.alarm_id=`audits_alarmaudit`.alarm_id "
-					+ "WHERE `audits_alarmaudit`.username='"
-					+ username
-					+ "' and (finish_time is not null) and timestampdiff(MINUTE,`alarming_alarm`.receive_time,`alarming_alarm`.finish_time)>30;";
-		} else if ((dateFrom != null) && (dateTo == null)) {
-			query = "SELECT COUNT(*) FROM `alarming_alarm` INNER JOIN `audits_alarmaudit` on `alarming_alarm`.alarm_id=`audits_alarmaudit`.alarm_id "
-					+ "WHERE `audits_alarmaudit`.username='"
-					+ username
-					+ "' and (finish_time is not null) and timestampdiff(MINUTE,`alarming_alarm`.receive_time,`alarming_alarm`.finish_time)>30 "
-					+ "and finish_time>='" + dateFrom + "');";
-		} else if ((dateFrom == null) && (dateTo != null)) {
-			query = "SELECT COUNT(*) FROM `alarming_alarm` INNER JOIN `audits_alarmaudit` on `alarming_alarm`.alarm_id=`audits_alarmaudit`.alarm_id "
-					+ "WHERE `audits_alarmaudit`.username='"
-					+ username
-					+ "' and (finish_time is not null) and timestampdiff(MINUTE,`alarming_alarm`.receive_time,`alarming_alarm`.finish_time)>30 "
-					+ "and finish_time<='" + dateTo + "');";
-		} else {
-			query = "SELECT COUNT(*) FROM `alarming_alarm` INNER JOIN `audits_alarmaudit` on `alarming_alarm`.alarm_id=`audits_alarmaudit`.alarm_id "
-					+ "WHERE `audits_alarmaudit`.username='"
-					+ username
-					+ "' and (finish_time is not null) and timestampdiff(MINUTE,`alarming_alarm`.receive_time,`alarming_alarm`.finish_time)>30 and "
-					+ "(finish_time>='"
-					+ dateFrom
-					+ "' and finish_time<='"
-					+ dateTo + "');";
-		}
-		Connection dbConn = null;
-		Statement stmnt = null;
-		ResultSet result = null;
-		try {
-			dbConn = ConnectionBean.getInstance().getMYSQLConnection();
-			stmnt = dbConn.createStatement();
-			result = stmnt.executeQuery(query);
-			while (result.next()) {
-				count = result.getInt(1);
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-			try {
-				result.close();
-				stmnt.close();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-			dbConn = null;
-			stmnt = null;
-			result = null;
-		}
-		return count;
-	}
+//	@Override
+//	public int avgAlarmHandlingTime(String username, Date dateFrom, Date dateTo) {
+//		int avgTime = 0;
+//		String query = "";
+//		if ((dateFrom == null) && (dateTo == null)) {
+//			query = "SELECT AVG(time_taken) FROM `alarming_alarm` INNER JOIN `audits_alarmaudit` on `alarming_alarm`.alarm_id=`audits_alarmaudit`.alarm_id "
+//					+ "WHERE `audits_alarmaudit`.username='" + username + "';";
+//		} else if ((dateFrom != null) && (dateTo == null)) {
+//			query = "SELECT AVG(time_taken) FROM `alarming_alarm` INNER JOIN `audits_alarmaudit` on `alarming_alarm`.alarm_id=`audits_alarmaudit`.alarm_id "
+//					+ "WHERE `audits_alarmaudit`.username='"
+//					+ username
+//					+ "' and finish_time>='" + dateFrom + "');";
+//		} else if ((dateFrom == null) && (dateTo != null)) {
+//			query = "SELECT AVG(time_taken) FROM `alarming_alarm` INNER JOIN `audits_alarmaudit` on `alarming_alarm`.alarm_id=`audits_alarmaudit`.alarm_id "
+//					+ "WHERE `audits_alarmaudit`.username='"
+//					+ username
+//					+ "' and finish_time<='" + dateTo + "');";
+//		} else {
+//			query = "SELECT AVG(time_taken) FROM `alarming_alarm` INNER JOIN `audits_alarmaudit` on `alarming_alarm`.alarm_id=`audits_alarmaudit`.alarm_id "
+//					+ "WHERE `audits_alarmaudit`.username='"
+//					+ username
+//					+ "' and (finish_time>='"
+//					+ dateFrom
+//					+ "' and finish_time<='" + dateTo + "');";
+//		}
+//		Connection dbConn = null;
+//		Statement stmnt = null;
+//		ResultSet result = null;
+//		try {
+//			dbConn = ConnectionBean.getInstance().getMYSQLConnection();
+//			stmnt = dbConn.createStatement();
+//			result = stmnt.executeQuery(query);
+//			while (result.next()) {
+//				avgTime = result.getInt(1);
+//			}
+//		} catch (SQLException e) {
+//			e.printStackTrace();
+//		} finally {
+//			try {
+//				result.close();
+//				stmnt.close();
+//			} catch (SQLException e) {
+//				e.printStackTrace();
+//			}
+//			dbConn = null;
+//			stmnt = null;
+//			result = null;
+//		}
+//		return avgTime;
+//	}
+//
+//	@Override
+//	public int maxAlarmHandlingTime(String username, Date dateFrom, Date dateTo) {
+//		int maxTime = 0;
+//		String query = "";
+//		if ((dateFrom == null) && (dateTo == null)) {
+//			query = "SELECT MAX(time_taken) FROM `alarming_alarm` INNER JOIN `audits_alarmaudit` on `alarming_alarm`.alarm_id=`audits_alarmaudit`.alarm_id "
+//					+ "WHERE `audits_alarmaudit`.username='" + username + "';";
+//		} else if ((dateFrom != null) && (dateTo == null)) {
+//			query = "SELECT MAX(time_taken) FROM `alarming_alarm` INNER JOIN `audits_alarmaudit` on `alarming_alarm`.alarm_id=`audits_alarmaudit`.alarm_id "
+//					+ "WHERE `audits_alarmaudit`.username='"
+//					+ username
+//					+ "' and finish_time>='" + dateFrom + "');";
+//		} else if ((dateFrom == null) && (dateTo != null)) {
+//			query = "SELECT MAX(time_taken) FROM `alarming_alarm` INNER JOIN `audits_alarmaudit` on `alarming_alarm`.alarm_id=`audits_alarmaudit`.alarm_id "
+//					+ "WHERE `audits_alarmaudit`.username='"
+//					+ username
+//					+ "' and finish_time<='" + dateTo + "');";
+//		} else {
+//			query = "SELECT MAX(time_taken) FROM `alarming_alarm` INNER JOIN `audits_alarmaudit` on `alarming_alarm`.alarm_id=`audits_alarmaudit`.alarm_id "
+//					+ "WHERE `audits_alarmaudit`.username='"
+//					+ username
+//					+ "' and (finish_time>='"
+//					+ dateFrom
+//					+ "' and finish_time<='" + dateTo + "');";
+//		}
+//		Connection dbConn = null;
+//		Statement stmnt = null;
+//		ResultSet result = null;
+//
+//		try {
+//			dbConn = ConnectionBean.getInstance().getMYSQLConnection();
+//			stmnt = dbConn.createStatement();
+//			result = stmnt.executeQuery(query);
+//			while (result.next()) {
+//				maxTime = result.getInt(1);
+//			}
+//		} catch (SQLException e) {
+//			e.printStackTrace();
+//		} finally {
+//			try {
+//				result.close();
+//				stmnt.close();
+//			} catch (SQLException e) {
+//				e.printStackTrace();
+//			}
+//			dbConn = null;
+//			stmnt = null;
+//			result = null;
+//
+//		}
+//		return maxTime;
+//	}
+//
+//	@Override
+//	public int minAlarmHandlingTime(String username, Date dateFrom, Date dateTo) {
+//		int minTime = 0;
+//		String query = "";
+//		if ((dateFrom == null) && (dateTo == null)) {
+//			query = "SELECT MIN(time_taken) FROM `alarming_alarm` INNER JOIN `audits_alarmaudit` on `alarming_alarm`.alarm_id=`audits_alarmaudit`.alarm_id "
+//					+ "WHERE `audits_alarmaudit`.username='" + username + "';";
+//		} else if ((dateFrom != null) && (dateTo == null)) {
+//			query = "SELECT MIN(time_taken) FROM `alarming_alarm` INNER JOIN `audits_alarmaudit` on `alarming_alarm`.alarm_id=`audits_alarmaudit`.alarm_id "
+//					+ "WHERE `audits_alarmaudit`.username='"
+//					+ username
+//					+ "' and finish_time>='" + dateFrom + "');";
+//		} else if ((dateFrom == null) && (dateTo != null)) {
+//			query = "SELECT MIN(time_taken) FROM `alarming_alarm` INNER JOIN `audits_alarmaudit` on `alarming_alarm`.alarm_id=`audits_alarmaudit`.alarm_id "
+//					+ "WHERE `audits_alarmaudit`.username='"
+//					+ username
+//					+ "' and finish_time<='" + dateTo + "');";
+//		} else {
+//			query = "SELECT MIN(time_taken) FROM `alarming_alarm` INNER JOIN `audits_alarmaudit` on `alarming_alarm`.alarm_id=`audits_alarmaudit`.alarm_id "
+//					+ "WHERE `audits_alarmaudit`.username='"
+//					+ username
+//					+ "' and (finish_time>='"
+//					+ dateFrom
+//					+ "' and finish_time<='" + dateTo + "');";
+//		}
+//		Connection dbConn = null;
+//		Statement stmnt = null;
+//		ResultSet result = null;
+//		try {
+//			dbConn = ConnectionBean.getInstance().getMYSQLConnection();
+//			stmnt = dbConn.createStatement();
+//			result = stmnt.executeQuery(query);
+//			while (result.next()) {
+//				minTime = result.getInt(1);
+//			}
+//		} catch (SQLException e) {
+//			e.printStackTrace();
+//		} finally {
+//			try {
+//				result.close();
+//				stmnt.close();
+//			} catch (SQLException e) {
+//				e.printStackTrace();
+//			}
+//			dbConn = null;
+//			stmnt = null;
+//			result = null;
+//		}
+//		return minTime;
+//	}
+//
+//	@Override
+//	public int totalAlmsHandled(String username, Date dateFrom, Date dateTo) {
+//		int count = 0;
+//		String query = "";
+//		if ((dateFrom == null) && (dateTo == null)) {
+//			query = "SELECT COUNT(*) FROM `alarming_alarm` INNER JOIN `audits_alarmaudit` on `alarming_alarm`.alarm_id=`audits_alarmaudit`.alarm_id "
+//					+ "WHERE `audits_alarmaudit`.username='"
+//					+ username
+//					+ "' and (finish_time is not null) and `audits_alarmaudit`.action_taken!='Cleared';";
+//		} else if ((dateFrom != null) && (dateTo == null)) {
+//			query = "SELECT COUNT(*) FROM `alarming_alarm` INNER JOIN `audits_alarmaudit` on `alarming_alarm`.alarm_id=`audits_alarmaudit`.alarm_id "
+//					+ "WHERE `audits_alarmaudit`.username='"
+//					+ username
+//					+ "' and (finish_time is not null) and `audits_alarmaudit`.action_taken!='Cleared' "
+//					+ "and finish_time>='" + dateFrom + "');";
+//		} else if ((dateFrom == null) && (dateTo != null)) {
+//			query = "SELECT COUNT(*) FROM `alarming_alarm` INNER JOIN `audits_alarmaudit` on `alarming_alarm`.alarm_id=`audits_alarmaudit`.alarm_id "
+//					+ "WHERE `audits_alarmaudit`.username='"
+//					+ username
+//					+ "' and (finish_time is not null) and `audits_alarmaudit`.action_taken!='Cleared' "
+//					+ "and finish_time<='" + dateTo + "');";
+//		} else {
+//			query = "SELECT COUNT(*) FROM `alarming_alarm` INNER JOIN `audits_alarmaudit` on `alarming_alarm`.alarm_id=`audits_alarmaudit`.alarm_id "
+//					+ "WHERE `audits_alarmaudit`.username='"
+//					+ username
+//					+ "' and (finish_time is not null) and `audits_alarmaudit`.action_taken!='Cleared' and "
+//					+ "(finish_time>='"
+//					+ dateFrom
+//					+ "' and finish_time<='"
+//					+ dateTo + "');";
+//		}
+//		Connection dbConn = null;
+//		Statement stmnt = null;
+//		ResultSet result = null;
+//		try {
+//			dbConn = ConnectionBean.getInstance().getMYSQLConnection();
+//			stmnt = dbConn.createStatement();
+//			result = stmnt.executeQuery(query);
+//			while (result.next()) {
+//				count = result.getInt(1);
+//			}
+//		} catch (SQLException e) {
+//			e.printStackTrace();
+//		} finally {
+//			try {
+//				result.close();
+//				stmnt.close();
+//			} catch (SQLException e) {
+//				e.printStackTrace();
+//			}
+//			dbConn = null;
+//			stmnt = null;
+//			result = null;
+//		}
+//		return count;
+//	}
+//
+//	@Override
+//	public int totalAlmsCleared(String username, Date dateFrom, Date dateTo) {
+//		int count = 0;
+//		String query = "";
+//		if ((dateFrom == null) && (dateTo == null)) {
+//			query = "SELECT COUNT(*) FROM `alarming_alarm` INNER JOIN `audits_alarmaudit` on `alarming_alarm`.alarm_id=`audits_alarmaudit`.alarm_id "
+//					+ "WHERE `audits_alarmaudit`.username='"
+//					+ username
+//					+ "' and (finish_time is not null) and `audits_alarmaudit`.action_taken='Cleared';";
+//		} else if ((dateFrom != null) && (dateTo == null)) {
+//			query = "SELECT COUNT(*) FROM `alarming_alarm` INNER JOIN `audits_alarmaudit` on `alarming_alarm`.alarm_id=`audits_alarmaudit`.alarm_id "
+//					+ "WHERE `audits_alarmaudit`.username='"
+//					+ username
+//					+ "' and (finish_time is not null) and `audits_alarmaudit`.action_taken='Cleared' "
+//					+ "and finish_time>='" + dateFrom + "');";
+//		} else if ((dateFrom == null) && (dateTo != null)) {
+//			query = "SELECT COUNT(*) FROM `alarming_alarm` INNER JOIN `audits_alarmaudit` on `alarming_alarm`.alarm_id=`audits_alarmaudit`.alarm_id "
+//					+ "WHERE `audits_alarmaudit`.username='"
+//					+ username
+//					+ "' and (finish_time is not null) and `audits_alarmaudit`.action_taken='Cleared' "
+//					+ "and finish_time<='" + dateTo + "');";
+//		} else {
+//			query = "SELECT COUNT(*) FROM `alarming_alarm` INNER JOIN `audits_alarmaudit` on `alarming_alarm`.alarm_id=`audits_alarmaudit`.alarm_id "
+//					+ "WHERE `audits_alarmaudit`.username='"
+//					+ username
+//					+ "' and (finish_time is not null) and `audits_alarmaudit`.action_taken='Cleared' and "
+//					+ "(finish_time>='"
+//					+ dateFrom
+//					+ "' and finish_time<='"
+//					+ dateTo + "');";
+//		}
+//		Connection dbConn = null;
+//		Statement stmnt = null;
+//		ResultSet result = null;
+//		try {
+//			dbConn = ConnectionBean.getInstance().getMYSQLConnection();
+//			stmnt = dbConn.createStatement();
+//			result = stmnt.executeQuery(query);
+//			while (result.next()) {
+//				count = result.getInt(1);
+//			}
+//		} catch (SQLException e) {
+//			e.printStackTrace();
+//		} finally {
+//			try {
+//				result.close();
+//				stmnt.close();
+//			} catch (SQLException e) {
+//				e.printStackTrace();
+//			}
+//			dbConn = null;
+//			stmnt = null;
+//			result = null;
+//		}
+//		return count;
+//	}
+//
+//	@Override
+//	public int totalAlmsHeld(String username, Date dateFrom, Date dateTo) {
+//		int count = 0;
+//		String query = "";
+//		if ((dateFrom == null) && (dateTo == null)) {
+//			query = "SELECT COUNT(*) FROM `alarming_alarm` INNER JOIN `audits_alarmaudit` on `alarming_alarm`.alarm_id=`audits_alarmaudit`.alarm_id "
+//					+ "WHERE `audits_alarmaudit`.username='"
+//					+ username
+//					+ "' and (finish_time is not null) and `alarming_alarm`.time_held>0;";
+//		} else if ((dateFrom != null) && (dateTo == null)) {
+//			query = "SELECT COUNT(*) FROM `alarming_alarm` INNER JOIN `audits_alarmaudit` on `alarming_alarm`.alarm_id=`audits_alarmaudit`.alarm_id "
+//					+ "WHERE `audits_alarmaudit`.username='"
+//					+ username
+//					+ "' and (finish_time is not null) and `alarming_alarm`.time_held>0 "
+//					+ "and finish_time>='" + dateFrom + "');";
+//		} else if ((dateFrom == null) && (dateTo != null)) {
+//			query = "SELECT COUNT(*) FROM `alarming_alarm` INNER JOIN `audits_alarmaudit` on `alarming_alarm`.alarm_id=`audits_alarmaudit`.alarm_id "
+//					+ "WHERE `audits_alarmaudit`.username='"
+//					+ username
+//					+ "' and (finish_time is not null) and `alarming_alarm`.time_held>0 "
+//					+ "and finish_time<='" + dateTo + "');";
+//		} else {
+//			query = "SELECT COUNT(*) FROM `alarming_alarm` INNER JOIN `audits_alarmaudit` on `alarming_alarm`.alarm_id=`audits_alarmaudit`.alarm_id "
+//					+ "WHERE `audits_alarmaudit`.username='"
+//					+ username
+//					+ "' and (finish_time is not null) and `alarming_alarm`.time_held>0 and "
+//					+ "(finish_time>='"
+//					+ dateFrom
+//					+ "' and finish_time<='"
+//					+ dateTo + "');";
+//		}
+//		Connection dbConn = null;
+//		Statement stmnt = null;
+//		ResultSet result = null;
+//		try {
+//			dbConn = ConnectionBean.getInstance().getMYSQLConnection();
+//			stmnt = dbConn.createStatement();
+//			result = stmnt.executeQuery(query);
+//			while (result.next()) {
+//				count = result.getInt(1);
+//			}
+//		} catch (SQLException e) {
+//			e.printStackTrace();
+//		} finally {
+//			try {
+//				result.close();
+//				stmnt.close();
+//			} catch (SQLException e) {
+//				e.printStackTrace();
+//			}
+//			dbConn = null;
+//			stmnt = null;
+//			result = null;
+//		}
+//		return count;
+//	}
+//
+//	@Override
+//	public int totalAlmsOverdue(String username, Date dateFrom, Date dateTo) {
+//		int count = 0;
+//		String query = "";
+//		if ((dateFrom == null) && (dateTo == null)) {
+//			query = "SELECT COUNT(*) FROM `alarming_alarm` INNER JOIN `audits_alarmaudit` on `alarming_alarm`.alarm_id=`audits_alarmaudit`.alarm_id "
+//					+ "WHERE `audits_alarmaudit`.username='"
+//					+ username
+//					+ "' and (finish_time is not null) and timestampdiff(MINUTE,`alarming_alarm`.receive_time,`alarming_alarm`.finish_time)>30;";
+//		} else if ((dateFrom != null) && (dateTo == null)) {
+//			query = "SELECT COUNT(*) FROM `alarming_alarm` INNER JOIN `audits_alarmaudit` on `alarming_alarm`.alarm_id=`audits_alarmaudit`.alarm_id "
+//					+ "WHERE `audits_alarmaudit`.username='"
+//					+ username
+//					+ "' and (finish_time is not null) and timestampdiff(MINUTE,`alarming_alarm`.receive_time,`alarming_alarm`.finish_time)>30 "
+//					+ "and finish_time>='" + dateFrom + "');";
+//		} else if ((dateFrom == null) && (dateTo != null)) {
+//			query = "SELECT COUNT(*) FROM `alarming_alarm` INNER JOIN `audits_alarmaudit` on `alarming_alarm`.alarm_id=`audits_alarmaudit`.alarm_id "
+//					+ "WHERE `audits_alarmaudit`.username='"
+//					+ username
+//					+ "' and (finish_time is not null) and timestampdiff(MINUTE,`alarming_alarm`.receive_time,`alarming_alarm`.finish_time)>30 "
+//					+ "and finish_time<='" + dateTo + "');";
+//		} else {
+//			query = "SELECT COUNT(*) FROM `alarming_alarm` INNER JOIN `audits_alarmaudit` on `alarming_alarm`.alarm_id=`audits_alarmaudit`.alarm_id "
+//					+ "WHERE `audits_alarmaudit`.username='"
+//					+ username
+//					+ "' and (finish_time is not null) and timestampdiff(MINUTE,`alarming_alarm`.receive_time,`alarming_alarm`.finish_time)>30 and "
+//					+ "(finish_time>='"
+//					+ dateFrom
+//					+ "' and finish_time<='"
+//					+ dateTo + "');";
+//		}
+//		Connection dbConn = null;
+//		Statement stmnt = null;
+//		ResultSet result = null;
+//		try {
+//			dbConn = ConnectionBean.getInstance().getMYSQLConnection();
+//			stmnt = dbConn.createStatement();
+//			result = stmnt.executeQuery(query);
+//			while (result.next()) {
+//				count = result.getInt(1);
+//			}
+//		} catch (SQLException e) {
+//			e.printStackTrace();
+//		} finally {
+//			try {
+//				result.close();
+//				stmnt.close();
+//			} catch (SQLException e) {
+//				e.printStackTrace();
+//			}
+//			dbConn = null;
+//			stmnt = null;
+//			result = null;
+//		}
+//		return count;
+//	}
 }

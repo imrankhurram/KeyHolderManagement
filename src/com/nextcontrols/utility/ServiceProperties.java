@@ -133,7 +133,7 @@ import java.util.Properties;
 //			}
 //		}
 		
-		public Connection getBureauConnection() throws SQLException{
+		public Connection getSQLConnection() throws SQLException{
 			try {
 				return DriverManager.getConnection(CONNECTIONBUREAU);
 			} catch (SQLException e) {

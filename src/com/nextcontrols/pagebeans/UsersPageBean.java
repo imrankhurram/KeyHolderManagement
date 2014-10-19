@@ -150,11 +150,12 @@ public class UsersPageBean implements Serializable {
 		ExternalContext ectx = FacesContext.getCurrentInstance()
 				.getExternalContext();
 		HttpSession session = (HttpSession) ectx.getSession(false);
-		UserAuditDAO.getInstance().insertUserAudit(
-				new UserAudit(Integer.parseInt(session.getAttribute("userId")
-						.toString()), new Timestamp(Calendar.getInstance()
-						.getTime().getTime()), "UsersModified",
-						"User list batch update", null));
+		UserAuditDAO.getInstance().insertUserAdminAudit(String.valueOf(session.getAttribute("userId")), "Users Modified! User list batch update", null, -1);
+				
+//				new UserAudit(Integer.parseInt(session.getAttribute("userId")
+//						.toString()), new Timestamp(Calendar.getInstance()
+//						.getTime().getTime()), "UsersModified",
+//						"User list batch update", null));
 
 	}
 
@@ -237,12 +238,13 @@ public class UsersPageBean implements Serializable {
 				(int) session.getAttribute("customerId"),
 				this.ownSelectedCustomersList);
 
-		UserAuditDAO.getInstance().insertUserAudit(
-				new UserAudit(Integer.parseInt(session.getAttribute("userId")
-						.toString()), new Timestamp(Calendar.getInstance()
-						.getTime().getTime()), "UserAdded", "A new user "
-						+ this.newUser.getUsername()
-						+ " was added and assigned customers", null));
+		UserAuditDAO.getInstance().insertUserAdminAudit(String.valueOf(session.getAttribute("userId")),"A new user "+this.newUser.getUsername()+" was added and assigned customers", null, -1);
+//		(
+//				new UserAudit(Integer.parseInt(session.getAttribute("userId")
+//						.toString()), new Timestamp(Calendar.getInstance()
+//						.getTime().getTime()), "UserAdded", "A new user "
+//						+ this.newUser.getUsername()
+//						+ " was added and assigned customers", null));
 
 		this.newUser = new User();
 		initializeUsers();
@@ -318,26 +320,27 @@ public class UsersPageBean implements Serializable {
 		ExternalContext ectx = FacesContext.getCurrentInstance()
 				.getExternalContext();
 		HttpSession session = (HttpSession) ectx.getSession(false);
-		UserAuditDAO.getInstance().insertUserAudit(
-				new UserAudit(Integer.parseInt(session.getAttribute("userId")
-						.toString()), new Timestamp(Calendar.getInstance()
-						.getTime().getTime()), "UserModified", "User "
-						+ this.selectedUser.getUsername() + " was modified",
-						null));
+//		UserAuditDAO.getInstance().insertUserAudit(
+//				new UserAudit(Integer.parseInt(session.getAttribute("userId")
+//						.toString()), new Timestamp(Calendar.getInstance()
+//						.getTime().getTime()), "UserModified", "User "
+//						+ this.selectedUser.getUsername() + " was modified",
+//						null));
 
 		UserDAO.getInstance().modifyUserCustomers(
 				this.selectedUser.getUserId(), this.ownSelectedCustomersList);
 
-		UserAuditDAO.getInstance().insertUserAudit(
-				new UserAudit(Integer.parseInt(session.getAttribute("userId")
-						.toString()), new Timestamp(Calendar.getInstance()
-						.getTime().getTime()), "UserCustomersModified",
-						"Customer list of User "
-								+ this.selectedUser.getUsername()
-								+ " was modified", null));
+		UserAuditDAO.getInstance().insertUserAdminAudit(String.valueOf(session.getAttribute("userId")),"User "+this.selectedUser.getUsername()+" and its customer list were modified", null, -1);
+//		(
+//				new UserAudit(Integer.parseInt(session.getAttribute("userId")
+//						.toString()), new Timestamp(Calendar.getInstance()
+//						.getTime().getTime()), "UserCustomersModified",
+//						"Customer list of User "
+//								+ this.selectedUser.getUsername()
+//								+ " was modified", null));
 
-		System.out.println("user name: " + this.selectedUser.getUsername());
-		System.out.println("user modified!");
+//		System.out.println("user name: " + this.selectedUser.getUsername());
+//		System.out.println("user modified!");
 	}
 
 	public void checkUserSelection() {
@@ -357,6 +360,10 @@ public class UsersPageBean implements Serializable {
 
 	public void deleteUser() {
 		UserDAO.getInstance().deleteUser(this.selectedUser.getUserId());
+		ExternalContext ectx = FacesContext.getCurrentInstance()
+				.getExternalContext();
+		HttpSession session = (HttpSession) ectx.getSession(false);
+		UserAuditDAO.getInstance().insertUserAdminAudit(String.valueOf(session.getAttribute("userId")), "User "+this.selectedUser.getUsername()+ " was deleted", null, -1);
 		this.selectedUser = null;
 		initializeUsers();
 		RequestContext.getCurrentInstance().update("frmUsersPage");

@@ -58,6 +58,7 @@ public class WebsiteDAO implements IWebsiteDAO, Serializable {
 				assignedWebsites.add(new Website(rs.getInt("website_id"),rs.getString("name"),rs.getString("meterName"),rs.getString("hvacName"),rs.getString("fixtureName")
 						,rs.getString("alarmName"),rs.getString("imagePath"),rs.getString("branchListName"),rs.getString("Logo"),rs.getBoolean("typetutela"),rs.getInt("inactivityTimeout")
 						,rs.getString("CountryCode")));
+				break;
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();

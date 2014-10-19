@@ -92,10 +92,10 @@
 						style="margin-top: 6px; margin-bottom: 0px; width: 100%">
 						<table style="float: left">
 							<tr>
-								<td><p:commandLink value="ADD USER"
+								<td><p:commandLink 
 										actionListener="#{users.initializeNewUser}"
 										update=":addUserDlg" styleClass="greenButton"
-										oncomplete="PF('addUserDlg').show();" /></td>
+										oncomplete="PF('addUserDlg').show();" >ADD <br/>USER</p:commandLink></td>
 								<td><p:commandLink value="MODIFY USER"
 										actionListener="#{users.initializeEditUser}"
 										update=":editUserFrm" styleClass="greenButton" /></td>

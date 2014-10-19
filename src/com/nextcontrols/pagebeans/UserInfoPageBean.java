@@ -35,7 +35,7 @@ public class UserInfoPageBean implements Serializable {
 	static int sec = 0;
 	static int min = 0;
 	static int hr = 0;
-	private List<String> phoneExtensions;
+//	private List<String> phoneExtensions;
 	private String mUserName; // operator's username
 	private String mPassword; // operator's password
 	private String mFirstName; // operator's first name
@@ -44,12 +44,12 @@ public class UserInfoPageBean implements Serializable {
 	private String mStatus;
 	private String userType; // operator's user type
 	private String userBureauType; // operator's bureau type
-	private String extension; // //operator's phone extensions
-	private String checkVar;
-	private String checkStatusH;
-	private String checkReciversOk;
+//	private String extension; // //operator's phone extensions
+//	private String checkVar;
+//	private String checkStatusH;
+//	private String checkReciversOk;
 	private boolean facesMessage;
-	private boolean flashFlag;
+//	private boolean flashFlag;
 	boolean shown;
 	int stampHour;
 	int stampSec;
@@ -61,71 +61,71 @@ public class UserInfoPageBean implements Serializable {
 	private String avgResponseTime;
 	private int userId;
 	private int dueActivities;
-	private int unresolvedEvents;
-	private int almsPerHour;
-	private int almsLastYear;
-	private int actionedAlms;
-	private int overdueSize;
-	private int allAlarmsSize;
-	private int usersOnlineCount;
+//	private int unresolvedEvents;
+//	private int almsPerHour;
+//	private int almsLastYear;
+//	private int actionedAlms;
+//	private int overdueSize;
+//	private int allAlarmsSize;
+//	private int usersOnlineCount;
 	private boolean areManyWebsites;
 
 	// //////////////////////////
 
 	public UserInfoPageBean() {
-		phoneExtensions = new ArrayList<String>();
+//		phoneExtensions = new ArrayList<String>();
 		facesMessage = false;
 		shown = false;
 		areManyWebsites = false;
-		checkVar = "";
+//		checkVar = "";
 		date1 = Calendar.getInstance();
 		dateFormat = new SimpleDateFormat("dd MMMMMMM yyyy HH:mm");
 	}
 
-	public void setCheckReciversOk() {
-		// checkReceiverActivie();
-		if (flashFlag == false) {
-			// this.alarmReceiver=null;
-		}
-	}
-
-	public String getCheckReciversOk() {
-		setCheckReciversOk();
-		if (flashFlag == false) {
-			// this.alarmReceiver=null;
-		}
-		return checkReciversOk;
-	}
-
-	public void setCheckVar(String checkVar) {
-		this.checkVar = checkVar;
-	}
-
-	public String getCheckVar() {
-		// checkReceiverActivie();
-		if (flashFlag == false) {
-			// this.alarmReceiver=null;
-		}
-		return checkVar;
-	}
-
-	public void setCheckStatusH(String checkStatusH) {
-		this.checkStatusH = checkStatusH;
-	}
-
-	public String getCheckStatusH() {
-		// checkReceiverActivie();
-		if (flashFlag == true) {
-			FacesMessage facesMsg = new FacesMessage();
-			facesMsg.setDetail("Alarm Receiver Down");
-			facesMsg.setSummary("Alarm Receiver Down");
-			facesMsg.setSeverity(FacesMessage.SEVERITY_ERROR);
-			FacesContext.getCurrentInstance().addMessage(null, facesMsg);
-		} else {
-			// this.alarmReceiver=null;
-		}
-		return checkStatusH;
-	}
+//	public void setCheckReciversOk() {
+//		// checkReceiverActivie();
+//		if (flashFlag == false) {
+//			// this.alarmReceiver=null;
+//		}
+//	}
+//
+//	public String getCheckReciversOk() {
+//		setCheckReciversOk();
+//		if (flashFlag == false) {
+//			// this.alarmReceiver=null;
+//		}
+//		return checkReciversOk;
+//	}
+//
+//	public void setCheckVar(String checkVar) {
+//		this.checkVar = checkVar;
+//	}
+//
+//	public String getCheckVar() {
+//		// checkReceiverActivie();
+//		if (flashFlag == false) {
+//			// this.alarmReceiver=null;
+//		}
+//		return checkVar;
+//	}
+//
+//	public void setCheckStatusH(String checkStatusH) {
+//		this.checkStatusH = checkStatusH;
+//	}
+//
+//	public String getCheckStatusH() {
+//		// checkReceiverActivie();
+//		if (flashFlag == true) {
+//			FacesMessage facesMsg = new FacesMessage();
+//			facesMsg.setDetail("Alarm Receiver Down");
+//			facesMsg.setSummary("Alarm Receiver Down");
+//			facesMsg.setSeverity(FacesMessage.SEVERITY_ERROR);
+//			FacesContext.getCurrentInstance().addMessage(null, facesMsg);
+//		} else {
+//			// this.alarmReceiver=null;
+//		}
+//		return checkStatusH;
+//	}
 
 	public boolean isAreManyWebsites() {
 		return areManyWebsites;
@@ -240,30 +240,30 @@ public class UserInfoPageBean implements Serializable {
 		return dueActivities;
 	}
 
-	public void setExtension(String extension) {
-		this.extension = extension;
-		ExternalContext ectx = FacesContext.getCurrentInstance()
-				.getExternalContext();
-		HttpSession session = (HttpSession) ectx.getSession(false);
-		session.setAttribute("extension", extension);
-	}
+//	public void setExtension(String extension) {
+//		this.extension = extension;
+//		ExternalContext ectx = FacesContext.getCurrentInstance()
+//				.getExternalContext();
+//		HttpSession session = (HttpSession) ectx.getSession(false);
+//		session.setAttribute("extension", extension);
+//	}
+//
+//	public String getExtension() {
+//		return extension;
+//	}
 
-	public String getExtension() {
-		return extension;
-	}
-
-	public List<String> completePhoneExtension(String query) {
-		List<String> extensionsList = new ArrayList<String>();
-		String allExtensions = ServiceProperties.getInstance()
-				.getPhoneExtensions();
-		String[] separatedExtensions = allExtensions.split(",");
-		for (int i = 0; i <= separatedExtensions.length - 1; i++) {
-			if (separatedExtensions[i].indexOf(query) != -1) {
-				extensionsList.add(separatedExtensions[i]);
-			}
-		}
-		return extensionsList;
-	}
+//	public List<String> completePhoneExtension(String query) {
+//		List<String> extensionsList = new ArrayList<String>();
+//		String allExtensions = ServiceProperties.getInstance()
+//				.getPhoneExtensions();
+//		String[] separatedExtensions = allExtensions.split(",");
+//		for (int i = 0; i <= separatedExtensions.length - 1; i++) {
+//			if (separatedExtensions[i].indexOf(query) != -1) {
+//				extensionsList.add(separatedExtensions[i]);
+//			}
+//		}
+//		return extensionsList;
+//	}
 
 	public String loginAction() {
 		String action = null;
@@ -290,19 +290,19 @@ public class UserInfoPageBean implements Serializable {
 		return "success";
 	}
 
-	public void idleMonitor() {
-		if (this.getUserId() != 0) {
-			UserAuditDAO.getInstance().insertUserAudit(
-					new UserAudit(this.getUserId(), new Timestamp(Calendar
-							.getInstance().getTime().getTime()), "UserIdle",
-							"The user has been inactive for 15 minutes", null));
-			ExternalContext ectx = FacesContext.getCurrentInstance()
-					.getExternalContext();
-			HttpSession session = (HttpSession) ectx.getSession(false);
-			session.removeAttribute("user");
-			session.invalidate();
-		}
-	}
+//	public void idleMonitor() {
+//		if (this.getUserId() != 0) {
+//			UserAuditDAO.getInstance().insertUserAudit(
+//					new UserAudit(this.getUserId(), new Timestamp(Calendar
+//							.getInstance().getTime().getTime()), "UserIdle",
+//							"The user has been inactive for 15 minutes", null));
+//			ExternalContext ectx = FacesContext.getCurrentInstance()
+//					.getExternalContext();
+//			HttpSession session = (HttpSession) ectx.getSession(false);
+//			session.removeAttribute("user");
+//			session.invalidate();
+//		}
+//	}
 
 	public boolean checkUserName() {
 		if (this.getUserName() == null) {
@@ -325,11 +325,11 @@ public class UserInfoPageBean implements Serializable {
 		// Timestamp(Calendar.getInstance().getTime().getTime()),"UserLogin","The user has logged in",null));
 	}
 
-	public void extensionSelected() {
-		if ((this.getUserName() != null) && (this.getPassword() != null)) {
-			processLogin();
-		}
-	}
+//	public void extensionSelected() {
+//		if ((this.getUserName() != null) && (this.getPassword() != null)) {
+//			processLogin();
+//		}
+//	}
 
 	/**
 	 * login function
@@ -478,37 +478,37 @@ public class UserInfoPageBean implements Serializable {
 	 * 
 	 * @return
 	 */
-	public String processLHLogin() {
-		if ((UserDAO.getInstance().correctPassword(this.getUserName(),
-				encryptPassword(this.getPassword())) == true)) {
-			User currentUser = UserDAO.getInstance().getSpecificUser(
-					this.getUserName());
-			this.setUserId(currentUser.getUserId());
-			this.setFirstName(currentUser.getFirstName());
-			this.setLastName(currentUser.getLastName());
-			this.setUserType(currentUser.getUserWebType());
-			this.setUserBureauType(currentUser.getUserBureauType());
-			this.dbInsertLogin();
-			ExternalContext ectx = FacesContext.getCurrentInstance()
-					.getExternalContext();
-			HttpSession session = (HttpSession) ectx.getSession(false);
-			session.setAttribute("user", this.getUserName());
-			session.setAttribute("userId", this.getUserId());
-			session.setAttribute("name",
-					this.getFirstName() + " " + this.getLastName());
-			this.updateUsersActivity();
-			this.loginAudit();
-			wrongDetails = false;
-			if (this.getUserBureauType().equals("LHCustomer")) {
-				return "LHCustomerAreasPage?faces-redirect=true";
-			} else {
-				return "LHLogin?faces-redirect=true";
-			}
-		} else {
-			wrongDetails = true;
-			return "login?faces-redirect=true";
-		}
-	}
+//	public String processLHLogin() {
+//		if ((UserDAO.getInstance().correctPassword(this.getUserName(),
+//				encryptPassword(this.getPassword())) == true)) {
+//			User currentUser = UserDAO.getInstance().getSpecificUser(
+//					this.getUserName());
+//			this.setUserId(currentUser.getUserId());
+//			this.setFirstName(currentUser.getFirstName());
+//			this.setLastName(currentUser.getLastName());
+//			this.setUserType(currentUser.getUserWebType());
+//			this.setUserBureauType(currentUser.getUserBureauType());
+//			this.dbInsertLogin();
+//			ExternalContext ectx = FacesContext.getCurrentInstance()
+//					.getExternalContext();
+//			HttpSession session = (HttpSession) ectx.getSession(false);
+//			session.setAttribute("user", this.getUserName());
+//			session.setAttribute("userId", this.getUserId());
+//			session.setAttribute("name",
+//					this.getFirstName() + " " + this.getLastName());
+//			this.updateUsersActivity();
+//			this.loginAudit();
+//			wrongDetails = false;
+//			if (this.getUserBureauType().equals("LHCustomer")) {
+//				return "LHCustomerAreasPage?faces-redirect=true";
+//			} else {
+//				return "LHLogin?faces-redirect=true";
+//			}
+//		} else {
+//			wrongDetails = true;
+//			return "login?faces-redirect=true";
+//		}
+//	}
 
 	/**
 	 * encrypts user's password
@@ -543,51 +543,51 @@ public class UserInfoPageBean implements Serializable {
 	 * 
 	 * @return
 	 */
-	public String resetPassword() {
-		String newPassword = generatePassword();
-		String message = "Your password for the Remote Monitoring Bureau was reset.\nYour new password is: "
-				+ newPassword;
-		String emailAddr = UserDAO.getInstance().getUsersEmail(
-				this.getUserName());
-		fn_SendEmail(1, emailAddr, message, "PasswordGenerator");
-		wrongDetails = true;
-		return "login?faces-redirect=true";
-	}
+//	public String resetPassword() {
+//		String newPassword = generatePassword();
+//		String message = "Your password for the Remote Monitoring Bureau was reset.\nYour new password is: "
+//				+ newPassword;
+//		String emailAddr = UserDAO.getInstance().getUsersEmail(
+//				this.getUserName());
+//		fn_SendEmail(1, emailAddr, message, "PasswordGenerator");
+//		wrongDetails = true;
+//		return "login?faces-redirect=true";
+//	}
+//
+//	/**
+//	 * generate a new user's password
+//	 * 
+//	 * @return
+//	 */
+//	private String generatePassword() {
+//		String strNewPass = "";
+//		String encryptedPass = "";
+//		int whatsNext;
+//		String characters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890.,;[]#=-+*&^%$£";
+//
+//		for (int i = 0; i < 12; i++) {
+//			whatsNext = (int) Math.floor(Math.random() * characters.length());
+//			strNewPass = strNewPass + characters.charAt(whatsNext);
+//		}
+//		encryptedPass = encryptPassword(strNewPass);
+//		if (UserDAO.getInstance().passwordExists(encryptedPass) == true) {
+//			strNewPass = this.generatePassword();
+//		}
+//		UserDAO.getInstance().resetPassword(this.getUserName(), encryptedPass);
+//		return strNewPass;
+//	}
 
-	/**
-	 * generate a new user's password
-	 * 
-	 * @return
-	 */
-	private String generatePassword() {
-		String strNewPass = "";
-		String encryptedPass = "";
-		int whatsNext;
-		String characters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890.,;[]#=-+*&^%$£";
-
-		for (int i = 0; i < 12; i++) {
-			whatsNext = (int) Math.floor(Math.random() * characters.length());
-			strNewPass = strNewPass + characters.charAt(whatsNext);
-		}
-		encryptedPass = encryptPassword(strNewPass);
-		if (UserDAO.getInstance().passwordExists(encryptedPass) == true) {
-			strNewPass = this.generatePassword();
-		}
-		UserDAO.getInstance().resetPassword(this.getUserName(), encryptedPass);
-		return strNewPass;
-	}
-
-	private void fn_SendEmail(int pSendFlag, String pEmails, String message,
-			String pUserName) {
-		// IBureauMessagingService service =
-		// TextMessageServiceBean.getInstance();
-		// try {
-		// service.fn_sendEmailMessage(message, pEmails.split(","), "",
-		// pUserName).equalsIgnoreCase("OK");
-		// } catch (IOException e) {
-		// e.printStackTrace();
-		// }
-	}
+//	private void fn_SendEmail(int pSendFlag, String pEmails, String message,
+//			String pUserName) {
+//		// IBureauMessagingService service =
+//		// TextMessageServiceBean.getInstance();
+//		// try {
+//		// service.fn_sendEmailMessage(message, pEmails.split(","), "",
+//		// pUserName).equalsIgnoreCase("OK");
+//		// } catch (IOException e) {
+//		// e.printStackTrace();
+//		// }
+//	}
 
 	public void setWrongDetails(boolean WrongDetails) {
 		wrongDetails = WrongDetails;
@@ -597,153 +597,153 @@ public class UserInfoPageBean implements Serializable {
 		return wrongDetails;
 	}
 
-	public void setActionedAlms() {
-		// this.actionedAlms = ActiveAlarmDAO.getInstance().actionedAlmCount();
-		RequestContext requestContext = RequestContext.getCurrentInstance();
-		if (requestContext != null) {
-			requestContext.update("AlmsActioned");
-		}
-	}
+//	public void setActionedAlms() {
+//		// this.actionedAlms = ActiveAlarmDAO.getInstance().actionedAlmCount();
+//		RequestContext requestContext = RequestContext.getCurrentInstance();
+//		if (requestContext != null) {
+//			requestContext.update("AlmsActioned");
+//		}
+//	}
 
-	public int getActionedAlms() {
-		return actionedAlms;
-	}
+//	public int getActionedAlms() {
+//		return actionedAlms;
+//	}
+//
+//	public void setAvgResponseTime() {
+//		// int responseTime= ActiveAlarmDAO.getInstance().averageResponseTime();
+//		// int hours = responseTime / 3600;
+//		// int remainder = responseTime % 3600;
+//		// int minutes = remainder / 60;
+//		// int seconds = remainder % 60;
+//		// this.avgResponseTime = ( (hours < 10 ? "0" : "") + hours + ":" +
+//		// (minutes < 10 ? "0" : "") + minutes + ":" + (seconds< 10 ? "0" : "")
+//		// + seconds );
+//		//
+//		// RequestContext requestContext = RequestContext.getCurrentInstance();
+//		// if (requestContext!=null){
+//		// requestContext.update("AvgAlmsResponsetime");
+//		// }
+//	}
+//
+//	public String getAvgResponseTime() {
+//		return avgResponseTime;
+//	}
+//
+//	public void setAlmsPerHour() {
+//		// ActiveAlarmDAO activeAlarmDAO = new ActiveAlarmDAO();
+//		// this.almsPerHour = activeAlarmDAO.receivedAlmsPerHour();
+//	}
+//
+//	public int getAlmsPerHour() {
+//		return almsPerHour;
+//	}
+//
+//	public void setAlmsLastYear() {
+//		// this.almsLastYear =
+//		// ActiveAlarmDAO.getInstance().receivedAlmsLastYear();
+//	}
+//
+//	public int getAlmsLastYear() {
+//		return almsLastYear;
+//	}
+//
+//	public void setPhoneExtensions() {
+//		String allExtensions = ServiceProperties.getInstance()
+//				.getPhoneExtensions();
+//		String[] separatedExtensions = allExtensions.split(",");
+//		for (int i = 0; i <= separatedExtensions.length - 1; i++) {
+//			phoneExtensions.add(separatedExtensions[i]);
+//		}
+//	}
+//
+//	public List<String> getPhoneExtensions() {
+//		setPhoneExtensions();
+//		return phoneExtensions;
+//	}
+//
+//	public void setUsersOnlineCount() {
+//		/*
+//		 * UserActivityDAO activityDB = new UserActivityDAO();
+//		 * this.usersOnlineCount = activityDB.getNumberUsersOnline();
+//		 */
+//	}
+//
+//	public int getUsersOnlineCount() {
+//		setUsersOnlineCount();
+//		return usersOnlineCount;
+//	}
+//
+//	public void setCurrentTime() {
+//		this.currentTime = dateFormat.format(Calendar.getInstance().getTime());
+//	}
+//
+//	public String getCurrentTime() {
+//		setCurrentTime();
+//		return currentTime;
+//
+//	}
 
-	public void setAvgResponseTime() {
-		// int responseTime= ActiveAlarmDAO.getInstance().averageResponseTime();
-		// int hours = responseTime / 3600;
-		// int remainder = responseTime % 3600;
-		// int minutes = remainder / 60;
-		// int seconds = remainder % 60;
-		// this.avgResponseTime = ( (hours < 10 ? "0" : "") + hours + ":" +
-		// (minutes < 10 ? "0" : "") + minutes + ":" + (seconds< 10 ? "0" : "")
-		// + seconds );
-		//
-		// RequestContext requestContext = RequestContext.getCurrentInstance();
-		// if (requestContext!=null){
-		// requestContext.update("AvgAlmsResponsetime");
-		// }
-	}
-
-	public String getAvgResponseTime() {
-		return avgResponseTime;
-	}
-
-	public void setAlmsPerHour() {
-		// ActiveAlarmDAO activeAlarmDAO = new ActiveAlarmDAO();
-		// this.almsPerHour = activeAlarmDAO.receivedAlmsPerHour();
-	}
-
-	public int getAlmsPerHour() {
-		return almsPerHour;
-	}
-
-	public void setAlmsLastYear() {
-		// this.almsLastYear =
-		// ActiveAlarmDAO.getInstance().receivedAlmsLastYear();
-	}
-
-	public int getAlmsLastYear() {
-		return almsLastYear;
-	}
-
-	public void setPhoneExtensions() {
-		String allExtensions = ServiceProperties.getInstance()
-				.getPhoneExtensions();
-		String[] separatedExtensions = allExtensions.split(",");
-		for (int i = 0; i <= separatedExtensions.length - 1; i++) {
-			phoneExtensions.add(separatedExtensions[i]);
-		}
-	}
-
-	public List<String> getPhoneExtensions() {
-		setPhoneExtensions();
-		return phoneExtensions;
-	}
-
-	public void setUsersOnlineCount() {
-		/*
-		 * UserActivityDAO activityDB = new UserActivityDAO();
-		 * this.usersOnlineCount = activityDB.getNumberUsersOnline();
-		 */
-	}
-
-	public int getUsersOnlineCount() {
-		setUsersOnlineCount();
-		return usersOnlineCount;
-	}
-
-	public void setCurrentTime() {
-		this.currentTime = dateFormat.format(Calendar.getInstance().getTime());
-	}
-
-	public String getCurrentTime() {
-		setCurrentTime();
-		return currentTime;
-
-	}
-
-	public void setUnresolvedEvents() {
-		// this.unresolvedEvents =
-		// EventDAO.getInstance().getNumberUnresolvedEvents();
-	}
-
-	public int getUnresolvedEvents() {
-		setUnresolvedEvents();
-		return unresolvedEvents;
-	}
-
-	public void setOverdueSize() {
-		// this.overdueSize =
-		// ActiveAlarmDAO.getInstance().getOverdueAlarmsCount();
-	}
-
-	public int getOverdueSize() {
-		// setOverdueSize();
-		return overdueSize;
-	}
-
-	public void setAllAlarmsSize() {
-		// this.allAlarmsSize =
-		// ActiveAlarmDAO.getInstance().allActiveAlarmsCount();
-	}
-
-	public int getAllAlarmsSize() {
-		// setAllAlarmsSize();
-		return allAlarmsSize;
-	}
-
+//	public void setUnresolvedEvents() {
+//		// this.unresolvedEvents =
+//		// EventDAO.getInstance().getNumberUnresolvedEvents();
+//	}
+//
+//	public int getUnresolvedEvents() {
+//		setUnresolvedEvents();
+//		return unresolvedEvents;
+//	}
+//
+//	public void setOverdueSize() {
+//		// this.overdueSize =
+//		// ActiveAlarmDAO.getInstance().getOverdueAlarmsCount();
+//	}
+//
+//	public int getOverdueSize() {
+//		// setOverdueSize();
+//		return overdueSize;
+//	}
+//
+//	public void setAllAlarmsSize() {
+//		// this.allAlarmsSize =
+//		// ActiveAlarmDAO.getInstance().allActiveAlarmsCount();
+//	}
+//
+//	public int getAllAlarmsSize() {
+//		// setAllAlarmsSize();
+//		return allAlarmsSize;
+//	}
+//
 	/**
 	 * calls the check_folders stored procedure if there are errors displays a
 	 * growl message for each error
 	 */
-	public void checkFoldersForError() {
-		/*
-		 * FacesContext context=FacesContext.getCurrentInstance();
-		 * ActiveAlarmDAO alarmDB = new ActiveAlarmDAO(); String message=null;
-		 * message = alarmDB.checkFolders(); String[] errors =
-		 * message.split("\\|");
-		 * 
-		 * Growl error= (Growl)
-		 * FacesContext.getCurrentInstance().getViewRoot().findComponent
-		 * ("frmmenuleft:growl"); if (errors.length>1){
-		 * 
-		 * for (int i=1;i<=errors.length-1;i++){
-		 * System.out.println("Erros contents afetr split: " + errors[i]);
-		 * System.out.println("context message.. "+
-		 * context.getMessageList().size());
-		 * System.out.println("Flag's Value.. "+ shown);
-		 * context.addMessage(null, new
-		 * FacesMessage(FacesMessage.SEVERITY_ERROR, "ERROR", errors[i]));
-		 * System.out.println("context message..after add  Size.."+
-		 * context.getMessageList().size());
-		 * 
-		 * } setFacesMessage(true); error.setRendered(true);
-		 * 
-		 * }else{ error.setRendered(false); }
-		 */
-
-	}
+//	public void checkFoldersForError() {
+//		/*
+//		 * FacesContext context=FacesContext.getCurrentInstance();
+//		 * ActiveAlarmDAO alarmDB = new ActiveAlarmDAO(); String message=null;
+//		 * message = alarmDB.checkFolders(); String[] errors =
+//		 * message.split("\\|");
+//		 * 
+//		 * Growl error= (Growl)
+//		 * FacesContext.getCurrentInstance().getViewRoot().findComponent
+//		 * ("frmmenuleft:growl"); if (errors.length>1){
+//		 * 
+//		 * for (int i=1;i<=errors.length-1;i++){
+//		 * System.out.println("Erros contents afetr split: " + errors[i]);
+//		 * System.out.println("context message.. "+
+//		 * context.getMessageList().size());
+//		 * System.out.println("Flag's Value.. "+ shown);
+//		 * context.addMessage(null, new
+//		 * FacesMessage(FacesMessage.SEVERITY_ERROR, "ERROR", errors[i]));
+//		 * System.out.println("context message..after add  Size.."+
+//		 * context.getMessageList().size());
+//		 * 
+//		 * } setFacesMessage(true); error.setRendered(true);
+//		 * 
+//		 * }else{ error.setRendered(false); }
+//		 */
+//
+//	}
 
 	public void setFacesMessage(boolean facesMessage) {
 		this.facesMessage = facesMessage;
@@ -753,11 +753,11 @@ public class UserInfoPageBean implements Serializable {
 		return facesMessage;
 	}
 
-	public void setFlashFlag(boolean flashFlag) {
-		this.flashFlag = flashFlag;
-	}
-
-	public boolean isFlashFlag() {
-		return flashFlag;
-	}
+//	public void setFlashFlag(boolean flashFlag) {
+//		this.flashFlag = flashFlag;
+//	}
+//
+//	public boolean isFlashFlag() {
+//		return flashFlag;
+//	}
 }
