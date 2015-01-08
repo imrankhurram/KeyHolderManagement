@@ -856,8 +856,9 @@ h3.warning {
 	vertical-align: middle;
 	margin: 0 auto;
 	color: white !important;
-	border-radius:3px;
+	border-radius: 3px;
 }
+
 .greenButton:hover {
 	background-size: 100% 100%;
 	background-color: #67B7C5;
@@ -870,18 +871,69 @@ h3.warning {
 	vertical-align: middle;
 	margin: 0 auto;
 	color: white;
-	border-radius:3px;
+	border-radius: 3px;
 }
-#contactTypeDlg .ui-dialog-titlebar{
+
+#contactTypeDlg .ui-dialog-titlebar {
 	background-image: none !important;
-	background-size:0px !important;
-	height:0px;
+	background-size: 0px !important;
+	height: 0px;
 }
-.ui-datatable th.scrollableColumns{
+
+.ui-datatable th.scrollableColumns {
 	background: #acadac !important;
-	border:1px solid #a8a8a8;
+	border: 1px solid #a8a8a8;
 }
-.ui-datatable th.scrollableColumns:hover{
+
+.ui-datatable th.scrollableColumns:hover {
 	background: #9E9F9E !important;
-	border:1px solid #a8a8a8;
+	border: 1px solid #a8a8a8;
+}
+
+.normalButton {
+	background-size: 100% 100%;
+	background-color: #199DAF;
+	width: 65px;
+	height: 22px;
+	line-height: 15px;
+	text-align: center;
+	/* display: table-cell; */
+	font-weight: bold;
+	/* vertical-align: middle; */
+	margin: 0 auto;
+	color: white !important;
+	border-radius: 3px;
+	padding-top:5px;
+}
+.normalButton:hover {
+	background-size: 100% 100%;
+	background-color: #67B7C5;
+	width: 65px;
+	height: 22px;
+	line-height: 15px;
+	text-align: center;
+	/* display: table-cell; */
+	font-weight: bold;
+	/* vertical-align: middle; */
+	margin: 0 auto;
+	color: white !important;
+	border-radius: 3px;
+	padding-top:5px;
+}
+.ui-paginator{
+	background:#9e9f9e !important;
+	color:white !important;
+}
+.smallIsolation {
+	height:175px !important;
+	overflow: -moz-scrollbars-vertical;
+	overflow-x: hidden;
+	overflow-y: scroll;
+}
+
+.bigIsolation{
+	height:350px !important;
+	overflow: -moz-scrollbars-vertical;
+	overflow-x: hidden;
+	overflow-y: scroll;
 }

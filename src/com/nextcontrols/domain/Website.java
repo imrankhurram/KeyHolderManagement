@@ -49,7 +49,19 @@ public class Website implements Serializable {
 		this.inactivityTimeout = inactivityTimeout;
 		this.countryCode = countryCode;
 	}
-
+	  public Website(int pID){
+	    	this.websiteId = pID;
+	    	this.name = "";
+	        this.alarmName= "";
+	        this.branchListName= "";
+	        this.imagePath = "";
+	        this.Logo = "";
+	 		this.inactivityTimeout = 5;
+	 		this.meterName = "";
+	     	this.hvacName = "";
+	     	this.fixtureName = "";
+	     	this.countryCode="GBR";
+		}
 	public int getWebsiteId() {
 		return websiteId;
 	}

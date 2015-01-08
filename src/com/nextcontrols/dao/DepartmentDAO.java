@@ -65,7 +65,7 @@ public class DepartmentDAO implements IDepartmentDAO, Serializable{
 		ResultSet result=null;
 //		System.out.println("list: "+branchCodeList.toString());
 		String query="SELECT dep_id,version,name,type,display_name,branch_code FROM `departments` WHERE branch_code IN " + branchCodeList.toString() +";";
-//		System.out.println("query: "+query);
+		System.out.println("query: "+query);
 		try {
 			dbConn=ConnectionBean.getInstance().getMYSQLConnection();
 			stmnt=dbConn.createStatement();

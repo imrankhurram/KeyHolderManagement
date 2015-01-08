@@ -47,4 +47,40 @@
 		<pattern value="/UsersAdmin" />
 		<view-id value="/UsersAdminPage.jsf" />
 	</url-mapping>
+	<url-mapping id="SiteList">
+		<pattern value="/SiteList" />
+		<view-id value="/SiteListPage.jsf" />
+	</url-mapping>
+	<url-mapping id="SensorList">
+		<pattern value="/SensorList" />
+		<view-id value="/SensorListPage.jsf" />
+	</url-mapping>
+	<url-mapping id="ModifyIsolationPage">
+		<pattern value="/ModifyIsolationPage" />
+		<view-id value="/ModifyIsolationPage.jsf" />
+	</url-mapping>
+	<url-mapping id="ModifyAlarmAssetIsolationPage">
+		<pattern value="/ModifyAlarmAssetIsolationPage" />
+		<view-id value="/ModifyAlarmAssetIsolationPage.jsf" />
+	</url-mapping>
+	<url-mapping id="IsolationsPage">
+		<pattern value="/IsolationsPage" />
+		<view-id value="/IsolationsPage.jsf" />
+	</url-mapping>
+	<url-mapping id="IsolationsFilterPage">
+		<pattern value="/IsolationsFilterPage" />
+		<view-id value="/IsolationsFilterPage.jsf" />
+	</url-mapping>
+	<url-mapping id="IsolateAlarmAssetPage">
+		<pattern value="/IsolateAlarmAssetPage" />
+		<view-id value="/IsolateAlarmAssetPage.jsf" />
+	</url-mapping>
+	<url-mapping id="AlarmAssetIsolationsPage">
+		<pattern value="/AlarmAssetIsolationsPage" />
+		<view-id value="/AlarmAssetIsolationsPage.jsf" />
+	</url-mapping>
+	<url-mapping id="AddIsolationPage">
+		<pattern value="/AddIsolationPage" />
+		<view-id value="/AddIsolationPage.jsf" />
+	</url-mapping>
 </pretty-config>

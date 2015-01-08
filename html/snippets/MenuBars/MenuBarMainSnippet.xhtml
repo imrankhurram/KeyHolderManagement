@@ -26,8 +26,7 @@
 
 						</h:commandLink></li>
 				</c:if>
-				<c:if
-					test="${not userInfo.areManyWebsites}">
+				<c:if test="${not userInfo.areManyWebsites}">
 					<c:if test="${userInfo.userType!='UserByPermissions'}">
 						<li><h:commandLink
 								action="#{keyholdersmenubar.actionUsersButton}"
@@ -37,6 +36,13 @@
 							</h:commandLink></li>
 					</c:if>
 				</c:if>
+				<!-- <c:if test="${not userInfo.areManyWebsites}"> -->
+					<li><h:commandLink
+							action="#{keyholdersmenubar.actionIsolationsButton}"
+							style="background: url('./images/Setting.png')"
+							styleClass="mainMenuButton" title="Isolations">
+						</h:commandLink></li>
+				<!-- </c:if>  -->
 				<li><h:commandLink action="#{keyholdersmenubar.actionLogout}"
 						style="background: url('./images/Logout.png')"
 						styleClass="mainMenuButton" title="Logout">

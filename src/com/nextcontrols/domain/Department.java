@@ -14,6 +14,7 @@ public class Department implements Serializable{
 	private String name;
 	private String type;
 	private String displayName;
+	private Site branch;
 	public Department(){}
 	
 	public Department(int dep_id,int version,String branch_code,String name,String type,String displayName){
@@ -71,6 +72,14 @@ public class Department implements Serializable{
 
 	public void setDisplayName(String displayName) {
 		this.displayName = displayName;
+	}
+
+	public Site getBranch() {
+		return branch;
+	}
+
+	public void setBranch(Site branch) {
+		this.branch = branch;
 	}
 	
 }

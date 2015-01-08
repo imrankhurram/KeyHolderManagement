@@ -78,7 +78,7 @@ public class MenuBarKeyholdersPageBean implements Serializable {
 		ExternalContext ectx = FacesContext.getCurrentInstance()
 				.getExternalContext();
 		HttpSession session = (HttpSession) ectx.getSession(false);
-		if((Boolean)session.getAttribute("usersOnly")){
+		if ((Boolean) session.getAttribute("usersOnly")) {
 			return "";
 		}
 		boolean areManyWebsites = (boolean) session
@@ -86,7 +86,7 @@ public class MenuBarKeyholdersPageBean implements Serializable {
 		if (areManyWebsites) {
 			return "WebsitesPage?faces-redirect=true";
 		} else
-			return "";//TODO back to tutela website
+			return "";// TODO back to tutela website
 	}
 
 	public String actionLogout() {
@@ -125,19 +125,41 @@ public class MenuBarKeyholdersPageBean implements Serializable {
 				session.setAttribute("users", userListPageBean);
 			}
 			return "CustomersPage.xhtml?faces-redirect=true";
-				
-		}
-		else{
-		if (userListPageBean != null) {
-			session.removeAttribute("users");
-			userListPageBean.initializeUsers();
-			session.setAttribute("users", userListPageBean);
+
 		} else {
-			userListPageBean = new UsersPageBean();
-			userListPageBean.initializeUsers();
-			session.setAttribute("users", userListPageBean);
+			if (userListPageBean != null) {
+				session.removeAttribute("users");
+				userListPageBean.initializeUsers();
+				session.setAttribute("users", userListPageBean);
+			} else {
+				userListPageBean = new UsersPageBean();
+				userListPageBean.initializeUsers();
+				session.setAttribute("users", userListPageBean);
+			}
+			return "UsersPage.xhtml?faces-redirect=true";
 		}
-		return "UsersPage.xhtml?faces-redirect=true";
+	}
+
+	public String actionIsolationsButton() {
+		ExternalContext ectx = FacesContext.getCurrentInstance()
+				.getExternalContext();
+		HttpSession session = (HttpSession) ectx.getSession(false);
+		SitePageBean sitePageBean = (SitePageBean) session
+				.getAttribute("sites");
+		if (sitePageBean == null) {
+			sitePageBean = new SitePageBean();
+			session.setAttribute("sites", sitePageBean);
 		}
+		return "SiteListPage.xhtml?faces-redirect=true";
+	}
+
+	public String actionIsolationsFilterButton() {
+		return "IsolationsFilterPage.xhtml?faces-redirect=true";
+	}
+	public String actionSensorsBack() {
+		return "SiteListPage?faces-redirect=true";
+	}
+	public String actionAlarmAssetIsolationsBack() {
+		return "SensorListPage?faces-redirect=true";
 	}
 }

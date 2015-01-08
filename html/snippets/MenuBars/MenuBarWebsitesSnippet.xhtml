@@ -17,14 +17,19 @@
 					</h:commandLink></li>
 				<!-- <c:if
 					test="${(userInfo.areManyWebsites=='WebAdmin') || (userInfo.userType=='WebReadOnly')}"> -->
-					<c:if test="${userInfo.userType!='UserByPermissions'}">
-						<li><h:commandLink
-								action="#{keyholdersmenubar.actionUsersButton}"
-								style="background: url('./images/UsersIcon.png')"
-								styleClass="mainMenuButton" title="Users">
+				<c:if test="${userInfo.userType!='UserByPermissions'}">
+					<li><h:commandLink
+							action="#{keyholdersmenubar.actionUsersButton}"
+							style="background: url('./images/UsersIcon.png')"
+							styleClass="mainMenuButton" title="Users">
 
-							</h:commandLink></li>
-					</c:if>
+						</h:commandLink></li>
+				</c:if>
+				<!-- <li><h:commandLink
+						action="#{keyholdersmenubar.actionIsolationsButton}"
+						style="background: url('./images/Setting.png')"
+						styleClass="mainMenuButton" title="Isolations">
+					</h:commandLink></li> -->
 				<!-- </c:if> -->
 				<li><h:commandLink action="#{keyholdersmenubar.actionLogout}"
 						style="background: url('./images/Logout.png')"

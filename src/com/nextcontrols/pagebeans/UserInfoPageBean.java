@@ -69,6 +69,7 @@ public class UserInfoPageBean implements Serializable {
 //	private int allAlarmsSize;
 //	private int usersOnlineCount;
 	private boolean areManyWebsites;
+	private boolean usersOnly;
 
 	// //////////////////////////
 
@@ -337,7 +338,7 @@ public class UserInfoPageBean implements Serializable {
 	 * @return
 	 */
 	public String processLogin() {
-//		return processLoginUsers();//for only users management system
+//		return processLoginUsers();//for only users management system standalone app
 		return processLoginKeyholders(); //for full keyholders apps with users management system
 	}
 
@@ -351,6 +352,7 @@ public class UserInfoPageBean implements Serializable {
 			this.setLastName(currentUser.getLastName());
 			this.setUserType(currentUser.getUserWebType());
 			this.setUserBureauType(currentUser.getUserBureauType());
+			this.setUsersOnly(true);
 			this.dbInsertLogin();
 			ExternalContext ectx = FacesContext.getCurrentInstance()
 					.getExternalContext();
@@ -405,6 +407,7 @@ public class UserInfoPageBean implements Serializable {
 			this.setLastName(currentUser.getLastName());
 			this.setUserType(currentUser.getUserWebType());
 			this.setUserBureauType(currentUser.getUserBureauType());
+			this.setUsersOnly(false);
 			this.dbInsertLogin();
 			ExternalContext ectx = FacesContext.getCurrentInstance()
 					.getExternalContext();
@@ -753,6 +756,14 @@ public class UserInfoPageBean implements Serializable {
 		return facesMessage;
 	}
 
+	public boolean isUsersOnly() {
+		return usersOnly;
+	}
+
+	public void setUsersOnly(boolean usersOnly) {
+		this.usersOnly = usersOnly;
+	}
+
 //	public void setFlashFlag(boolean flashFlag) {
 //		this.flashFlag = flashFlag;
 //	}
@@ -760,4 +771,5 @@ public class UserInfoPageBean implements Serializable {
 //	public boolean isFlashFlag() {
 //		return flashFlag;
 //	}
+	
 }

@@ -22,7 +22,9 @@ public class WebsitesPageBean implements Serializable {
 	 */
 	private static final long serialVersionUID = 1L;
 	private List<Website> websitesList;
-//	private Website selectedWebsite;
+	private int selectedWebsiteId;
+
+	// private Website selectedWebsite;
 
 	public WebsitesPageBean() {
 		websitesList = new ArrayList<Website>();
@@ -35,17 +37,18 @@ public class WebsitesPageBean implements Serializable {
 		HttpSession session = (HttpSession) ectx.getSession(false);
 		websitesList = WebsiteDAO.getInstance().getAssignedWebsites(
 				(int) session.getAttribute("userId"));
-		
-//		for (Website website : websitesList) {
-//			System.out.println("website id: " + website.getWebsiteId()
-//					+ "--website name: " + website.getName());
-//		}
+
+		// for (Website website : websitesList) {
+		// System.out.println("website id: " + website.getWebsiteId()
+		// + "--website name: " + website.getName());
+		// }
 	}
 
 	public String showDepartments(int websiteId) {
 		ExternalContext ectx = FacesContext.getCurrentInstance()
 				.getExternalContext();
 		HttpSession session = (HttpSession) ectx.getSession(false);
+		this.selectedWebsiteId = websiteId;
 		DepartmentsPageBean departmentsPageBean = (DepartmentsPageBean) session
 				.getAttribute("departments");
 		if (departmentsPageBean != null) {
@@ -70,6 +73,14 @@ public class WebsitesPageBean implements Serializable {
 
 	public void setWebsitesList(List<Website> websitesList) {
 		this.websitesList = websitesList;
+	}
+
+	public int getSelectedWebsiteId() {
+		return selectedWebsiteId;
+	}
+
+	public void setSelectedWebsiteId(int selectedWebsiteId) {
+		this.selectedWebsiteId = selectedWebsiteId;
 	}
 
 }

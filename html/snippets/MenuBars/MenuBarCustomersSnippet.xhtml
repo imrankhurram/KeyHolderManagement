@@ -15,27 +15,29 @@
 						<!-- TODO action back to tutela website -->
 
 					</h:commandLink></li>
-				<c:choose>
-					<c:when
-						test="${(userInfo.userType=='WebAdmin') || (userInfo.userType=='WebReadOnly')}">
-						<li><h:commandLink
-								style="background: url('./images/BackButton.png')"
-								action="#{keyholdersmenubar.actionDepartmentsBack}"
-								styleClass="mainMenuButton" title="Back to Websites">
-								<!-- TODO action back to tutela website -->
+				<c:if test="${not userInfo.usersOnly}">
+					<c:choose>
+						<c:when
+							test="${(userInfo.userType=='WebAdmin') || (userInfo.userType=='WebReadOnly')}">
+							<li><h:commandLink
+									style="background: url('./images/BackButton.png')"
+									action="#{keyholdersmenubar.actionDepartmentsBack}"
+									styleClass="mainMenuButton" title="Back to Websites">
+									<!-- TODO action back to tutela website -->
 
-							</h:commandLink></li>
+								</h:commandLink></li>
 
-					</c:when>
-					<c:otherwise>
-						<li><h:commandLink
-								action="#{keyholdersmenubar.actionKeyholdersBack}"
-								style="background: url('./images/BackButton.png')"
-								styleClass="mainMenuButton" title="Back to Departments">
+						</c:when>
+						<c:otherwise>
+							<li><h:commandLink
+									action="#{keyholdersmenubar.actionKeyholdersBack}"
+									style="background: url('./images/BackButton.png')"
+									styleClass="mainMenuButton" title="Back to Departments">
 
-							</h:commandLink></li>
-					</c:otherwise>
-				</c:choose>
+								</h:commandLink></li>
+						</c:otherwise>
+					</c:choose>
+				</c:if>
 				<li><h:commandLink action="#{keyholdersmenubar.actionLogout}"
 						style="background: url('./images/Logout.png')"
 						styleClass="mainMenuButton" title="Logout">
