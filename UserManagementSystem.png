@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<class-diagram version="1.1.6" icons="true" always-add-relationships="false" generalizations="true" realizations="true" 
+  associations="true" dependencies="false" nesting-relationships="true">  
+  <class id="1" language="java" name="com.nextcontrols.pagebeans.UsersPageBean" project="KeyHolderManagement" 
+    file="/KeyHolderManagement/src/com/nextcontrols/pagebeans/UsersPageBean.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="162" y="61"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
+      visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <interface id="2" language="java" name="com.nextcontrols.dao.IUserDAO" project="KeyHolderManagement" 
+    file="/KeyHolderManagement/src/com/nextcontrols/dao/IUserDAO.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="374" width="241" x="569" y="-280"/>    
+    <display autosize="false" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
+      visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </interface>  
+  <class id="3" language="java" name="com.nextcontrols.dao.UserDAO" project="KeyHolderManagement" 
+    file="/KeyHolderManagement/src/com/nextcontrols/dao/UserDAO.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="520" width="263" x="581" y="270"/>    
+    <display autosize="false" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
+      visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="4" language="java" name="com.nextcontrols.pagebeans.UserInfoPageBean" project="KeyHolderManagement" 
+    file="/KeyHolderManagement/src/com/nextcontrols/pagebeans/UserInfoPageBean.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="442" y="290"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
+      visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="5" language="java" name="com.nextcontrols.dao.ConnectionBean" project="KeyHolderManagement" 
+    file="/KeyHolderManagement/src/com/nextcontrols/dao/ConnectionBean.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="685" y="938"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
+      visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <interface id="6" language="java" name="com.nextcontrols.dao.IUserAuditDAO" project="KeyHolderManagement" 
+    file="/KeyHolderManagement/src/com/nextcontrols/dao/IUserAuditDAO.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="171" width="319" x="844" y="-281"/>    
+    <display autosize="false" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
+      visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </interface>  
+  <class id="7" language="java" name="com.nextcontrols.dao.UserAuditDAO" project="KeyHolderManagement" 
+    file="/KeyHolderManagement/src/com/nextcontrols/dao/UserAuditDAO.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="279" width="309" x="905" y="-37"/>    
+    <display autosize="false" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
+      visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="8" language="java" name="com.nextcontrols.pagebeans.UserActivityPageBean" project="KeyHolderManagement" 
+    file="/KeyHolderManagement/src/com/nextcontrols/pagebeans/UserActivityPageBean.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="1001" y="462"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
+      visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="9" language="java" name="com.nextcontrols.domain.UserAudit" project="KeyHolderManagement" 
+    file="/KeyHolderManagement/src/com/nextcontrols/domain/UserAudit.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="531" width="181" x="1163" y="301"/>    
+    <display autosize="false" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
+      visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="10" language="java" name="com.nextcontrols.domain.User" project="KeyHolderManagement" 
+    file="/KeyHolderManagement/src/com/nextcontrols/domain/User.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="878" width="305" x="29" y="484"/>    
+    <display autosize="false" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
+      visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <realization id="11">    
+    <end type="SOURCE" refId="3"/>    
+    <end type="TARGET" refId="2"/>  
+  </realization>  
+  <dependency id="12">    
+    <end type="SOURCE" refId="4"/>    
+    <end type="TARGET" refId="3"/>  
+  </dependency>  
+  <dependency id="13">    
+    <end type="SOURCE" refId="4"/>    
+    <end type="TARGET" refId="1"/>  
+  </dependency>  
+  <dependency id="14">    
+    <bendpoint x="1156" y="415"/>    
+    <bendpoint x="1128" y="655"/>    
+    <end type="SOURCE" refId="7"/>    
+    <end type="TARGET" refId="5"/>  
+  </dependency>  
+  <association id="15">    
+    <end type="SOURCE" refId="8" navigable="false">      
+      <attribute id="16" name="userActivities">        
+        <position height="18" width="74" x="1093" y="491"/>      
+      </attribute>      
+      <multiplicity id="17" minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" refId="9" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <dependency id="18">    
+    <bendpoint x="919" y="217"/>    
+    <bendpoint x="664" y="214"/>    
+    <end type="SOURCE" refId="8"/>    
+    <end type="TARGET" refId="4"/>  
+  </dependency>  
+  <dependency id="19">    
+    <end type="SOURCE" refId="7"/>    
+    <end type="TARGET" refId="2"/>  
+  </dependency>  
+  <association id="20">    
+    <bendpoint x="317" y="471"/>    
+    <end type="SOURCE" refId="1" navigable="false">      
+      <attribute id="21" name="usersList">        
+        <position height="18" width="53" x="302" y="432"/>      
+      </attribute>      
+      <multiplicity id="22" minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" refId="10" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="23">    
+    <end type="SOURCE" refId="3" navigable="false">      
+      <attribute id="24" name="instance"/>      
+      <multiplicity id="25" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="2" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <dependency id="26">    
+    <end type="SOURCE" refId="8"/>    
+    <end type="TARGET" refId="2"/>  
+  </dependency>  
+  <association id="27">    
+    <bendpoint x="276" y="462"/>    
+    <end type="SOURCE" refId="1" navigable="false">      
+      <attribute id="28" name="selectedUser"/>      
+      <multiplicity id="29" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="10" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <dependency id="30">    
+    <end type="SOURCE" refId="8"/>    
+    <end type="TARGET" refId="3"/>  
+  </dependency>  
+  <dependency id="31">    
+    <bendpoint x="848" y="167"/>    
+    <bendpoint x="879" y="-26"/>    
+    <end type="SOURCE" refId="8"/>    
+    <end type="TARGET" refId="6"/>  
+  </dependency>  
+  <association id="32">    
+    <end type="SOURCE" refId="1" navigable="false">      
+      <attribute id="33" name="newUser"/>      
+      <multiplicity id="34" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="10" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <dependency id="35">    
+    <end type="SOURCE" refId="8"/>    
+    <end type="TARGET" refId="7"/>  
+  </dependency>  
+  <realization id="36">    
+    <bendpoint x="928" y="-68"/>    
+    <end type="SOURCE" refId="7"/>    
+    <end type="TARGET" refId="6"/>  
+  </realization>  
+  <association id="37">    
+    <bendpoint x="1142" y="-63"/>    
+    <end type="SOURCE" refId="7" navigable="false">      
+      <attribute id="38" name="instance"/>      
+      <multiplicity id="39" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="6" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <dependency id="40">    
+    <end type="SOURCE" refId="4"/>    
+    <end type="TARGET" refId="2"/>  
+  </dependency>  
+  <dependency id="41">    
+    <end type="SOURCE" refId="7"/>    
+    <end type="TARGET" refId="3"/>  
+  </dependency>  
+  <association id="42">    
+    <bendpoint x="43" y="450"/>    
+    <end type="SOURCE" refId="1" navigable="false">      
+      <attribute id="43" name="filteredUsersList"/>      
+      <multiplicity id="44" minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" refId="10" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <dependency id="45">    
+    <end type="SOURCE" refId="7"/>    
+    <end type="TARGET" refId="9"/>  
+  </dependency>  
+  <association id="46">    
+    <end type="SOURCE" refId="5" navigable="false">      
+      <attribute id="47" name="connBean"/>      
+      <multiplicity id="48" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="5" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <dependency id="49">    
+    <end type="SOURCE" refId="1"/>    
+    <end type="TARGET" refId="7"/>  
+  </dependency>  
+  <classifier-display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+    accessors="true" visibility="true">    
+    <attributes public="true" package="true" protected="true" private="true" static="true"/>    
+    <operations public="true" package="true" protected="true" private="true" static="true"/>  
+  </classifier-display>  
+  <association-display labels="true" multiplicity="true"/>
+</class-diagram>

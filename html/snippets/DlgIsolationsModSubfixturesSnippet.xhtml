@@ -1,0 +1,43 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+xmlns:ui="http://java.sun.com/jsf/facelets"
+xmlns:h="http://java.sun.com/jsf/html"
+xmlns:f="http://java.sun.com/jsf/core"
+xmlns:p="http://primefaces.org/ui">
+
+<p:dialog id="modIsolationsSubfixturesDlg" widgetVar="modIsolationAssetSubfix" modal="false" position="center" appendTo="@(body)" width="525" closable="true">
+<h:form id="modIsolationsSubfixtures">
+	<h:panelGrid columns="1" style="margin:5px !important;">
+		<p:dataTable id="tbIsolationsSubfixtures" value="#{isolations.chosenIsolatedAlmAsset.subfixtureIdList}" var="assetSearchString" style="overflow: -moz-scrollbars-vertical;overflow-x: hidden;overflow-y: auto !important;max-height:325px !important;">
+   		 <f:facet name="header">
+   		 	AlarmAsset Search String for Asset #{isolations.chosenIsolatedAlmAsset.fixtureName}
+   		 </f:facet>
+   		 <p:column style="width:100px;">
+     		<f:facet name="header">
+        		<h:outputText value="Controller Search"/>
+     		</f:facet>
+     		<h:outputText value="#{assetSearchString.controllerSearch}"/>       
+   		 </p:column>
+   		 <p:column style="width:100px;">
+     		<f:facet name="header">
+        		<h:outputText value="Subfixture"/>
+     		</f:facet>
+     		<h:outputText value="#{assetSearchString.subfixture}"/>       
+   		 </p:column>
+   		 <p:column style="width:50px;">
+     		<f:facet name="header">
+        		<h:outputText value="Isolate"/>
+     		</f:facet>
+     		<h:selectBooleanCheckbox id="isolateSubfix" value="#{assetSearchString.isolate}">
+						<p:ajax update="isolateSubfix" event="change"/> 
+    		</h:selectBooleanCheckbox>      
+   		 </p:column>
+   		</p:dataTable>
+	</h:panelGrid>
+	<h:panelGrid columns="2" style="margin:5px !important;">
+	<p:commandButton value="Add" update=":modIsolationFrm:tbChooseAssets" actionListener="#{isolations.chosenIsolatedAlmAsset.addSubfixtures}" oncomplete="PF('modIsolationAssetSubfix').hide()" styleClass="dialogButton"/>
+   	<p:commandButton value="Clear"  actionListener="#{isolations.chosenIsolatedAlmAsset.clearSubfixChoiceList}" oncomplete="PF('modIsolationAssetSubfix').hide()" update=":modIsolationFrm:tbChooseAssets" styleClass="dialogButton"/>
+	</h:panelGrid>                                                                                                   
+	                                                           
+</h:form> 
+</p:dialog>
+</ui:composition>

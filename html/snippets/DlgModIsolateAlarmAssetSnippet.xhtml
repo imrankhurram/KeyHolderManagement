@@ -1,0 +1,219 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+	<p:dialog id="modIsolationsAlarmAssetDlg"
+		widgetVar="modIsolationAlarmAssetDlg" header="Modify Alarm Isolation"
+		modal="false" position="center" appendTo="@(body)" width="525"
+		closable="true">
+		<h:form id="modIsolationFrm">
+			<p:panel id="pnl" style="background:none;">
+				<p:dataTable id="tbChooseAssets" var="almasset" dynamic="false"
+					value="#{assetgroup.isolationAlarmAsset}">
+					<p:column style="width:115px;">
+						<f:facet name="header">
+							<h:outputText value="Name" />
+						</f:facet>
+						<h:outputText value="#{almasset.fixtureName}" id="fixtureName">
+							<p:tooltip value="#{almasset.fixtureName}" for="fixtureName" />
+						</h:outputText>
+					</p:column>
+					<p:column style="width:120px;">
+						<f:facet name="header">
+							<h:outputText value="Type" />
+						</f:facet>
+						<h:outputText value="#{almasset.fixtureType}" id="fixtureType">
+							<p:tooltip value="#{almasset.fixtureType}" for="fixtureType" />
+						</h:outputText>
+					</p:column>
+				</p:dataTable>
+				<h:panelGrid columns="2" style="margin:5px !important;">
+
+					<!-- <h:outputText value="Alarm Asset: " />
+					<h:outputText value="#{assetgroup.isolationAlarmAsset.fixtureName}"
+						style="font-weight:bold;" /> -->
+					<h:outputText value="Isolation Type: *" />
+					<h:selectOneMenu id="selectIsolationType"
+						value="#{assetgroup.chosenIsolation.isolationType}">
+						<f:selectItem itemValue="Once" itemLabel="Once" />
+						<f:selectItem itemValue="Weekly" itemLabel="Weekly" />
+						<p:ajax actionListener="#{assetgroup.chooseTypeChosen}"
+							event="change" update="modIsolationFrm"
+							process="selectIsolationType" />
+					</h:selectOneMenu>
+					<h:outputText id="strDateLabel" value="Start Date: *"
+						rendered="#{assetgroup.chosenIsolation.isolationType != 'Once'}" />
+					<p:calendar id="startDate"
+						value="#{assetgroup.chosenIsolation.startTime}" mode="popup"
+						locale="en" onSelectUpdate="endDateCal,endDateCalOperator"
+						pattern="dd-MM-yyyy" startWeekday="1" monthFormat="short"
+						showWeekdays="false" required="true"
+						requiredMessage="Start date is required"
+						rendered="#{assetgroup.chosenIsolation.isolationType != 'Once'}" />
+
+				</h:panelGrid>
+				<div id="test" style="display: inline-block;">
+					<h:panelGrid id="startEndHours" columns="4"
+						rendered="#{assetgroup.chosenIsolation.isolationType != 'Once'}">
+						<h:outputText value="Start Time: *" />
+						<h:selectOneMenu value="#{assetgroup.startingHour}">
+							<f:selectItems value="#{assetgroup.hours}" />
+						</h:selectOneMenu>
+						<h:outputText value=" : " />
+						<h:selectOneMenu value="#{assetgroup.startingMinutes}">
+							<f:selectItems value="#{assetgroup.minutes}" />
+						</h:selectOneMenu>
+
+						<h:outputText value="End Time: *"
+							rendered="#{assetgroup.chosenIsolation.isolationType != 'Permanent'}" />
+						<h:selectOneMenu value="#{assetgroup.endHour}"
+							rendered="#{assetgroup.chosenIsolation.isolationType != 'Permanent'}">
+							<f:selectItems value="#{assetgroup.endHours}" />
+						</h:selectOneMenu>
+						<h:outputText value=" : "
+							rendered="#{assetgroup.chosenIsolation.isolationType != 'Permanent'}" />
+						<h:selectOneMenu value="#{assetgroup.endMinutes}"
+							rendered="#{assetgroup.chosenIsolation.isolationType != 'Permanent'}">
+							<f:selectItems value="#{assetgroup.minutes}" />
+						</h:selectOneMenu>
+					</h:panelGrid>
+					<h:panelGrid id="endDate" columns="2"
+						rendered="#{userInfo.userBureauType=='Admin' || userInfo.userBureauType=='Supervisor'}">
+						<h:outputText value="End Date: "
+							rendered="#{assetgroup.chosenIsolation.isolationType == 'Daily'}" />
+						<p:calendar value="#{assetgroup.chosenIsolation.endTime}"
+							mode="popup" locale="en" pattern="dd-MM-yyyy" startWeekday="1"
+							monthFormat="short" showWeekdays="false" required="false"
+							mindate="#{assetgroup.chosenIsolation.startTime}"
+							rendered="#{assetgroup.chosenIsolation.isolationType == 'Daily'}" />
+					</h:panelGrid>
+					<h:panelGrid id="endDateOp" columns="2"
+						rendered="#{userInfo.userBureauType=='Operator'}">
+						<h:outputText value="End Date: "
+							rendered="#{assetgroup.chosenIsolation.isolationType == 'Daily'}" />
+						<p:calendar value="#{assetgroup.chosenIsolation.endTime}"
+							mode="popup" locale="en" pattern="dd-MM-yyyy" startWeekday="1"
+							monthFormat="short" showWeekdays="false" required="false"
+							mindate="#{assetgroup.chosenIsolation.startTime}"
+							maxdate="#{assetgroup.maxDate}"
+							rendered="#{assetgroup.chosenIsolation.isolationType == 'Daily'}" />
+					</h:panelGrid>
+
+					<h:panelGrid id="dayOfWeek" columns="2"
+						rendered="#{assetgroup.chosenIsolation.isolationType == 'Weekly'}">
+						<h:outputText value="Day of Week: "
+							rendered="#{assetgroup.chosenIsolation.isolationType == 'Weekly'}" />
+						<h:selectOneMenu id="weekday"
+							value="#{assetgroup.chosenIsolation.dayOfWeek}"
+							rendered="#{assetgroup.chosenIsolation.isolationType == 'Weekly'}">
+							<f:selectItems value="#{assetgroup.weekdays}" />
+						</h:selectOneMenu>
+					</h:panelGrid>
+
+					<h:panelGrid id="endDateGrid" columns="5"
+						rendered="#{userInfo.userBureauType=='Admin' || userInfo.userBureauType=='Supervisor'}">
+						<h:outputText value="Start Date: *"
+							rendered="#{assetgroup.chosenIsolation.isolationType == 'Once'}" />
+						<p:calendar value="#{assetgroup.chosenIsolation.startTime}"
+							locale="en" mode="popup" onSelectUpdate="endDateCal"
+							pattern="dd-MM-yyyy" startWeekday="1" monthFormat="short"
+							showWeekdays="false" required="true"
+							requiredMessage="Start date is required"
+							rendered="#{assetgroup.chosenIsolation.isolationType == 'Once'}" />
+						<h:selectOneMenu value="#{assetgroup.startingHour}"
+							rendered="#{assetgroup.chosenIsolation.isolationType == 'Once'}">
+							<f:selectItems value="#{assetgroup.hours}" />
+						</h:selectOneMenu>
+						<h:outputText value=" : "
+							rendered="#{assetgroup.chosenIsolation.isolationType == 'Once'}" />
+						<h:selectOneMenu value="#{assetgroup.startingMinutes}"
+							rendered="#{assetgroup.chosenIsolation.isolationType == 'Once'}">
+							<f:selectItems value="#{assetgroup.minutes}" />
+						</h:selectOneMenu>
+
+						<h:outputText value="End Date: *"
+							rendered="#{assetgroup.chosenIsolation.isolationType == 'Once'}" />
+						<p:calendar id="endDateCal"
+							value="#{assetgroup.chosenIsolation.endTime}" locale="en"
+							mode="popup" pattern="dd-MM-yyyy" startWeekday="1"
+							monthFormat="short" showWeekdays="false" required="true"
+							requiredMessage="End date is required"
+							mindate="#{assetgroup.chosenIsolation.startTime}"
+							rendered="#{assetgroup.chosenIsolation.isolationType == 'Once'}" />
+						<h:selectOneMenu value="#{assetgroup.endHour}"
+							rendered="#{assetgroup.chosenIsolation.isolationType == 'Once'}">
+							<f:selectItems value="#{assetgroup.endHours}" />
+						</h:selectOneMenu>
+						<h:outputText value=" : "
+							rendered="#{assetgroup.chosenIsolation.isolationType == 'Once'}" />
+						<h:selectOneMenu value="#{assetgroup.endMinutes}"
+							rendered="#{assetgroup.chosenIsolation.isolationType == 'Once'}">
+							<f:selectItems value="#{assetgroup.minutes}" />
+						</h:selectOneMenu>
+					</h:panelGrid>
+
+					<h:panelGrid id="endDateGridOperator" columns="5"
+						rendered="#{userInfo.userBureauType=='Operator'}">
+						<h:outputText value="Start Date: *"
+							rendered="#{assetgroup.chosenIsolation.isolationType == 'Once'}" />
+						<p:calendar id="startDateCalOperator"
+							value="#{assetgroup.chosenIsolation.startTime}" mode="popup"
+							locale="en" onSelectUpdate="endDateCalOperator"
+							pattern="dd-MM-yyyy" startWeekday="1" monthFormat="short"
+							showWeekdays="false" required="true"
+							requiredMessage="Start date is required"
+							rendered="#{assetgroup.chosenIsolation.isolationType == 'Once'}" />
+
+						<h:selectOneMenu value="#{assetgroup.startingHour}"
+							rendered="#{assetgroup.chosenIsolation.isolationType == 'Once'}">
+							<f:selectItems value="#{assetgroup.hours}" />
+						</h:selectOneMenu>
+						<h:outputText value=" : "
+							rendered="#{assetgroup.chosenIsolation.isolationType == 'Once'}" />
+						<h:selectOneMenu value="#{assetgroup.startingMinutes}"
+							rendered="#{assetgroup.chosenIsolation.isolationType == 'Once'}">
+							<f:selectItems value="#{assetgroup.minutes}" />
+						</h:selectOneMenu>
+
+						<h:outputText value="End Date: *"
+							rendered="#{assetgroup.chosenIsolation.isolationType == 'Once'}" />
+						<p:calendar id="endDateCalOperator"
+							value="#{assetgroup.chosenIsolation.endTime}" mode="popup"
+							locale="en" pattern="dd-MM-yyyy" startWeekday="1"
+							monthFormat="short" showWeekdays="false" required="true"
+							requiredMessage="End date is required"
+							mindate="#{assetgroup.chosenIsolation.startTime}"
+							maxdate="#{assetgroup.maxDate}"
+							rendered="#{assetgroup.chosenIsolation.isolationType == 'Once'}" />
+						<h:selectOneMenu value="#{assetgroup.endHour}"
+							rendered="#{assetgroup.chosenIsolation.isolationType == 'Once'}">
+							<f:selectItems value="#{assetgroup.endHours}" />
+						</h:selectOneMenu>
+						<h:outputText value=" : "
+							rendered="#{assetgroup.chosenIsolation.isolationType == 'Once'}" />
+						<h:selectOneMenu value="#{assetgroup.endMinutes}"
+							rendered="#{assetgroup.chosenIsolation.isolationType == 'Once'}">
+							<f:selectItems value="#{assetgroup.minutes}" />
+						</h:selectOneMenu>
+					</h:panelGrid>
+				</div>
+				<br />
+				<h:outputText
+					value="Note: Start and end date, time are in Site's local timezone"
+					styleClass="visibleText" />
+			</p:panel>
+			<table>
+				<tr>
+					<td><p:commandButton value="Modify"
+							action="#{assetgroup.modAlarmIsolation}"
+							styleClass="dialogButton" ajax="false" /></td>
+					<td><p:commandButton value="Cancel" immediate="true"
+							action="AlarmAssetIsolationsPage?faces-redirect=true"
+							styleClass="dialogButton" /></td>
+				</tr>
+			</table>
+		</h:form>
+	</p:dialog>
+</ui:composition>

@@ -1,0 +1,226 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	template="MainTemplate.xhtml">
+
+
+	<ui:define name="contentPanel">
+		<div id="Wrapper">
+			<ui:include src="./snippets/MenuBars/MenuBarAlarmAssetIsolationsSnippet.xhtml" />
+			<ui:include src="./snippets/DlgAlarmAssetIsolationDetails.xhtml" />
+			<ui:include src="./snippets/DlgIsolateAlarmAssetSnippet.xhtml" />
+			<ui:include src="./snippets/DlgModIsolateAlarmAssetSnippet.xhtml" />
+
+			<h:form id="frmAlarmAssetIsolationsPage">
+				<div class="quarterminus30" style="margin: 0 10px 5px; width: 100%">
+					<div class="userPanel" style="float: left">
+						User:
+						<p:outputLabel value="#{userInfo.userName}"
+							style="font-size:15px !important; font-weight:bold !important;" />
+					</div>
+					<div style="float: right;">
+						<table>
+							<tr>
+								<td align="center"><h:outputText value="Red - active"
+										style="color:#FF0000" /></td>
+								<td align="center"><h:outputText value="Black - inactive"
+										style="color:#000000" /></td>
+								<td align="center"><h:outputText value="Blue - disabled"
+										style="color:#0066FF" /></td>
+								<td align="center"><h:outputText value="Grey - expired"
+										style="color:#686868" /></td>
+							</tr>
+						</table>
+					</div>
+				</div>
+
+				<div class="" style="float: left; padding-left: 10px; width: 100%;">
+					<p:messages showDetail="false" id="msg" />
+					<h3>
+						<b>Alarm Isolations</b>
+					</h3>
+
+					<p:dataTable id="tbIsolationList" var="isolated" paginator="true"
+						paginatorPosition="top"
+						paginatorTemplate="{PreviousPageLink} {CurrentPageReport}
+					{NextPageLink}"
+						rows="10" scrollable="true" scrollHeight="205"
+						rowStyleClass="#{isolated.colour}"
+						value="#{assetgroup.selectedIsolations}" style="padding:0px;"
+						rowKey="#{isolated.isolationId}" selectionMode="single"
+						selection="#{assetgroup.chosenIsolation}">
+						<p:column>
+							<f:facet name="header">
+								<h:outputText value="Type" />
+							</f:facet>
+							<h:outputText value="#{isolated.isolationType}" />
+						</p:column>
+
+						<p:column>
+							<f:facet name="header">
+								<h:outputText value="Name" />
+							</f:facet>
+							<h:outputText value="#{isolated.nameMore}" />
+						</p:column>
+						<p:column>
+							<f:facet name="header">
+								<h:outputText value="Site Contact" />
+							</f:facet>
+							<h:outputText value="#{isolated.name}" />
+						</p:column>
+						<p:column>
+							<f:facet name="header">
+								<h:outputText value="Created By" />
+							</f:facet>
+							<h:outputText value="#{isolated.userName}" />
+						</p:column>
+						<p:column>
+							<f:facet name="header">
+								<h:outputText value="Start Time" />
+							</f:facet>
+							<h:outputText value="#{isolated.startDate}" />
+						</p:column>
+						<p:column>
+							<f:facet name="header">
+								<h:outputText value="End Time" />
+							</f:facet>
+							<h:outputText value="#{isolated.endDate}" />
+						</p:column>
+						<p:column>
+							<f:facet name="header">
+								<h:outputText value="Start Hour" />
+							</f:facet>
+							<h:outputText value="#{isolated.startHour}" />
+						</p:column>
+						<p:column>
+							<f:facet name="header">
+								<h:outputText value="End Hour" />
+							</f:facet>
+							<h:outputText value="#{isolated.endHour}" />
+						</p:column>
+						<p:column>
+							<f:facet name="header">
+								<h:outputText value="Activity" />
+							</f:facet>
+							<p:commandLink value="Enable"
+								rendered="#{isolated.enabled==false}"
+								action="#{assetgroup.enableIsolation}">
+								<f:setPropertyActionListener
+									target="#{assetgroup.tempIsolation}" value="#{isolated}" />
+							</p:commandLink>
+							<p:commandLink value="Disable"
+								rendered="#{isolated.enabled==true}"
+								action="#{assetgroup.disableIsolation}">
+								<f:setPropertyActionListener
+									target="#{assetgroup.tempIsolation}" value="#{isolated}" />
+							</p:commandLink>
+						</p:column>
+						 <p:column>
+
+							<f:facet name="header">
+								<h:outputText value="Details" />
+							</f:facet>
+							<p:commandLink value="View" action="#{assetgroup.viewDetails}"
+								update=":viewIsolationDetailsFrm"
+								oncomplete="PF('viewIsolationDetailsDialog').show()">
+								<f:setPropertyActionListener
+									target="#{assetgroup.tempIsolation}" value="#{isolated}" />
+							</p:commandLink>
+						</p:column> 
+					 	<p:column>
+							<f:facet name="header">
+								<h:selectOneMenu id="status"
+									value="#{assetgroup.selectedStatus}" style="width:60px;">
+									<f:selectItems value="#{assetgroup.statusList}" />
+									<p:ajax event="change"
+										listener="#{assetgroup.updateStatusChanged}"
+										update="tbIsolationList" process="status" />
+								</h:selectOneMenu>
+							</f:facet>
+							<h:outputText value="#{assetgroup.selectedStatus}"/>
+						</p:column> 
+						<!-- 	<f:facet name="footer">
+  				<p:commandButton id="hidden" style="width:0px !important;height:0px !important;border:none !important;background:none !important;"/>
+		   		<p:toolbar style="border-radius:0px !important;-webkit-border-radius:0px !important;-moz-border-radius:0px !important;">
+		   		<p:toolbarGroup align="left">
+		  		<p:commandButton id="addGlobalIsolation" value="Add Isolation" actionListener="#{globalIsolations.addPreProcess}" action="AddGlobalIsolationPage?faces-redirect=true" rendered="#{globalIsolations.selectedDepartment != '-1' &amp;&amp;  globalIsolations.selectedDepartment != '0'}"/>
+				<p:commandButton id="modGlobalIsolation" value="Modify Isolation" update=":globalIsolationsFrm:msg" actionListener="#{globalIsolations.modificationPreProcess}" action="#{globalIsolations.modifyAlmIsolationPage}" rendered="#{userInfo.userBureauType=='Admin' || userInfo.userBureauType=='Supervisor'}"/>
+		  		Added by Nayyab new Command button to delete the isolations
+		  		<p:commandButton id="deleteButtonNormal" value="Delete Isolation" rendered="#{userInfo.userBureauType=='Admin' || userInfo.userBureauType=='Supervisor'}"  onclick="confirmDelDlg.show()" type="button"/>
+	  			</p:toolbarGroup>
+		  		</p:toolbar>
+		  		<p:toolbar>
+		   		<p:toolbarGroup align="left">
+		  		<p:commandButton value="CSV" onstart= "CSVDownloadDialog.show();" style="color:#A8A6A8!important;">
+		  		 <f:setPropertyActionListener target="#{csvexp.tabColumnsWithSize}" value="#{globalIsolations.exptrColNamesWithSize}"/>   
+				 <f:setPropertyActionListener target="#{csvexp.columnValues}" value="#{globalIsolations.exptrColumnValues}"/>       
+                 <f:setPropertyActionListener target="#{csvexp.fileName}" value="#{globalIsolations.exptrFileName}"/>   
+                 <f:setPropertyActionListener target="#{csvexp.redirectTo}" value="GlobalIsolationsPage?faces-redirect=true"/>	
+				</p:commandButton>
+				<p:commandButton value="PDF"  onstart= "pdfDownloadDialog.show();" style="color:#A8A6A8!important;" >
+				<f:setPropertyActionListener target="#{pdfExp.columnValues}" value="#{globalIsolations.exptrColumnValues}"/>  
+			              <f:setPropertyActionListener target="#{pdfExp.tabColumnsWithSize}" value="#{globalIsolations.exptrColNamesWithSize}"/>   
+               	          <f:setPropertyActionListener target="#{pdfExp.headerContent}" value="#{globalIsolations.exptrHeaderContent}"/>  		     
+			              <f:setPropertyActionListener target="#{pdfExp.logo}" value="#{globalIsolations.exptrPageLogo}"/> 
+		                  <f:setPropertyActionListener target="#{pdfExp.pageTitle}" value="#{globalIsolations.exptrPgTitle}"/> 
+	                     <f:setPropertyActionListener target="#{pdfExp.fileName}" value="#{globalIsolations.exptrFileName}"/> 
+	                     <f:setPropertyActionListener target="#{pdfExp.redirectTo}" value="GlobalIsolationsPage?faces-redirect=true"/>	     
+				</p:commandButton>
+				<p:commandButton value="XLS" onstart= "XLSDownloadDialog.show();" style="color:#A8A6A8!important;">
+		  		 <f:setPropertyActionListener target="#{xlsexp.tabColumnsWithSize}" value="#{globalIsolations.exptrColNamesWithSize}"/>   
+				 <f:setPropertyActionListener target="#{xlsexp.columnValues}" value="#{globalIsolations.exptrColumnValues}"/>       
+                 <f:setPropertyActionListener target="#{xlsexp.fileName}" value="#{globalIsolations.exptrFileName}"/>   
+                 <f:setPropertyActionListener target="#{xlsexp.redirectTo}" value="GlobalIsolationsPage?faces-redirect=true"/>	
+				</p:commandButton>
+				<p:commandButton value="XML" ajax="false" style="color:#A8A6A8!important;">
+						<p:dataExporter type="xml" target="tbIsolationList" fileName="AlarmIsolations" preProcessor="#{exporter.preProcessor}" postProcessor="#{exporter.postProcessor}"/>
+				</p:commandButton>
+		  		</p:toolbarGroup>
+		  		</p:toolbar>
+		   		</f:facet> -->
+					</p:dataTable>
+					<div class="threequartersplus30"
+						style="margin-top: 6px; margin-bottom: 0px; width: 100%">
+					 	<table style="float: left">
+							<tr>
+<!-- 										action="IsolateAlarmAssetPage?faces-redirect=true" -->
+								<td><p:commandLink
+										actionListener="#{assetgroup.isolateFixturePreProcessor}"
+										oncomplete="PF('addIsolationAlarmAssetDlg').show()"
+										update=":isolationsAlarmAssetDlg"
+										styleClass="greenButton">Add <br />Isolation</p:commandLink></td>
+<!-- 										action="#{assetgroup.modifyAlmIsolationPage}" -->
+								<td><p:commandLink update=":frmAlarmAssetIsolationsPage:msg :modIsolationsAlarmAssetDlg"
+										actionListener="#{assetgroup.modificationPreProcess}"
+										oncomplete="PF('modIsolationAlarmAssetDlg').show()"
+										styleClass="greenButton"
+										rendered="#{userInfo.userBureauType=='Admin' || userInfo.userBureauType=='Supervisor'}">Modify <br />Isolation</p:commandLink></td>
+							 	<td><p:commandLink styleClass="greenButton"
+										rendered="#{userInfo.userBureauType=='Admin' || userInfo.userBureauType=='Supervisor'}"
+										onclick="PF('confirmDelDlg').show()">Delete <br />Isolation</p:commandLink></td> 
+							</tr>
+						</table> 
+
+					</div>
+				</div>
+			</h:form>
+
+		</div>
+		<p:confirmDialog appendTo="@(body)" widgetVar="confirmDelDlg"
+			header="Delete Isolation"
+			message="Are you sure you want to delete the selected Alarm Isolation?"
+			severity="alert" width="400">
+			<h:form>
+				<p:commandButton value="Yes"
+					actionListener="#{assetgroup.delAlmIsolations}"
+					styleClass="dialogButton" oncomplete="PF('confirmDelDlg').hide()"
+					update=":frmAlarmAssetIsolationsPage:tbIsolationList" />
+				<p:commandButton type="button" value="No"
+					onclick="PF('confirmDelDlg').hide()" styleClass="dialogButton" />
+			</h:form>
+		</p:confirmDialog>
+	</ui:define>
+</ui:composition>

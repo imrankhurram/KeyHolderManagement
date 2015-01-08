@@ -1,0 +1,67 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:o="http://omnifaces.org/ui" xmlns:p="http://primefaces.org/ui">
+
+	<!-- START OF DIALOG -->
+	<p:dialog widgetVar="viewIsolationDetailsDialog"
+		id="viewIsolationDetailsDialog" appendTo="@(body)" modal="true"
+		position="center" header="Details for Isolation" resizable="false"
+		showEffect="fade" hideEffect="fade" closable="true">
+
+		<h:form id="viewIsolationDetailsFrm" prependId="false">
+			<p:tabView
+				rendered="#{isolations.viewIsolatedAlarmTraps !=null || isolations.viewIsolatedAlarmAssets !=null}">
+				<p:tab title="Isolated Alarm Traps"
+					rendered="#{isolations.viewIsolatedAlarmTraps !=null}">
+					<h:panelGrid columns="1" style="margin:5px">
+						<p:dataTable var="isolatedTrap" paginator="true" dynamic="false"
+							paginatorPosition="top"
+							paginatorTemplate="{PreviousPageLink} {CurrentPageReport}
+					{NextPageLink}"
+							rows="10" value="#{isolations.viewIsolatedAlarmTraps}"
+							paginatorAlwaysVisible="false" style="width:650px;">
+							<p:column headerText="Alarm Trap Name" style="width:150px;">
+								<h:outputText value="#{isolatedTrap.name}" />
+							</p:column>
+						</p:dataTable>
+					</h:panelGrid>
+				</p:tab>
+				<p:tab title="Isolated Alarm Assets"
+					rendered="#{isolations.viewIsolatedAlarmAssets !=null}">
+					<h:panelGrid columns="2" style="margin:5px">
+						<p:dataTable var="isolatedAsset" paginator="true" dynamic="false"
+							paginatorPosition="top"
+							paginatorTemplate="{PreviousPageLink} {CurrentPageReport}
+					{NextPageLink}"
+							rows="10" value="#{isolations.viewIsolatedAlarmAssets}"
+							paginatorAlwaysVisible="false" style="width:650px;">
+							<p:column headerText="Fixture" style="width:150px;">
+								<h:outputText value="#{isolatedAsset.fixtureName}" />
+							</p:column>
+							<p:column headerText="Fixture Type" style="width:150px;">
+								<h:outputText value="#{isolatedAsset.fixtureType}" />
+							</p:column>
+							<p:column headerText="Subfixture" style="width:150px;">
+								<h:outputText value="#{isolatedAsset.subfixture}" />
+							</p:column>
+						</p:dataTable>
+					</h:panelGrid>
+				</p:tab>
+			</p:tabView>
+			<h:panelGrid columns="1" style="margin:5px"
+				rendered="#{isolations.viewIsolatedAlarmTraps ==null &amp;&amp; isolations.viewIsolatedAlarmAssets ==null}">
+				<h:outputText
+					value="No Alarm Traps or Alarm Assets have been isolated"
+					style="font-size:12px;color:red;" />
+			</h:panelGrid>
+
+
+
+		</h:form>
+
+	</p:dialog>
+	<!-- END OF DIALOG -->
+</ui:composition>

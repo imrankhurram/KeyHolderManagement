@@ -1,0 +1,89 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	template="MainTemplate.xhtml">
+
+
+	<ui:define name="contentPanel">
+		<div id="Wrapper">
+			<ui:include src="./snippets/MenuBars/MenuBarSensorListSnippet.xhtml" />
+			<ui:include src="./snippets/DlgIsolateAlarmAssetSnippet.xhtml" />
+
+
+			<h:form id="frmSensorListPage">
+				<div class="quarterminus30">
+					<div class="userPanel">
+						User:
+						<p:outputLabel value="#{userInfo.userName}"
+							style="font-size:15px !important; font-weight:bold !important;" />
+					</div>
+				</div>
+
+				<div class="" style="float: left; padding-left: 10px; width: 100%;">
+					<h3>
+						<b>Sensor List</b>
+					</h3>
+					<p:dataTable widgetVar="TbSensorList" id="tbSensorList" var="row"
+						value="#{assetgroup.assetList}" rowKey="#{row.id}"
+						scrollable="true" scrollHeight="205"
+						emptyMessage="No Sensor Exist." styleClass="keyholdersTable"
+						resizableColumns="true">
+						<p:column width="100">
+							<f:facet name="header">
+								<h:outputText value="REFERENCE" />
+							</f:facet>
+							<h:outputText id="name" value="#{row.assetName}">
+								<p:tooltip for="name" value="#{row.assetName}" />
+							</h:outputText>
+						</p:column>
+						<p:column width="200">
+							<f:facet name="header">
+								<h:outputText value="DESCRIPTION" />
+							</f:facet>
+							<h:outputText id="description" value="#{row.description}">
+								<p:tooltip for="description" value="#{row.description}" />
+							</h:outputText>
+						</p:column>
+						<p:column width="80">
+							<f:facet name="header">
+								<h:outputText value="ISOLATION STATUS" />
+							</f:facet>
+							<h:outputText id="isolation_status_isolated" value="Isolated"
+								rendered="#{row.isolated}" />
+							<h:outputText id="isolation_status_not_isolated"
+								value="Not Isolated" rendered="#{not row.isolated}" />
+						</p:column>
+						<p:column width="80">
+							<f:facet name="header">
+								<h:outputText value="ISOLATION" />
+							</f:facet>
+							<p:commandLink id="add_isolation" value="Add Isolation"
+								actionListener="#{assetgroup.isolateAsset(row)}"
+								oncomplete="PF('addIsolationAlarmAssetDlg').show()"
+								update=":isolationsAlarmAssetDlg"
+								rendered="#{not row.hasIsolations}" />
+							<p:commandLink id="edit_isolation" value="Edit Isolation"
+								action="#{assetgroup.showAssetIsolationPreProcessor(row)}"
+								rendered="#{row.hasIsolations}" />
+						</p:column>
+					</p:dataTable>
+					<div class="threequartersplus30"
+						style="margin-top: 6px; margin-bottom: 0px; width: 100%">
+						<table style="float: left">
+							<tr>
+								<td><p:commandLink
+										action="#{keyholdersmenubar.actionIsolationsFilterButton}"
+										styleClass="greenButton">All <br />Isolations</p:commandLink></td>
+
+							</tr>
+						</table>
+					</div>
+				</div>
+			</h:form>
+
+		</div>
+	</ui:define>
+</ui:composition>
